@@ -44,6 +44,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final double m_drivetrainWheelbaseWidth =  Constants.DRIVETRAIN_WHEELBASE_WIDTH;  //Calibrated for 2024 BunnyBots
     public final double m_drivetrainWheelbaseLength = Constants.DRIVETRAIN_WHEELBASE_LENGTH; //Calibrated for 2024 BunnyBots
 
+    // Sets default alliance to blue can be overwritten in shuffleboard
     public String selectedAliance = "blueAlliance"; //Sets Alliance as Blue
 
     // x is forward       robot is long in the x-direction, i.e. wheelbase length
@@ -79,7 +80,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                                               Constants.BACK_RIGHT_ANGLE_OFFSET_COMPETITION,
                                                               1.0);
   
-    public final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
+    public final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);  //Nav X
 
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
       m_frontLeftLocation,
@@ -87,7 +88,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       m_backLeftLocation, 
       m_backRightLocation);
     
-    private boolean followJoystics = true;
+    private boolean followJoystics = true;  //When false does not use Joysticks for driving - When true uses Joysticks for driving
   
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
@@ -102,7 +103,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
-    getPose();
+    getPose(); 
 
     // resetAngle() should be called before zeroOdometry() because reseting odometry uses gyro values to do the reset
     resetAngle();
@@ -124,14 +125,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose){
-    int desiredRot =0;
-    return createPath(startPose, middlePose, endPose, desiredRot);
+    int desiredRot = 0; //End Rotation is Defaulted to 0
+    return createPath(startPose, middlePose, endPose, desiredRot); 
   }
 
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
-    boolean isRedAliance  =false;
-    
-    isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    //boolean isRedAliance  = false;  Check if we need to actually set this to false in this method
+
+    //set isRedAlliance to value from DriverStation 
+    boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red; 
 
     // if (selectedAliance.equalsIgnoreCase("FMS")) {
     // }
@@ -151,18 +153,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SmartDashboard.putString("DriverStation.Alliance.Red",DriverStation.Alliance.Red.name());
 
     if (isRedAliance) { 
-      startPose = new Pose2d(-startPose.getX(), startPose.getY(), new Rotation2d(Math.toRadians(toRedHead(startPose.getRotation().getDegrees()))));
+      //Default is Blue so if Red Alliance then negate the X value and Rotation converts to Red Alliance
+      startPose = new Pose2d(-startPose.getX(), startPose.getY(), new Rotation2d(Math.toRadians(toRedHead(startPose.getRotation().getDegrees())))); 
       middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
       endPose = new Pose2d(-endPose.getX(), endPose.getY(), new Rotation2d(Math.toRadians(toRedHead(endPose.getRotation().getDegrees()))));
-      endRot*=-1;
+      endRot *= -1;
     }
     // angleSupplier expects a final variable so we create desiredRot and give the value of endRot
-    final double desiredRot =endRot;
+    final double desiredRot = endRot;
 
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      Constants.maxModuleLinearSpeed,  // 3.5
-      Constants.maxModuleLinearAccelaration)// 4
+      Constants.maxModuleLinearSpeed,  // 3.5 m/s
+      Constants.maxModuleLinearAccelaration)// 4 m/s^2
       .setKinematics(m_kinematics);
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
@@ -200,6 +203,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     ProfiledPIDController thetaController = new ProfiledPIDController(3, 0, 0.2, kThetaControllerConstraints); // Find a value for the PID
     // ProfiledPIDController thetaController = new ProfiledPIDController(4, 0, 0.2, kThetaControllerConstraints); // Find a value for the PID
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    //This SwerveControllerCommand expects an angleSupplier
     Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(desiredRot));
 
 
@@ -225,12 +230,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_gyro.setAngleAdjustment(0);
   }
   public void resetAngle(int degree){
+    //Use this method if you want to reset the angle to something not 0
     m_gyro.reset();
     m_gyro.setAngleAdjustment(degree);
   }
 
   public void setFollowJoystick(boolean followJoystics){
-    this.followJoystics =followJoystics;
+    this.followJoystics = followJoystics;
   }
 
 
@@ -366,6 +372,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // m_frontRight.setDesiredState(swerveModuleStates[1]);
     // m_backLeft.setDesiredState(swerveModuleStates[2]);
     // m_backRight.setDesiredState(swerveModuleStates[3]);
+
+    //If the desired states are not in this order then the swerve will not work  
     m_frontLeft.setDesiredState(swerveModuleStates[1]);
     m_frontRight.setDesiredState(swerveModuleStates[0]);
     m_backLeft.setDesiredState(swerveModuleStates[3]);
@@ -428,7 +436,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, 4);
-
+    //Desired states in this order or code will not work 1, 0, 3, 2 for FL, FR, BL, BR respectively
     m_frontLeft.setDesiredState(desiredStates[1]);
     m_frontRight.setDesiredState(desiredStates[0]);
     m_backLeft.setDesiredState(desiredStates[3]);
@@ -445,7 +453,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SwerveModuleState[] desiredStates = m_kinematics.toSwerveModuleStates(cs, centerOfRotation);
 
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 4);
-
+    
+    //Desired states in this order or code will not work 1, 0, 3, 2 for FL, FR, BL, BR respectively
     m_frontLeft.setDesiredState(desiredStates[1]);
     m_frontRight.setDesiredState(desiredStates[0]);
     m_backLeft.setDesiredState(desiredStates[3]);
@@ -467,6 +476,7 @@ public ChassisSpeeds getChassisSpeeds() {
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, DrivetrainSubsystem.kMaxSpeed);
+    //Desired states in this order or code will not work 1, 0, 3, 2 for FL, FR, BL, BR respectively
     m_frontLeft.setDesiredState(desiredStates[1]);
     m_frontRight.setDesiredState(desiredStates[0]);
     m_backLeft.setDesiredState(desiredStates[3]);
