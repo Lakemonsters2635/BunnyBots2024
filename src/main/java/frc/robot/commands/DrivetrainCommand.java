@@ -32,6 +32,10 @@ public class DrivetrainCommand extends Command {
     m_dts.setXPowerCommanded(Math.copySign(Math.pow(x, 3), x)); //Sets Powers to Motors Based of Joystick Values
     m_dts.setYPowerCommanded(Math.copySign(Math.pow(y, 3), y));
     m_dts.setRotCommanded(Math.copySign(Math.pow(rot, 3), rot));
+
+    System.out.println("x" + Math.copySign(Math.pow(x, 3), x));
+    System.out.println("y"+ Math.copySign(Math.pow(y, 3), y));
+    System.out.println("rot" + Math.copySign(Math.pow(rot, 3), rot));
   }
 
   // Called once the command ends or is interrupted.

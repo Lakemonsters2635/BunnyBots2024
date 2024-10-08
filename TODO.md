@@ -4,3 +4,9 @@
 * Figure out if we actually need to set `isRedAlliance` to false in `DrivetrainSubsystem.createPath()`  
 * Figure out if we can simplify the multiplying by * -1 later in `DrivetrainSubsystem.drive()`
 * Fix Documentation on LoggingState, actualLoggingState, and Advantage Scope in `DrivetrainSybsystem.periodic()`
+* Figure out what data we can get of SparkMax and Krakens.. Desired Data: Voltage, Current, Speed, Position/Encoder Position, Temperature
+  * Krakens: 
+    * ASDF
+  * SparkMax
+    * ASDF
+    * `getBusVoltage()`
