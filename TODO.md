@@ -10,3 +10,5 @@
   * SparkMax
     * ASDF
     * `getBusVoltage()`
+* Make sure we fix the json main in shuffleboard for vision data (`ObjectTrackerSubsystem`)
+* Call ObjectTrackerSubsystem.updateDetections() with detectionsString = jsonString to populate yoloObjects and aprilTags
