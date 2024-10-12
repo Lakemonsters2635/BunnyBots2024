@@ -78,7 +78,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         monsterVision = inst.getTable("MonsterVision");
         jsonString = "";
 
-        if (source == "NoteCam") {
+        if (source == "NoteCam") { // is it defined eclipse?
             cameraTilt= Constants.VISION_NOTE_CAM_TILT;
         }
         else if(source == "AprilTagPro"){
@@ -105,9 +105,12 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         if(entry==null) {
             return;
         }
-        jsonString = entry.getString("ObjectTracker");
+        // default to an empty list of detections if nothing is found: 
+        jsonString = entry.getString("[]");
         // TODO: call updateDetections with detectionsString = jsonString to populate yoloObjects and aprilTags
         updateDetections(jsonString, gson);
+        return ;
+        /* This commented code uses the OLD VisionObject
         try {
             foundObjects = gson.fromJson(jsonString, VisionObject[].class);
         } catch (Exception e) {
@@ -140,7 +143,8 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         // TODO: Comment this part
         // for (VisionObject object : foundObjects){
         //     System.out.format("%s %.1f %.1f %.1f %.1f\n",object.objectLabel, object.x, object.y, object.z, object.confidence);
-        // }       
+        // }      '' 
+        */
     }
 
     private void applyRotationTranslationMatrix() {
@@ -327,20 +331,20 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             return null;
         }
     }
-    // Yaw difference is from the frame of reference of rotation
-    // Get Y from the rotaion object of detection and translate to z rotation of robot spo we can directly feed into command to turn robot
-    // Confirm that we are turning in correct direction
-    public double getYawDifferenceFromDetectionRotation(Detection detection) {
-        // The whole point of this functions is so that we know which direction to turn the robot
-        return 0.0;
-    }
-    public double getDistanceFromDetection(Detection detection) {
-        return detection.z;
-    }
-    public double getXFieldDistanceFromDetection(Detection detection) {
-        // x not
-        return 0.0;
-    }
+    // // Yaw difference is from the frame of reference of rotation
+    // // Get Y from the rotaion object of detection and translate to z rotation of robot spo we can directly feed into command to turn robot
+    // // Confirm that we are turning in correct direction
+    // public double getYawDifferenceFromDetectionRotation(Detection detection) {
+    //     // The whole point of this functions is so that we know which direction to turn the robot
+    //     return 0.0;
+    // }
+    // public double getDistanceFromDetection(Detection detection) {
+    //     return detection.z;
+    // }
+    // public double getXFieldDistanceFromDetection(Detection detection) {
+    //     // x not
+    //     return 0.0;
+    // }
     private double getThetaYZField(Detection detection) {
         double camX = detection.x;
         double camZ = detection.z;
