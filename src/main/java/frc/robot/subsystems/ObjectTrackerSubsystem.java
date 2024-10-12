@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.models.VisionObject;
@@ -109,6 +110,18 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         jsonString = entry.getString("[]");
         // TODO: call updateDetections with detectionsString = jsonString to populate yoloObjects and aprilTags
         updateDetections(jsonString, gson);
+        // use the getClosestAprilTag() to get the detection for the closest april tag
+        // Use smart dashboarf to display the x, y, z and ya values
+        try {
+            SmartDashboard.putNumber("VisionX", getNearestAprilTagDetection().x);
+            SmartDashboard.putNumber("VisionY", getNearestAprilTagDetection().y);
+            SmartDashboard.putNumber("VisionZ", getNearestAprilTagDetection().z);
+            SmartDashboard.putNumber("VisionYa", getNearestAprilTagDetection().ya);
+            System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
+        
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return ;
         /* This commented code uses the OLD VisionObject
         try {
@@ -383,15 +396,17 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     }
     public void updateDetections(String detectionsString, Gson gson) {
         DetectionList gsonOut = gson.fromJson(detectionsString, DetectionList.class);
+        aprilTags.clear();
+        yoloObjects.clear();
         
         // Seperate out the detections with rotation
         for (int i = 0; i < gsonOut.size(); i++) { // Maybe change later
             if (gsonOut.get(i).objectLabel.substring(0,3).equals("tag")) {
                 aprilTags.add(gsonOut.get(i));
-                System.out.println("UpdateDetections(: found apriltag");
+                // System.out.println("UpdateDetections(: found apriltag");
             } else {
                 yoloObjects.add(gsonOut.get(i));
-                System.out.println("yolo object");
+                // System.out.println("yolo object");
             }
         }
     }
