@@ -10,3 +10,16 @@
   * SparkMax
     * ASDF
     * `getBusVoltage()`
+* Figure out how to read Amps from the power distribution
+  ```java
+  import edu.wpi.first.wpilibj.PowerDistributionPanel;
+  public class Robot extends TimedRobot {
+      private PowerDistributionPanel pdp = new PowerDistributionPanel();
+      @Override
+      public void robotPeriodic() {
+          // Read the current draw on channel 0
+          double current = pdp.getCurrent(0);
+          System.out.println("Current on channel 0: " + current + "A");
+      }
+  }
+  ```
