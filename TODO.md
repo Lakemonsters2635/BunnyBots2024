@@ -23,3 +23,4 @@
       }
   }
   ```
+* Figure out which motors have embedded temperature sensors, and how to get these values.
