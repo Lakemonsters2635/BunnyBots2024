@@ -36,11 +36,12 @@ public final class Constants {
     // Add 90 to all encoder offsets
     // Switch robot's lenght to width
 
-    // ROBOT WIDTH AND LENGHT
+    // ROBOT WIDTH AND LENGHT 
+    // TODO: need to be able to switch between Bunny Bots and Eclipse
     public static final double DRIVETRAIN_WHEELBASE_WIDTH =  21.5/ Constants.INCHES_PER_METER; //21.5
     public static final double DRIVETRAIN_WHEELBASE_LENGTH = 25.5 / Constants.INCHES_PER_METER; //25.5
 
-    /* 
+    /* Bunny Bots Constants
     // FRONT LEFT
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 1; //1
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 0; //3
@@ -70,7 +71,7 @@ public final class Constants {
     public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 0;//1
     public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 6; //6
     public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1-13+3+3.8+5.0+180); //3.01
-*/
+//*/
     //    public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49.73+3-1.1+3-6.2-0.5); //3.0346
 
     
