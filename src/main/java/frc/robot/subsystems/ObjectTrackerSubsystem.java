@@ -120,7 +120,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
         
         } catch (Exception e) {
-            System.out.println(e);
+            // System.out.println(e);
         }
         return ;
         /* This commented code uses the OLD VisionObject
