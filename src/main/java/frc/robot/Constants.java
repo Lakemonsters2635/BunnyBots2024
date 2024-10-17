@@ -45,8 +45,7 @@ public final class Constants {
     public static final int FRONT_RIGHT_MODULE_STATE_INDEX = 0;
     public static final int BACK_LEFT_MODULE_STATE_INDEX = 3;
     public static final int BACK_RIGHT_MODULE_STATE_INDEX = 2;
-
-
+ 
      // FRONT LEFT
      public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 8; //1
      public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 1; //3
@@ -77,6 +76,9 @@ public final class Constants {
      public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 2; //7
      public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1-13+3+3.8+5.0+180); //3.01
  
+
+     
+
 
     // ROBOT WIDTH AND LENGTH
     //BUNNY BOTS SWERVE CONSTANTS
@@ -152,8 +154,11 @@ public final class Constants {
     //We may want to back off on this if autos start lagging
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 12 * Math.PI;
 
-    public static final double maxModuleLinearSpeed = 1.75;
-    public static final double maxModuleLinearAccelaration = 8;
+    public static final double maxModuleLinearAccelaration = 2;
+    public static final double maxModuleLinearSpeed = 0.5;
+
+    //public static final double maxModuleLinearSpeed = 1.75; //Originally 1.75 CHANGED
+    //public static final double maxModuleLinearAccelaration = 8; Originally 8 CHANGED
     // public static final double maxModuleLinearSpeed = 3.5;
     // public static final double maxModuleLinearAccelaration = 16;
 

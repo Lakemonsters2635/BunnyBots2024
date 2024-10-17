@@ -27,8 +27,10 @@ public class AutonomousCommands {
             new InstantCommand(() -> m_dts.resetAngle()),
             m_dts.createPath(
                         new Pose2d(0,0, new Rotation2d(Math.toRadians(90))),
-                        new Translation2d(0, 0.5),
-                        new Pose2d(0, 1, new Rotation2d(Math.toRadians(90)))
+                        new Translation2d(0, 5),
+                        new Pose2d(0, 10, new Rotation2d(Math.toRadians(90))),
+                        0
             ));
+        
     }
 }

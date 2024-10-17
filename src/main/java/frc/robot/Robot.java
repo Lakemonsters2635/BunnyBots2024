@@ -91,7 +91,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     RobotContainer.m_drivetrainSubsystem.setFollowJoystick(false);
     // m_autonomousCommand = m_autoChooser.getSelected();
-    m_autonomousCommand = m_autoChooser.getSelected();
+    // m_autonomousCommand = m_autoChooser.getSelected();
+    m_autonomousCommand = m_robotContainer.m_autonomousCommands.postSeasonAutoStraight();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
