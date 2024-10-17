@@ -443,10 +443,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, 4);
     //Desired states in this order or code will not work 1, 0, 3, 2 for FL, FR, BL, BR respectively
-    m_frontLeft.setDesiredState(swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
-    m_frontRight.setDesiredState(swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
-    m_backLeft.setDesiredState(swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
-    m_backRight.setDesiredState(swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
+    m_frontLeft.setDesiredState(desiredStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
+    m_frontRight.setDesiredState(desiredStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
+    m_backLeft.setDesiredState(desiredStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
+    m_backRight.setDesiredState(desiredStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
   } 
 
   /** Sets the swerve ModuleStates. Accept a center of rotation for when you DON'T want to rotate
@@ -461,10 +461,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 4);
     
     //Desired states in this order or code will not work 1, 0, 3, 2 for FL, FR, BL, BR respectively
-    m_frontLeft.setDesiredState(swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
-    m_frontRight.setDesiredState(swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
-    m_backLeft.setDesiredState(swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
-    m_backRight.setDesiredState(swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
+    m_frontLeft.setDesiredState(desiredStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
+    m_frontRight.setDesiredState(desiredStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
+    m_backLeft.setDesiredState(desiredStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
+    m_backRight.setDesiredState(desiredStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
   } 
 
 public ChassisSpeeds getChassisSpeeds() {
@@ -483,10 +483,10 @@ public ChassisSpeeds getChassisSpeeds() {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, DrivetrainSubsystem.kMaxSpeed);
     //Desired states in this order or code will not work 1, 0, 3, 2 for FL, FR, BL, BR respectively
-    m_frontLeft.setDesiredState(swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
-    m_frontRight.setDesiredState(swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
-    m_backLeft.setDesiredState(swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
-    m_backRight.setDesiredState(swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
+    m_frontLeft.setDesiredState(desiredStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
+    m_frontRight.setDesiredState(desiredStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
+    m_backLeft.setDesiredState(desiredStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
+    m_backRight.setDesiredState(desiredStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
   }
 
   /** Displays all 4 module positions + robot pose (forward/back) in SmartDashboard. 
