@@ -143,6 +143,10 @@ public final class Constants {
     public static final double CHANGE_IN_X_PER_SECOND= 0.714;
     public static final double CHANGE_IN_Y_PER_SECOND= 0.717;
 
+    //Conversions
+    public static final double FEET_TO_METERS = 3.281;
+
+
     //BUTTON BINDINGS
 
     // right buttons
@@ -150,5 +154,4 @@ public final class Constants {
     public static final int BALANCE_BUTTON = 10;
 
     // left buttons
-    
 }
