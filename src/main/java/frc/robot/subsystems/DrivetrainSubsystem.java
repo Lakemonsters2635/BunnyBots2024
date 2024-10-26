@@ -292,10 +292,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         // TODO: look at the deadband below
         if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
-          rotCommanded = rightJoystick.getTwist() * -1;
+          rotCommanded = rightJoystick.getTwist();
         }
 
-      
         this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                   yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
                   MathUtil.applyDeadband(rotCommanded * this.kMaxAngularSpeed, 0.2), 
