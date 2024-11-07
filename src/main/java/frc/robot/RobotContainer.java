@@ -17,6 +17,7 @@ import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
+import frc.robot.subsystems.VacuumSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -31,6 +32,7 @@ public class RobotContainer {
 
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  public static final VacuumSubsystem m_vacuumSubsystem = new VacuumSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
   //Command 
