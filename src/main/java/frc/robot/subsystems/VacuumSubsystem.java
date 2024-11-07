@@ -16,12 +16,14 @@ public class VacuumSubsystem extends SubsystemBase {
   private PowerDistribution powerDistribution;
   double current;
   public VacuumSubsystem() {
-    powerDistribution = new PowerDistribution(20, PowerDistribution.ModuleType.kRev);
+    // module id is can id of the PDH, check using REV Hardware Client
+    powerDistribution = new PowerDistribution(20, PowerDistribution.ModuleType.kRev); // TODO: Change this id
   }
 
   @Override
   public void periodic() {
-    current = powerDistribution.getCurrent(17);
+    // This on is the PDH id of vacuum
+    current = powerDistribution.getCurrent(17); // TODO: change this id
     SmartDashboard.putNumber("Vacuum current", current);
   }
 }
