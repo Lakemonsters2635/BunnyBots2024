@@ -147,15 +147,21 @@ public final class Constants {
     public static final double FEET_TO_METERS = 3.281;
 
 
-    //Relay
-    public static final int RELAY_CHANNEL = 0;
+
+    //Vacuum
+    public static final int LEFT_VACUUM_ID = 16;
+    public static final int RIGHT_VACUUM_ID =17;
+    public static final int runVacuumSpeed = 1;
+    public static final int stopVacuumSpeed =0;
 
     //BUTTON BINDINGS
 
     // right buttons
     public static final int SWERVE_RESET_BUTTON = 7;
     public static final int BALANCE_BUTTON = 10;
-    public static final int RUN_RELAY_BUTTON = 3;
+    
 
     // left buttons
+    public static final int RUN_LEFT_VACUUM_BUTTON = 4;
+    public static final int RUN_RIGHT_VACUUM_BUTTON = 5;
 }
