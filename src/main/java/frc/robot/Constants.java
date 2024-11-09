@@ -147,11 +147,15 @@ public final class Constants {
     public static final double FEET_TO_METERS = 3.281;
 
 
+    //Relay
+    public static final int RELAY_CHANNEL = 0;
+
     //BUTTON BINDINGS
 
     // right buttons
     public static final int SWERVE_RESET_BUTTON = 7;
     public static final int BALANCE_BUTTON = 10;
+    public static final int RUN_RELAY_BUTTON = 3;
 
     // left buttons
 }

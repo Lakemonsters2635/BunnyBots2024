@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
+import frc.robot.commands.ForwardRelayCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
+import frc.robot.subsystems.RelaySubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,10 +34,12 @@ public class RobotContainer {
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
+  public static final RelaySubsystem m_relaySubsystem = new RelaySubsystem();
  
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem);
+  public static final ForwardRelayCommand m_forwardRelayCommands = new ForwardRelayCommand(m_relaySubsystem);
 
 
   public RobotContainer() {
@@ -58,6 +62,7 @@ public class RobotContainer {
     // right buttons
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
+    Trigger runRelayButton = new JoystickButton(rightJoystick, Constants.RUN_RELAY_BUTTON);
 
     // left buttons
 
@@ -68,6 +73,7 @@ public class RobotContainer {
         new InstantCommand(()->m_drivetrainSubsystem.zeroOdometry())
       )
     );
+    runRelayButton.onTrue(m_forwardRelayCommands);
   }
 
   /**

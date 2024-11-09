@@ -15,7 +15,7 @@ final Relay m_relay;
 
 
   public RelaySubsystem() {
-    m_relay = new Relay(Constants.RELAY_CHANEL);
+    m_relay = new Relay(Constants.RELAY_CHANNEL);
   }
 
 
@@ -27,9 +27,6 @@ final Relay m_relay;
     m_relay.set(Relay.Value.kForward);
   }
     
-  public void reverseRelay(){
-    m_relay.set(Relay.Value.kReverse);
-  }
 
   public void stopRelay(){
     m_relay.set(Relay.Value.kOff);
