@@ -73,7 +73,7 @@ public class RobotContainer {
         new InstantCommand(()->m_drivetrainSubsystem.zeroOdometry())
       )
     );
-    runRelayButton.onTrue(m_forwardRelayCommands);
+    runRelayButton.whileTrue(m_forwardRelayCommands);
   }
 
   /**

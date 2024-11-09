@@ -25,6 +25,7 @@ final Relay m_relay;
 
   public void forwardRelay(){
     m_relay.set(Relay.Value.kForward);
+    System.out.println("method run works");
   }
     
 
