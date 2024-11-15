@@ -4,11 +4,33 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class vacuumSubsystem extends SubsystemBase {
-  /** Creates a new vacuumSubsystem. */
-  public vacuumSubsystem() {}
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+public class VacuumSubsystem extends SubsystemBase {
+  /** Creates a new VacuumSubsystem. */
+
+  public TalonSRX vacuumMotor;
+
+ 
+  public VacuumSubsystem(int can) {
+
+    vacuumMotor = new TalonSRX(can);
+  }
+
+  public void runVacuum(){
+    vacuumMotor.set(ControlMode.PercentOutput, Constants.runVacuumSpeed); //TODO: find TalonSRXControlMode
+  }
+
+  public void stopVacuum(){
+     vacuumMotor.set(ControlMode.PercentOutput, Constants.stopVacuumSpeed);  //TODO: find TalonSRXControlMode
+  }
 
   @Override
   public void periodic() {
