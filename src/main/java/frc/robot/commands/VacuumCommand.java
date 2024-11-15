@@ -5,40 +5,34 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.RelaySubsystem;
+import frc.robot.subsystems.VacuumSubsystem;
 
-public class ForwardRelayCommand extends Command {
-  /** Creates a new RelayCommand. */
+public class VacuumCommand extends Command {
 
-  RelaySubsystem m_relaySubsystem;
+/* Creates a new VacuumCommand. */
+  VacuumSubsystem m_vacuumSubsystem;
+  
+  public VacuumCommand(VacuumSubsystem vacuumSubsystem) {
 
-
-  public ForwardRelayCommand(RelaySubsystem relaySubsystem) {
-
-     m_relaySubsystem = relaySubsystem;
-
+  m_vacuumSubsystem = vacuumSubsystem;
+  addRequirements(m_vacuumSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_relaySubsystem);
   }
-
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_relaySubsystem.runRelay();
+  m_vacuumSubsystem.runVacuum();  
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_relaySubsystem.forwardRelay();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
-    m_relaySubsystem.stopRelay();
+    m_vacuumSubsystem.stopVacuum();
   }
 
   // Returns true when the command should end.
