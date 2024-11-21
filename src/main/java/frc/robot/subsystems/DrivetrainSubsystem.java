@@ -276,7 +276,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
-          rotCommanded = Constants.HAT_POWER_ROTATE*-1.0;
+          rotCommanded = Constants.HAT_POWER_ROTATE*-1;
         }
         else if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
           rotCommanded = Constants.HAT_POWER_ROTATE;
@@ -292,7 +292,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         // TODO: look at the deadband below
         if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
-          rotCommanded = rightJoystick.getTwist();
+          rotCommanded = rightJoystick.getTwist()*-1;
         }
 
         this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
