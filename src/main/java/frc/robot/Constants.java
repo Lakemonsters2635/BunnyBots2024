@@ -130,6 +130,9 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
 
+    // VACUUM CONSTANTS
+
+    public static final int VACUUM_1_MOTOR_ID = 4;
     // VISION CONSTANTS
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
     public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(0);
