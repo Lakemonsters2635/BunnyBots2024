@@ -17,6 +17,7 @@ import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
+import frc.robot.subsystems.VacumnSolenoidSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -31,6 +32,7 @@ public class RobotContainer {
 
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  public static final VacumnSolenoidSubsystem m_vacumnSolenoidSusbsystem = new VacumnSolenoidSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
   //Command 
@@ -60,6 +62,12 @@ public class RobotContainer {
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
 
     // left buttons
+    Trigger toggleLeftSolenoidValve = new JoystickButton(leftJoystick, Constants.LEFT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
+    Trigger toggleRightSolenoidValve = new JoystickButton(leftJoystick, Constants.RIGHT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
+
+    toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.toggleLeftValve()));
+    toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.toggleRightValve()));
+
 
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     resetOdometryButton.onTrue(
@@ -78,7 +86,6 @@ public class RobotContainer {
   public SendableChooser<Command> getAutonomousCommand() {
     SendableChooser<Command> m_autoChooser = new SendableChooser<>();
     SendableChooser<Command> m_alianceChooser = new SendableChooser<>();
-
     // m_alianceChooser.addOption("red", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("red")));
     // m_alianceChooser.addOption("blue", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("blue")));
     // m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
