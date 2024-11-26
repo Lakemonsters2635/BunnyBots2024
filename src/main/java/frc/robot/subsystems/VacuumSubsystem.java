@@ -14,7 +14,7 @@ import frc.robot.Constants;
 
 public class VacuumSubsystem extends SubsystemBase {
   /** Creates a new VacuumSubsystem. */
-  TalonSRX vacumnMotor;
+  TalonSRX vacumnMotor; 
   TalonFX armMotor; // Delete this
   public VacuumSubsystem() {
     vacumnMotor = new TalonSRX(Constants.VACUUM_1_MOTOR_ID);
