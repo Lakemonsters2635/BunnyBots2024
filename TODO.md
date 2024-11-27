@@ -10,5 +10,18 @@
   * SparkMax
     * ASDF
     * `getBusVoltage()`
-* Make sure we fix the json main in shuffleboard for vision data (`ObjectTrackerSubsystem`)
+* Figure out how to read Amps from the power distribution
+  ```java
+  import edu.wpi.first.wpilibj.PowerDistributionPanel;
+  public class Robot extends TimedRobot {
+      private PowerDistributionPanel pdp = new PowerDistributionPanel();
+      @Override
+      public void robotPeriodic() {
+          // Read the current draw on channel 0
+          double current = pdp.getCurrent(0);
+          System.out.println("Current on channel 0: " + current + "A");
+      }
+  }
+  ```
+* Figure out which motors have embedded temperature sensors, and how to get these values.* Make sure we fix the json main in shuffleboard for vision data (`ObjectTrackerSubsystem`)
 * Call ObjectTrackerSubsystem.updateDetections() with detectionsString = jsonString to populate yoloObjects and aprilTags

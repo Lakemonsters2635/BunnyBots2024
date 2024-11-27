@@ -36,46 +36,50 @@ public final class Constants {
     // Add 90 to all encoder offsets
     // Switch robot's lenght to width
 
-    // ROBOT WIDTH AND LENGHT 
-    // TODO: need to be able to switch between Bunny Bots and Eclipse
-    public static final double DRIVETRAIN_WHEELBASE_WIDTH =  21.5/ Constants.INCHES_PER_METER; //21.5
-    public static final double DRIVETRAIN_WHEELBASE_LENGTH = 25.5 / Constants.INCHES_PER_METER; //25.5
+    // ROBOT WIDTH AND LENGHT
+    public static final double DRIVETRAIN_WHEELBASE_WIDTH =  25.5/ Constants.INCHES_PER_METER; //21.5
+    public static final double DRIVETRAIN_WHEELBASE_LENGTH = 21.5 / Constants.INCHES_PER_METER; //25.5
 
-    /* Bunny Bots Constants
+    // SWERVE MODULE STATES
+    public static final int FRONT_LEFT_MODULE_STATE_INDEX = 0;
+    public static final int FRONT_RIGHT_MODULE_STATE_INDEX = 1;
+    public static final int BACK_LEFT_MODULE_STATE_INDEX = 2;
+    public static final int BACK_RIGHT_MODULE_STATE_INDEX = 3;
+
     // FRONT LEFT
-    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 1; //1
-    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 0; //3
-    public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 2; //2
-    public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49.73+3-1.1+3-6.2-0.5+180); //3.0346
+    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 7; //1
+    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 2; //1
+    public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 8; //2
+    public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49.73+3-1.1+3-6.2-0.5+180+32-90-83+90); //3.0346
 
     //    public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1-13+3+3.8+5.0); //3.01
 
     // FRONT RIGHT
-    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 7; //7
-    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 0; //2
-    public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 8; //8
-    public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(151.84+0.6-3.5+3+0.6+1.5+180); //2.9835
+    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 5; //7
+    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 3; //0
+    public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 6; //8
+    public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(151.84+0.6-3.5+3+0.6+1.5+180+22+90-21+90+180); //2.9835
 
     //    public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(17.07+5+50-90-19.3+3+4.8); // 3.0775
 
     // BACK LEFT
-    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 3; //3
-    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 0; //0
-    public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 4; //4
-    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(17.07+5+50-90-19.3+3+4.8+180); // 3.0775
+    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 1; //3
+    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 0; //3
+    public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 2; //10
+    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(17.07+5+50-90-19.3+3+4.8+180+55-90+56+90); // 3.0775
 
     //    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(151.84+0.6-3.5+3+0.6+1.5); //2.9835
 
     // BACK RIGHT
-    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 5; //5
-    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 0;//1
-    public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 6; //6
-    public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1-13+3+3.8+5.0+180); //3.01
-//*/
+    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 3; //5
+    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 1;//2
+    public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 4; //6
+    public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1-13+3+3.8+5.0+180+64+90+50-90); //3.01
+
     //    public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49.73+3-1.1+3-6.2-0.5); //3.0346
 
     
-    // ECLIPSE Constants (for vision)
+    /* ECLIPSE Constants (for vision)
     // BACK LEFT
     public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 3; //9
     public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 2; //0
@@ -102,7 +106,7 @@ public final class Constants {
     public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 3;//1
     public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 2; //7
     public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1-13+3+3.8+5.0+180); //3.01
-
+    */
 
     // hat constants 
     public static final int HAT_JOYSTICK_TRIM_POSITION = RIGHT_JOYSTICK_CHANNEL;
@@ -155,6 +159,14 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
 
+    // VACUUM CONSTANTS
+
+    public static final int LEFT_VACUUM_MOTOR_ID = 16;
+    public static final int RIGHT_VACUUM_MOTOR_ID = 17;
+    public static final double VACUUM_SPEED = 0.6;
+    // TOTE GRABBER CONSTANTS
+    public static final int TOTE_GRABBER_ID = 9;
+
     // VISION CONSTANTS
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
     public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(0);
@@ -168,12 +180,28 @@ public final class Constants {
     public static final double CHANGE_IN_X_PER_SECOND= 0.714;
     public static final double CHANGE_IN_Y_PER_SECOND= 0.717;
 
+    //Conversions
+    public static final double FEET_TO_METERS = 3.281;
+
+    //VACUUM SOLENOID CONSTANTS
+    public static final int PNEUMATICS_CONTROL_HUB_ID = 15;
+    public static final int LEFT_VALVE_ID = 4;
+    public static final int RIGHT_VALVE_ID = 1;
+
+
     //BUTTON BINDINGS
 
     // right buttons
     public static final int SWERVE_RESET_BUTTON = 7;
-    public static final int BALANCE_BUTTON = 10;
+    public static final int ZERO_ODOMETRY_BUTTON = 11;
+
+    public static final int LEFT_VACUUM_TOGGLE_BUTTON = 6;
+    public static final int RIGHT_VACUUM_TOGGLE_BUTTON = 5;
+
 
     // left buttons
-    
+    public static final int LEFT_VALVE_TOGGLE_BUTTON = 2;
+    public static final int RIGHT_VALVE_TOGGLE_BUTTON = 1;
+    public static final int TOTE_GRABBER_UP_BUTTON = 5;
+    public static final int TOTE_GRABBER_DOWN_BUTTON = 3;
 }

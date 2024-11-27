@@ -71,7 +71,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     public DetectionList yoloObjects;
     public DetectionList aprilTags;
 
-	// Put methods for controlling this subsystem
+	// Put methods for controlling this 
     // here. Call these from Commands.
 	public ObjectTrackerSubsystem(String source){
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
