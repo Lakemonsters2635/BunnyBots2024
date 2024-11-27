@@ -12,22 +12,20 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class VacuumSubsystem extends SubsystemBase {
+public class VacumnSubsystem extends SubsystemBase {
   /** Creates a new VacuumSubsystem. */
   TalonSRX vacumnMotor; 
-  TalonFX armMotor; // Delete this
-  public VacuumSubsystem() {
-    vacumnMotor = new TalonSRX(Constants.VACUUM_1_MOTOR_ID);
-    armMotor = new TalonFX(20);
+  public VacumnSubsystem(int canID) {
+    vacumnMotor = new TalonSRX(canID);
 
   }
 
-  public void enableVacuum1(){
+  public void enableVacumn(){
     vacumnMotor.set(TalonSRXControlMode.PercentOutput, .3);
     System.out.println("enableVacuum");
   }
 
-  public void stopVacuum1(){
+  public void stopVacumn(){
     vacumnMotor.set(TalonSRXControlMode.PercentOutput, 0);
     System.out.println("stopVacuum");
   }

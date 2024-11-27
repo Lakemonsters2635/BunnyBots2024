@@ -132,7 +132,10 @@ public final class Constants {
 
     // VACUUM CONSTANTS
 
-    public static final int VACUUM_1_MOTOR_ID = 4;
+    public static final int LEFT_VACUUM_MOTOR_ID = 4;
+    public static final int RIGHT_VACUUM_MOTOR_ID = 4;
+    public static final double VACUMN_SPEED = 0.3;
+
     // VISION CONSTANTS
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
     public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(0);

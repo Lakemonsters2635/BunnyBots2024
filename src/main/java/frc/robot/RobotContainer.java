@@ -17,7 +17,7 @@ import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
-import frc.robot.subsystems.VacuumSubsystem;
+import frc.robot.subsystems.VacumnSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,7 +32,9 @@ public class RobotContainer {
 
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  public static final VacuumSubsystem m_vacuumSubsystem = new VacuumSubsystem();
+  public static final VacumnSubsystem m_leftVacumnSubsystem = new VacumnSubsystem(16); 
+  public static final VacumnSubsystem m_rightVacumnSubsystem = new VacumnSubsystem(17); 
+
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
   //Command 
@@ -61,13 +63,13 @@ public class RobotContainer {
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
 
-    Trigger test = new JoystickButton(rightJoystick, 6);
-    Trigger test2 = new JoystickButton(rightJoystick, 4);
+    Trigger leftVacumnEnable = new JoystickButton(rightJoystick, 6);
+    Trigger leftVacumnStop = new JoystickButton(rightJoystick, 4);
 
     // left buttons
 
-    test.onTrue(new InstantCommand(()->m_vacuumSubsystem.enableVacuum1()));
-    test2.onTrue(new InstantCommand(()->m_vacuumSubsystem.stopVacuum1()));
+    leftVacumnEnable.onTrue(new InstantCommand(()->m_leftVacumnSubsystem.enableVacumn()));
+    leftVacumnStop.onTrue(new InstantCommand(()->m_leftVacumnSubsystem.stopVacumn()));
 
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     resetOdometryButton.onTrue(
