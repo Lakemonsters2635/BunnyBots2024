@@ -19,6 +19,7 @@ import frc.robot.commands.VacumnCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
 import frc.robot.subsystems.VacumnSubsystem;
+import frc.robot.subsystems.VacumnSolenoidSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -36,6 +37,7 @@ public class RobotContainer {
   public static final VacumnSubsystem m_leftVacumnSubsystem = new VacumnSubsystem(Constants.LEFT_VACUUM_MOTOR_ID); 
   public static final VacumnSubsystem m_rightVacumnSubsystem = new VacumnSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID); 
 
+  public static final VacumnSolenoidSubsystem m_vacumnSolenoidSusbsystem = new VacumnSolenoidSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
   //Command 
@@ -71,9 +73,17 @@ public class RobotContainer {
 
     // left buttons
 
-  
-    leftVacumnToggle.onTrue(m_leftVacumnCommand);
-    rightVacumnToggle.onTrue(m_rightVacumnCommnad);
+    Trigger toggleLeftSolenoidValve = new JoystickButton(leftJoystick, Constants.LEFT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
+    Trigger toggleRightSolenoidValve = new JoystickButton(leftJoystick, Constants.RIGHT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
+
+    Trigger openLeftSolenoidValve = new JoystickButton(leftJoystick, 10);
+    Trigger closeLeftSolenoidValve = new JoystickButton(leftJoystick, 9);
+
+    toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.toggleLeftValve()));
+    toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.toggleRightValve()));
+
+    // openLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.openLeftValve()));
+    // closeLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.closeLeftValve()));
 
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     resetOdometryButton.onTrue(
@@ -92,7 +102,6 @@ public class RobotContainer {
   public SendableChooser<Command> getAutonomousCommand() {
     SendableChooser<Command> m_autoChooser = new SendableChooser<>();
     SendableChooser<Command> m_alianceChooser = new SendableChooser<>();
-
     // m_alianceChooser.addOption("red", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("red")));
     // m_alianceChooser.addOption("blue", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("blue")));
     // m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
