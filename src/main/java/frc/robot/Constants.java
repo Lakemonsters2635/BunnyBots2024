@@ -132,9 +132,9 @@ public final class Constants {
 
     // VACUUM CONSTANTS
 
-    public static final int LEFT_VACUUM_MOTOR_ID = 4;
-    public static final int RIGHT_VACUUM_MOTOR_ID = 4;
-    public static final double VACUMN_SPEED = 0.3;
+    public static final int LEFT_VACUUM_MOTOR_ID = 16;
+    public static final int RIGHT_VACUUM_MOTOR_ID = 17;
+    public static final double VACUMN_SPEED = 0.6;
 
     // VISION CONSTANTS
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
@@ -158,6 +158,10 @@ public final class Constants {
     // right buttons
     public static final int SWERVE_RESET_BUTTON = 7;
     public static final int BALANCE_BUTTON = 10;
+
+    public static final int LEFT_VACUMN_TOGGLE_BUTTON = 6;
+    public static final int RIGHT_VACUMN_TOGGLE_BUTTON = 5;
+
 
     // left buttons
 }

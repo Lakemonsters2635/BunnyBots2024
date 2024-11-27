@@ -33,8 +33,8 @@ public class RobotContainer {
 
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  public static final VacumnSubsystem m_leftVacumnSubsystem = new VacumnSubsystem(16); 
-  public static final VacumnSubsystem m_rightVacumnSubsystem = new VacumnSubsystem(17); 
+  public static final VacumnSubsystem m_leftVacumnSubsystem = new VacumnSubsystem(Constants.LEFT_VACUUM_MOTOR_ID); 
+  public static final VacumnSubsystem m_rightVacumnSubsystem = new VacumnSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID); 
 
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
@@ -66,8 +66,8 @@ public class RobotContainer {
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
 
-    Trigger leftVacumnToggle = new JoystickButton(leftJoystick, 6);
-    Trigger rightVacumnToggle = new JoystickButton(leftJoystick, 5);
+    Trigger leftVacumnToggle = new JoystickButton(leftJoystick, Constants.LEFT_VACUMN_TOGGLE_BUTTON);
+    Trigger rightVacumnToggle = new JoystickButton(leftJoystick, Constants.RIGHT_VACUMN_TOGGLE_BUTTON);
 
     // left buttons
 
