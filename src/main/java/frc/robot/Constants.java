@@ -130,6 +130,9 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
 
+    // TOTE GRABBER CONSTANTS
+    public static final int TOTE_GRABBER_ID = 9;
+
     // VISION CONSTANTS
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
     public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(0);
@@ -151,7 +154,9 @@ public final class Constants {
 
     // right buttons
     public static final int SWERVE_RESET_BUTTON = 7;
-    public static final int BALANCE_BUTTON = 10;
+    public static final int ZERO_ODOMETRY_BUTTON = 11;
 
     // left buttons
+    public static final int TOTE_GRABBER_UP_BUTTON = 5;
+    public static final int TOTE_GRABBER_DOWN_BUTTON = 3;
 }

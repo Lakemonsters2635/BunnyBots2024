@@ -15,8 +15,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
+import frc.robot.commands.ToteGrabberDownCommand;
+import frc.robot.commands.ToteGrabberUpCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
+import frc.robot.subsystems.ToteGrabberSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -31,11 +34,14 @@ public class RobotContainer {
 
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  public static final ToteGrabberSubsystem m_toteGrabberSubsystem = new ToteGrabberSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem);
+  public static final ToteGrabberDownCommand m_toteGrabberDownCommand = new ToteGrabberDownCommand(m_toteGrabberSubsystem);
+  public static final ToteGrabberUpCommand m_toteGrabberUpCommand = new ToteGrabberUpCommand(m_toteGrabberSubsystem);
 
 
   public RobotContainer() {
@@ -57,10 +63,13 @@ public class RobotContainer {
 
     // right buttons
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
-    Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
+    Trigger resetOdometryButton = new JoystickButton(rightJoystick, Constants.ZERO_ODOMETRY_BUTTON);
 
     // left buttons
+    Trigger toteGrabberUpButton = new JoystickButton(leftJoystick, Constants.TOTE_GRABBER_UP_BUTTON);
+    Trigger toteGrabberDownButton = new JoystickButton(leftJoystick, Constants.TOTE_GRABBER_DOWN_BUTTON);
 
+    // right
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     resetOdometryButton.onTrue(
       new SequentialCommandGroup(
@@ -68,6 +77,10 @@ public class RobotContainer {
         new InstantCommand(()->m_drivetrainSubsystem.zeroOdometry())
       )
     );
+
+    // left
+    toteGrabberDownButton.whileTrue(m_toteGrabberDownCommand);
+    toteGrabberUpButton.whileTrue(m_toteGrabberUpCommand);
   }
 
   /**
