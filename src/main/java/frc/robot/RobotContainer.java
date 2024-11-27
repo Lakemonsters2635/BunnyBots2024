@@ -18,7 +18,7 @@ import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.VacuumCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
-import frc.robot.subsystems.VacuumSubsystem;
+import frc.robot.subsystems.vacuumSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,14 +34,14 @@ public class RobotContainer {
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
-  public static final VacuumSubsystem m_leftVacuumSubsystem = new VacuumSubsystem(Constants.LEFT_VACUUM_ID);
-  public static final VacuumSubsystem m_rightVacuumSubsystem = new VacuumSubsystem(Constants.RIGHT_VACUUM_ID);
+  public static final vacuumSubsystem m_leftVacuumSubsystem = new vacuumSubsystem(Constants.LEFT_VACUUM_ID);
+  public static final vacuumSubsystem m_rightVacuumSubsystem = new vacuumSubsystem(Constants.RIGHT_VACUUM_ID);
 
  
   //Command 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem);
-  public static final VacuumCommand m_leftVacuumCommand = new VacuumCommand(m_leftVacuumSubsystem);
+  // public static final VacuumCommand m_leftVacuumCommand = new VacuumCommand(m_leftVacuumSubsystem);
   public static final VacuumCommand m_rightVacuumCommand = new VacuumCommand(m_rightVacuumSubsystem);
   
   public RobotContainer() {
@@ -77,7 +77,7 @@ public class RobotContainer {
         new InstantCommand(()->m_drivetrainSubsystem.zeroOdometry())
       )
     );
-    runLeftVacuumButton.onTrue(m_leftVacuumCommand);
+    // runLeftVacuumButton.onTrue(m_leftVacuumCommand);
     runRightVacuumButton.onTrue(m_rightVacuumCommand);
   }
 

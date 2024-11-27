@@ -5,14 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.VacuumSubsystem;
+import frc.robot.subsystems.vacuumSubsystem;
 
 public class VacuumCommand extends Command {
 
 /* Creates a new VacuumCommand. */
-  VacuumSubsystem m_vacuumSubsystem;
+  vacuumSubsystem m_vacuumSubsystem;
   
-  public VacuumCommand(VacuumSubsystem vacuumSubsystem) {
+  public VacuumCommand(vacuumSubsystem vacuumSubsystem) {
 
   m_vacuumSubsystem = vacuumSubsystem;
   addRequirements(m_vacuumSubsystem);
