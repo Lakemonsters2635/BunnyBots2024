@@ -4,12 +4,16 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.VacumnSubsystem;
 
 public class VacumnCommand extends Command {
   /** Creates a new VacumnCommand. */
+  Timer m_timer = new Timer();
   VacumnSubsystem m_vacumnSubsystem;
+  boolean initialVacumnState = false;
   public VacumnCommand(VacumnSubsystem vacumnSubsystem) {
     m_vacumnSubsystem = vacumnSubsystem;
     addRequirements(m_vacumnSubsystem);
@@ -19,7 +23,9 @@ public class VacumnCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    System.out.println("RUNNING TOGGLE VACUMN");
+    System.out.println(m_vacumnSubsystem.getVacumnEnabled());
+    m_vacumnSubsystem.toggleVacumn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,6 +39,7 @@ public class VacumnCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    m_timer.delay(0.2);
+    return true;
   }
 }

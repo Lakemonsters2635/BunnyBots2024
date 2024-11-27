@@ -15,21 +15,38 @@ import frc.robot.Constants;
 public class VacumnSubsystem extends SubsystemBase {
   /** Creates a new VacuumSubsystem. */
   TalonSRX vacumnMotor; 
+  boolean vacumnEnabled = false; 
   public VacumnSubsystem(int canID) {
     vacumnMotor = new TalonSRX(canID);
+    vacumnEnabled = false;
 
   }
 
   public void enableVacumn(){
+    vacumnEnabled = true;
     vacumnMotor.set(TalonSRXControlMode.PercentOutput, .3);
     System.out.println("enableVacuum");
   }
 
   public void stopVacumn(){
+    vacumnEnabled = false;
     vacumnMotor.set(TalonSRXControlMode.PercentOutput, 0);
     System.out.println("stopVacuum");
   }
 
+  public void toggleVacumn(){
+    if(vacumnEnabled){
+      stopVacumn();
+    }
+    else{
+      enableVacumn();
+    }
+  }
+
+  public boolean getVacumnEnabled(){
+    return vacumnEnabled;
+  }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

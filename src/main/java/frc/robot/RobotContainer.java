@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
+import frc.robot.commands.VacumnCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
 import frc.robot.subsystems.VacumnSubsystem;
@@ -38,6 +39,8 @@ public class RobotContainer {
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
   //Command 
+  public static final VacumnCommand m_leftVacumnCommand = new VacumnCommand(m_leftVacumnSubsystem);
+  public static final VacumnCommand m_rightVacumnCommnad = new VacumnCommand(m_rightVacumnSubsystem);
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem);
 
@@ -63,13 +66,14 @@ public class RobotContainer {
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
 
-    Trigger leftVacumnEnable = new JoystickButton(rightJoystick, 6);
-    Trigger leftVacumnStop = new JoystickButton(rightJoystick, 4);
+    Trigger leftVacumnToggle = new JoystickButton(leftJoystick, 6);
+    Trigger rightVacumnToggle = new JoystickButton(leftJoystick, 5);
 
     // left buttons
 
-    leftVacumnEnable.onTrue(new InstantCommand(()->m_leftVacumnSubsystem.enableVacumn()));
-    leftVacumnStop.onTrue(new InstantCommand(()->m_leftVacumnSubsystem.stopVacumn()));
+  
+    leftVacumnToggle.onTrue(m_leftVacumnCommand);
+    rightVacumnToggle.onTrue(m_rightVacumnCommnad);
 
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     resetOdometryButton.onTrue(
