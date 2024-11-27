@@ -130,6 +130,12 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
 
+    // VACUUM CONSTANTS
+
+    public static final int LEFT_VACUUM_MOTOR_ID = 16;
+    public static final int RIGHT_VACUUM_MOTOR_ID = 17;
+    public static final double VACUUM_SPEED = 0.6;
+
     // VISION CONSTANTS
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
     public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(0);
@@ -146,6 +152,11 @@ public final class Constants {
     //Conversions
     public static final double FEET_TO_METERS = 3.281;
 
+    //VACUUM SOLENOID CONSTANTS
+    public static final int PNEUMATICS_CONTROL_HUB_ID = 15;
+    public static final int LEFT_VALVE_ID = 4;
+    public static final int RIGHT_VALVE_ID = 1;
+
 
     //BUTTON BINDINGS
 
@@ -153,5 +164,13 @@ public final class Constants {
     public static final int SWERVE_RESET_BUTTON = 7;
     public static final int BALANCE_BUTTON = 10;
 
+    public static final int LEFT_VACUUM_TOGGLE_BUTTON = 6;
+    public static final int RIGHT_VACUUM_TOGGLE_BUTTON = 5;
+
+
     // left buttons
+    public static final int LEFT_VALVE_TOGGLE_BUTTON = 2;
+    public static final int RIGHT_VALVE_TOGGLE_BUTTON = 1;
+
+
 }
