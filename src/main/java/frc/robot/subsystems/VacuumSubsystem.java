@@ -12,39 +12,39 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class VacumnSubsystem extends SubsystemBase {
+public class VacuumSubsystem extends SubsystemBase {
   /** Creates a new VacuumSubsystem. */
-  TalonSRX vacumnMotor; 
-  boolean vacumnEnabled = false; 
-  public VacumnSubsystem(int canID) {
-    vacumnMotor = new TalonSRX(canID);
-    vacumnEnabled = false;
+  TalonSRX vacuumMotor; 
+  boolean vacuumEnabled = false; 
+  public VacuumSubsystem(int canID) {
+    vacuumMotor = new TalonSRX(canID);
+    vacuumEnabled = false;
 
   }
 
-  public void enableVacumn(){
-    vacumnEnabled = true;
-    vacumnMotor.set(TalonSRXControlMode.PercentOutput, .3);
+  public void enableVacuum(){
+    vacuumEnabled = true;
+    vacuumMotor.set(TalonSRXControlMode.PercentOutput, .3);
     System.out.println("enableVacuum");
   }
 
-  public void stopVacumn(){
-    vacumnEnabled = false;
-    vacumnMotor.set(TalonSRXControlMode.PercentOutput, 0);
+  public void stopVacuum(){
+    vacuumEnabled = false;
+    vacuumMotor.set(TalonSRXControlMode.PercentOutput, 0);
     System.out.println("stopVacuum");
   }
 
-  public void toggleVacumn(){
-    if(vacumnEnabled){
-      stopVacumn();
+  public void toggleVacuum(){
+    if(vacuumEnabled){
+      stopVacuum();
     }
     else{
-      enableVacumn();
+      enableVacuum();
     }
   }
 
-  public boolean getVacumnEnabled(){
-    return vacumnEnabled;
+  public boolean getVacuumEnabled(){
+    return vacuumEnabled;
   }
   
   @Override

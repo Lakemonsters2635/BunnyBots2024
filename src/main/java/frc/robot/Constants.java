@@ -134,7 +134,7 @@ public final class Constants {
 
     public static final int LEFT_VACUUM_MOTOR_ID = 16;
     public static final int RIGHT_VACUUM_MOTOR_ID = 17;
-    public static final double VACUMN_SPEED = 0.6;
+    public static final double VACUUM_SPEED = 0.6;
 
     // VISION CONSTANTS
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
@@ -152,7 +152,7 @@ public final class Constants {
     //Conversions
     public static final double FEET_TO_METERS = 3.281;
 
-    //VACUMN SOLENOID CONSTANTS
+    //VACUUM SOLENOID CONSTANTS
     public static final int PNEUMATICS_CONTROL_HUB_ID = 15;
     public static final int LEFT_VALVE_ID = 4;
     public static final int RIGHT_VALVE_ID = 1;
@@ -164,8 +164,8 @@ public final class Constants {
     public static final int SWERVE_RESET_BUTTON = 7;
     public static final int BALANCE_BUTTON = 10;
 
-    public static final int LEFT_VACUMN_TOGGLE_BUTTON = 6;
-    public static final int RIGHT_VACUMN_TOGGLE_BUTTON = 5;
+    public static final int LEFT_VACUUM_TOGGLE_BUTTON = 6;
+    public static final int RIGHT_VACUUM_TOGGLE_BUTTON = 5;
 
 
     // left buttons

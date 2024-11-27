@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
-import frc.robot.commands.VacumnCommand;
+import frc.robot.commands.VacuumCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
-import frc.robot.subsystems.VacumnSubsystem;
-import frc.robot.subsystems.VacumnSolenoidSubsystem;
+import frc.robot.subsystems.VacuumSubsystem;
+import frc.robot.subsystems.VacuumSolenoidSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,15 +34,15 @@ public class RobotContainer {
 
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  public static final VacumnSubsystem m_leftVacumnSubsystem = new VacumnSubsystem(Constants.LEFT_VACUUM_MOTOR_ID); 
-  public static final VacumnSubsystem m_rightVacumnSubsystem = new VacumnSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID); 
+  public static final VacuumSubsystem m_leftVacuumSubsystem = new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID); 
+  public static final VacuumSubsystem m_rightVacuumSubsystem = new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID); 
 
-  public static final VacumnSolenoidSubsystem m_vacumnSolenoidSusbsystem = new VacumnSolenoidSubsystem();
+  public static final VacuumSolenoidSubsystem m_vacuumSolenoidSusbsystem = new VacuumSolenoidSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
   //Command 
-  public static final VacumnCommand m_leftVacumnCommand = new VacumnCommand(m_leftVacumnSubsystem);
-  public static final VacumnCommand m_rightVacumnCommnad = new VacumnCommand(m_rightVacumnSubsystem);
+  public static final VacuumCommand m_leftVacuumCommand = new VacuumCommand(m_leftVacuumSubsystem);
+  public static final VacuumCommand m_rightVacuumCommnad = new VacuumCommand(m_rightVacuumSubsystem);
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem);
 
@@ -68,8 +68,8 @@ public class RobotContainer {
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, 11);
 
-    Trigger leftVacumnToggle = new JoystickButton(leftJoystick, Constants.LEFT_VACUMN_TOGGLE_BUTTON);
-    Trigger rightVacumnToggle = new JoystickButton(leftJoystick, Constants.RIGHT_VACUMN_TOGGLE_BUTTON);
+    Trigger leftVacuumToggle = new JoystickButton(leftJoystick, Constants.LEFT_VACUUM_TOGGLE_BUTTON);
+    Trigger rightVacuumToggle = new JoystickButton(leftJoystick, Constants.RIGHT_VACUUM_TOGGLE_BUTTON);
 
     // left buttons
 
@@ -79,11 +79,11 @@ public class RobotContainer {
     Trigger openLeftSolenoidValve = new JoystickButton(leftJoystick, 10);
     Trigger closeLeftSolenoidValve = new JoystickButton(leftJoystick, 9);
 
-    toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.toggleLeftValve()));
-    toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.toggleRightValve()));
+    toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleLeftValve()));
+    toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleRightValve()));
 
-    // openLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.openLeftValve()));
-    // closeLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.closeLeftValve()));
+    // openLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.openLeftValve()));
+    // closeLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.closeLeftValve()));
 
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
     resetOdometryButton.onTrue(

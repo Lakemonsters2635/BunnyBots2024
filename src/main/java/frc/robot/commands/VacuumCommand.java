@@ -7,25 +7,25 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.VacumnSubsystem;
+import frc.robot.subsystems.VacuumSubsystem;
 
-public class VacumnCommand extends Command {
-  /** Creates a new VacumnCommand. */
+public class VacuumCommand extends Command {
+  /** Creates a new VacuumCommand. */
   Timer m_timer = new Timer();
-  VacumnSubsystem m_vacumnSubsystem;
-  boolean initialVacumnState = false;
-  public VacumnCommand(VacumnSubsystem vacumnSubsystem) {
-    m_vacumnSubsystem = vacumnSubsystem;
-    addRequirements(m_vacumnSubsystem);
+  VacuumSubsystem m_vacuumSubsystem;
+  boolean initialVacuumState = false;
+  public VacuumCommand(VacuumSubsystem vacuumSubsystem) {
+    m_vacuumSubsystem = vacuumSubsystem;
+    addRequirements(m_vacuumSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("RUNNING TOGGLE VACUMN");
-    System.out.println(m_vacumnSubsystem.getVacumnEnabled());
-    m_vacumnSubsystem.toggleVacumn();
+    System.out.println("RUNNING TOGGLE VACUUM");
+    System.out.println(m_vacuumSubsystem.getVacuumEnabled());
+    m_vacuumSubsystem.toggleVacuum();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

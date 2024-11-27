@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class VacumnSolenoidSubsystem extends SubsystemBase {
-  /** Creates a new VacumnSolenoidSubsystem. */
+public class VacuumSolenoidSubsystem extends SubsystemBase {
+  /** Creates a new VacuumSolenoidSubsystem. */
   private Solenoid leftValve;
   private Solenoid rightValve;
   private boolean isRedAlliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red; 
@@ -25,7 +25,7 @@ public class VacumnSolenoidSubsystem extends SubsystemBase {
   private boolean isRightBlue = false; //INPUT TRUE VALUES LATER
 
 
-  public VacumnSolenoidSubsystem() {
+  public VacuumSolenoidSubsystem() {
     leftValve = new Solenoid(Constants.PNEUMATICS_CONTROL_HUB_ID, PneumaticsModuleType.CTREPCM, Constants.LEFT_VALVE_ID);  //FIX CONSTANTS LATER
     rightValve = new Solenoid(Constants.PNEUMATICS_CONTROL_HUB_ID, PneumaticsModuleType.CTREPCM, Constants.RIGHT_VALVE_ID); //FIX CONSTANTS LATER
   }
