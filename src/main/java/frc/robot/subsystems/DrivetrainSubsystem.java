@@ -315,9 +315,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
                   true,
                   new Translation2d(0, -Constants.DRIVETRAIN_WHEELBASE_LENGTH/2));
         } else {
-          this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+          this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                   yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
-                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
+                  MathUtil.applyDeadband(rotCommanded * this.kMaxAngularSpeed, 0.2), 
                   true);
         }
       }
