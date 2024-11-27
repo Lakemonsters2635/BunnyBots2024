@@ -19,15 +19,15 @@ public class VacumnSolenoidSubsystem extends SubsystemBase {
   private Solenoid leftValve;
   private Solenoid rightValve;
   private boolean isRedAlliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red; 
-  private boolean isLeftRed = true; //INPUT TRUE VALUES LATER
-  private boolean isLeftBlue = true; //INPUT TRUE VALUES LATER
-  private boolean isRightRed = true; //INPUT TRUE VALUES LATER
-  private boolean isRightBlue = true; //INPUT TRUE VALUES LATER
+  private boolean isLeftRed = false; //INPUT TRUE VALUES LATER
+  private boolean isLeftBlue = false; //INPUT TRUE VALUES LATER
+  private boolean isRightRed = false; //INPUT TRUE VALUES LATER
+  private boolean isRightBlue = false; //INPUT TRUE VALUES LATER
 
 
   public VacumnSolenoidSubsystem() {
-    leftValve = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.LEFT_VALVE_ID);  //FIX CONSTANTS LATER
-    rightValve = new Solenoid(PneumaticsModuleType.CTREPCM, Constants.RIGHT_VALVE_ID); //FIX CONSTANTS LATER
+    leftValve = new Solenoid(Constants.PNEUMATICS_CONTROL_HUB_ID, PneumaticsModuleType.CTREPCM, Constants.LEFT_VALVE_ID);  //FIX CONSTANTS LATER
+    rightValve = new Solenoid(Constants.PNEUMATICS_CONTROL_HUB_ID, PneumaticsModuleType.CTREPCM, Constants.RIGHT_VALVE_ID); //FIX CONSTANTS LATER
   }
 
   public void openLeftValve(){
@@ -49,17 +49,22 @@ public class VacumnSolenoidSubsystem extends SubsystemBase {
   public void toggleLeftValve(){
     if(leftValve.get()){
       closeLeftValve();
+      System.out.println("Left valve close");
     }
     else{
       openLeftValve();
+      System.out.println("Left valve open");
     }
+
 
   }
   public void toggleRightValve(){
     if(rightValve.get()){
+      System.out.println("right valve close");
       closeRightValve();
     }
     else{
+      System.out.println("right valve open");
       openRightValve();
     }
   }
@@ -78,13 +83,13 @@ public class VacumnSolenoidSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     //2 sec then close
-    if(isRedAlliance == isLeftBlue){
+    if((isRedAlliance  && isLeftBlue) || (!isRedAlliance && isLeftRed)){
       openLeftValve();
       if(delay(2)){
         closeLeftValve();
       }
     }
-    if(isRedAlliance == isRightBlue){
+    if((isRedAlliance && isRightBlue) || (!isRedAlliance && isRightRed)){
       openRightValve();
       if(delay(2)){
         closeRightValve();

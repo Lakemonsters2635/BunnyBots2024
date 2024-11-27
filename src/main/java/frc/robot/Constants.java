@@ -147,8 +147,9 @@ public final class Constants {
     public static final double FEET_TO_METERS = 3.281;
 
     //VACUMN SOLENOID CONSTANTS
-    public static final int LEFT_VALVE_ID = 0;
-    public static final int RIGHT_VALVE_ID = 0;
+    public static final int PNEUMATICS_CONTROL_HUB_ID = 15;
+    public static final int LEFT_VALVE_ID = 4;
+    public static final int RIGHT_VALVE_ID = 1;
 
 
     //BUTTON BINDINGS
@@ -158,7 +159,7 @@ public final class Constants {
     public static final int BALANCE_BUTTON = 10;
 
     // left buttons
-    public static final int LEFT_VALVE_TOGGLE_BUTTON = 0;
+    public static final int LEFT_VALVE_TOGGLE_BUTTON = 2;
     public static final int RIGHT_VALVE_TOGGLE_BUTTON = 1;
 
 

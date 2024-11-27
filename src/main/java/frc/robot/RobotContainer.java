@@ -65,8 +65,14 @@ public class RobotContainer {
     Trigger toggleLeftSolenoidValve = new JoystickButton(leftJoystick, Constants.LEFT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
     Trigger toggleRightSolenoidValve = new JoystickButton(leftJoystick, Constants.RIGHT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
 
+    Trigger openLeftSolenoidValve = new JoystickButton(leftJoystick, 10);
+    Trigger closeLeftSolenoidValve = new JoystickButton(leftJoystick, 9);
+
     toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.toggleLeftValve()));
     toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.toggleRightValve()));
+
+    openLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.openLeftValve()));
+    closeLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacumnSolenoidSusbsystem.closeLeftValve()));
 
 
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
