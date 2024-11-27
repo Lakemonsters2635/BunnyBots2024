@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    // RobotContainer.m_objectTrackerSubsystem.data();
+    RobotContainer.m_objectTrackerSubsystem.data();
     
     // RobotContainer.m_objectTrackerSubsystem.Detection x = RobotContainer.m_objectTrackerSubsystem.getNearestAprilTagDetection();
     // if (x != null) {
