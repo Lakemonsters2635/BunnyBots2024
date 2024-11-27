@@ -47,11 +47,15 @@ class DetectionList extends ArrayList<Detection> {
 }
 
 public class ObjectTrackerSubsystem extends SubsystemBase {
-	  NetworkTable monsterVision; 
+	NetworkTable monsterVision; 
     public VisionObject[] foundObjects; 
     private String jsonString;
     private String source;
     private Gson gson = new Gson();
+    public double visionZ;
+    public double visionX;
+    public double visionY;
+    public double visionYa;
 
 
     /*
@@ -71,7 +75,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     public DetectionList yoloObjects;
     public DetectionList aprilTags;
 
-	// Put methods for controlling this 
+	// Put methods for controlling this subsystem
     // here. Call these from Commands.
 	public ObjectTrackerSubsystem(String source){
         NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -117,8 +121,15 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("VisionY", getNearestAprilTagDetection().y);
             SmartDashboard.putNumber("VisionZ", getNearestAprilTagDetection().z);
             SmartDashboard.putNumber("VisionYa", getNearestAprilTagDetection().ya);
-            System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
-        
+            //System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
+            visionZ = getNearestAprilTagDetection().z;
+            visionX = getNearestAprilTagDetection().x;
+            visionY = getNearestAprilTagDetection().y;
+            visionYa = getNearestAprilTagDetection().ya;
+            
+            String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+            double fps = Double.valueOf(fpsString);
+            SmartDashboard.putNumber("CameraFPS", fps);
         } catch (Exception e) {
             // System.out.println(e);
         }
@@ -358,7 +369,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     //     // x not
     //     return 0.0;
     // }
-    private double getThetaYZField(Detection detection) {
+    public double getThetaYZField(Detection detection) {
         double camX = detection.x;
         double camZ = detection.z;
         double yCamAngle = detection.ya;
@@ -383,6 +394,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         double radius = getRadius(detection);
         double thetaYZField = getThetaYZField(detection);
 
+
         xField = Math.sin(thetaYZField) * radius;
 
         return xField;
@@ -396,6 +408,15 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     }
     public void updateDetections(String detectionsString, Gson gson) {
         DetectionList gsonOut = gson.fromJson(detectionsString, DetectionList.class);
+        // Initialy grab fps from gsonOut, only update april tags and Yolo objects only if fps is above 25
+        String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+        double fps = Double.valueOf(fpsString);
+        SmartDashboard.putNumber("CameraFPS", fps);
+        
+        if (fps<25) {
+            // If the frames per second is less than 25 don't do the update
+            return ;
+        }
         aprilTags.clear();
         yoloObjects.clear();
         
