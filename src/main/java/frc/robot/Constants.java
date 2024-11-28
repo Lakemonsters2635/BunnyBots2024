@@ -157,6 +157,10 @@ public final class Constants {
     public static final int LEFT_VALVE_ID = 4;
     public static final int RIGHT_VALVE_ID = 1;
 
+    
+    //ARM CONSTANTS
+    public static final int ARM_ID = 20;
+
 
     //BUTTON BINDINGS
 

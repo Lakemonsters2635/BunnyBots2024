@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.VacuumCommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
 import frc.robot.subsystems.VacuumSubsystem;
@@ -36,7 +37,8 @@ public class RobotContainer {
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   public static final VacuumSubsystem m_leftVacuumSubsystem = new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID); 
   public static final VacuumSubsystem m_rightVacuumSubsystem = new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID); 
-
+  public static final ArmSubsystem m_armSubsystem = new ArmSubsystem();
+  
   public static final VacuumSolenoidSubsystem m_vacuumSolenoidSusbsystem = new VacuumSolenoidSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
