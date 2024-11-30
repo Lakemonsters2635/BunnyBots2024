@@ -132,9 +132,9 @@ public final class Constants {
 
     // VACUUM CONSTANTS
 
-    public static final int LEFT_VACUUM_MOTOR_ID = 16;
-    public static final int RIGHT_VACUUM_MOTOR_ID = 17;
-    public static final double VACUUM_SPEED = 0.6;
+    public static final int LEFT_VACUUM_MOTOR_ID = 17;
+    public static final int RIGHT_VACUUM_MOTOR_ID = 16;
+    public static final double VACUUM_SPEED = 1.0;
 
     // VISION CONSTANTS
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
