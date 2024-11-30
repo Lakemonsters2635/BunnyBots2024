@@ -185,6 +185,8 @@ public final class Constants {
     public static final int ARM_TO_UPWARD_POSITION_BUTTON = 3;
     public static final int ARM_TO_DOWNWARD_POSITION_BUTTON = 4;
 
+    public static final int ARM_SHAKE_BUTTON = 12;
+
 
 
 
