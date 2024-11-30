@@ -30,6 +30,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -40,6 +42,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public static Joystick rightJoystick = RobotContainer.rightJoystick;
     public static Joystick leftJoystick = RobotContainer.leftJoystick;
+
+    public static Trigger customCenterControlButton = new JoystickButton(leftJoystick, 4);
+    
 
     public final double m_drivetrainWheelbaseWidth =  Constants.DRIVETRAIN_WHEELBASE_WIDTH;  //Calibrated for 2024 BunnyBots
     public final double m_drivetrainWheelbaseLength = Constants.DRIVETRAIN_WHEELBASE_LENGTH; //Calibrated for 2024 BunnyBots
@@ -308,7 +313,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         // TODO: document how to use this button to reset various robot centers of rotation
         // Note: you can have multiple buttons for defining multiple centers of rotation.
-        if (false) {
+        if (customCenterControlButton.getAsBoolean()) {
           this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                   yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
                   MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
