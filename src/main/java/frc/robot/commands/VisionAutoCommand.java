@@ -41,10 +41,10 @@ public class VisionAutoCommand extends Command {
     // Don't need to get m_ots.data() because it is already called in Robot.java periodic
 
     try{
-      visionX = m_ots.visionX;
-      visionY = m_ots.visionY;
-      visionZ = m_ots.visionZ;
-      visionYa = m_ots.visionYa;
+      visionX = m_ots.getVisionX();
+      visionY = m_ots.getVisionY();
+      visionZ = m_ots.getVisionZ();
+      visionYa = m_ots.getVisionYa();
 
       SmartDashboard.putNumber("Robot x", m_dts.getPose().getX());
       SmartDashboard.putNumber("Robot y", m_dts.getPose().getY());

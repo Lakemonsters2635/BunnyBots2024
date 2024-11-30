@@ -52,10 +52,11 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     private String jsonString;
     private String source;
     private Gson gson = new Gson();
-    public double visionZ;
-    public double visionX;
-    public double visionY;
-    public double visionYa;
+    
+    private double visionZ;
+    private double visionX;
+    private double visionY;
+    private double visionYa;
 
 
     /*
@@ -169,6 +170,19 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         //     System.out.format("%s %.1f %.1f %.1f %.1f\n",object.objectLabel, object.x, object.y, object.z, object.confidence);
         // }      '' 
         */
+    }
+
+    public double getVisionX(){
+        return visionX;
+    }
+    public double getVisionY(){
+        return visionY;
+    }
+    public double getVisionZ(){
+        return visionZ;
+    }
+    public double getVisionYa(){
+        return visionYa;
     }
 
     private void applyRotationTranslationMatrix() {
