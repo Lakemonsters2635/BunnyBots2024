@@ -157,9 +157,13 @@ public final class Constants {
     public static final int LEFT_VALVE_ID = 4;
     public static final int RIGHT_VALVE_ID = 1;
 
-    
+
     //ARM CONSTANTS
     public static final int ARM_ID = 20;
+    public static final double ARM_DOWN_POSITION = -2.5; //Arm Power stops after it reaches this position
+    public static final double ARM_UP_POSITION = -6;     //Arm Power stops after it reaches this position
+    public static final double ARM_POWER = .15;
+    public static final double ARM_VOLTS = 11;
 
 
     //BUTTON BINDINGS
@@ -168,13 +172,20 @@ public final class Constants {
     public static final int SWERVE_RESET_BUTTON = 7;
     public static final int BALANCE_BUTTON = 10;
 
-    public static final int LEFT_VACUUM_TOGGLE_BUTTON = 6;
-    public static final int RIGHT_VACUUM_TOGGLE_BUTTON = 5;
+    
 
 
     // left buttons
     public static final int LEFT_VALVE_TOGGLE_BUTTON = 2;
     public static final int RIGHT_VALVE_TOGGLE_BUTTON = 1;
+
+    public static final int LEFT_VACUUM_TOGGLE_BUTTON = 6;
+    public static final int RIGHT_VACUUM_TOGGLE_BUTTON = 5;
+
+    public static final int ARM_TO_UPWARD_POSITION_BUTTON = 3;
+    public static final int ARM_TO_DOWNWARD_POSITION_BUTTON = 4;
+
+
 
 
 }
