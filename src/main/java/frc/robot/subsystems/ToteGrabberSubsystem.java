@@ -18,10 +18,10 @@ public class ToteGrabberSubsystem extends SubsystemBase {
   }
 
   public void toteGrabberDown(){
-    toteGrabberMotor.set(0.1);
+    toteGrabberMotor.set(0.2);
   }
   public void toteGrabberUp(){
-    toteGrabberMotor.set(-0.1);
+    toteGrabberMotor.set(-0.2);
   }
   public void toteGrabberStop(){
     toteGrabberMotor.set(0);

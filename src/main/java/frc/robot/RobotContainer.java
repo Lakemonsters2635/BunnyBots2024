@@ -74,8 +74,8 @@ public class RobotContainer {
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, Constants.ZERO_ODOMETRY_BUTTON);
 
-    Trigger leftVacuumToggle = new JoystickButton(leftJoystick, Constants.LEFT_VACUUM_TOGGLE_BUTTON);
-    Trigger rightVacuumToggle = new JoystickButton(leftJoystick, Constants.RIGHT_VACUUM_TOGGLE_BUTTON);
+    Trigger leftVacuumToggle = new JoystickButton(rightJoystick, Constants.LEFT_VACUUM_TOGGLE_BUTTON);
+    Trigger rightVacuumToggle = new JoystickButton(rightJoystick, Constants.RIGHT_VACUUM_TOGGLE_BUTTON);
 
     // left buttons
 
@@ -101,6 +101,9 @@ public class RobotContainer {
         new InstantCommand(()->m_drivetrainSubsystem.zeroOdometry())
       )
     );
+
+    leftVacuumToggle.onTrue(m_leftVacuumCommand);
+    rightVacuumToggle.onTrue(m_rightVacuumCommnad);
 
     // left
     toteGrabberDownButton.whileTrue(m_toteGrabberDownCommand);
