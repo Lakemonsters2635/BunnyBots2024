@@ -118,10 +118,25 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
   }
-
+  double a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 =0;
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    a10 = a9;
+    a9= a8;
+    a8= a7;
+    a7 = a6;
+    a6 = a5;
+    a5= a4;
+    a4= a3;
+    a3= a2;
+    a2 = a1;
+    a1= RobotContainer.powerDistribution.getCurrent(19);
+    double a = (a1 + a2 + a3 + a4+ a5 + a6 + a7 + a8 + a9 +a10) / 10;
+    double aa = (a1*10 + a2*9 + a3*8 + a4*7+ a5*6 + a6*5 + a7*4 + a8*3 + a9*2 +a10) / 55;
+    // SmartDashboard.putNumber("Vacuum current", RobotContainer.powerDistribution.getCurrent(19));
+    SmartDashboard.putNumber("Vacuum current a", a);
+    SmartDashboard.putNumber("Vacuum current aa", aa);
     RobotContainer.m_driveTrainCommand.execute();
     
   }

@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,6 +39,9 @@ public class RobotContainer {
   // Joysticks
   public static final Joystick rightJoystick = new Joystick(Constants.RIGHT_JOYSTICK_CHANNEL);
   public static final Joystick leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
+
+  //Power Distrubution
+  public static PowerDistribution powerDistribution = new PowerDistribution(20, PowerDistribution.ModuleType.kRev);
 
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
@@ -80,8 +84,13 @@ public class RobotContainer {
     // right buttons
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, Constants.ZERO_ODOMETRY_BUTTON);
+    
     Trigger leftVacuumToggle = new JoystickButton(rightJoystick, Constants.LEFT_VACUUM_TOGGLE_BUTTON);
     Trigger rightVacuumToggle = new JoystickButton(rightJoystick, Constants.RIGHT_VACUUM_TOGGLE_BUTTON);
+
+    Trigger toggleLeftSolenoidValve = new JoystickButton(rightJoystick, Constants.LEFT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
+    Trigger toggleRightSolenoidValve = new JoystickButton(rightJoystick, Constants.RIGHT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
+    
     
    
     // left buttons
@@ -91,12 +100,9 @@ public class RobotContainer {
     Trigger armToDownwardPositionButton = new JoystickButton(leftJoystick, Constants.ARM_TO_DOWNWARD_POSITION_BUTTON);   
     Trigger armShakeButton = new JoystickButton(leftJoystick, Constants.ARM_SHAKE_BUTTON);
 
-    Trigger toggleLeftSolenoidValve = new JoystickButton(leftJoystick, Constants.LEFT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
-    Trigger toggleRightSolenoidValve = new JoystickButton(leftJoystick, Constants.RIGHT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
-    
 
-    Trigger openLeftSolenoidValve = new JoystickButton(leftJoystick, 10);
-    Trigger closeLeftSolenoidValve = new JoystickButton(leftJoystick, 9);
+    // Trigger openLeftSolenoidValve = new JoystickButton(leftJoystick, 10);
+    // Trigger closeLeftSolenoidValve = new JoystickButton(leftJoystick, 9);
 
     toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleLeftValve()));
     toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleRightValve()));
