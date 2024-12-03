@@ -113,7 +113,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
             m_kinematics,
-            m_gyro.getRotation2d().unaryMinus(),
+            m_gyro.getRotation2d(),
             new SwerveModulePosition[] {
               m_frontLeft.getPosition(),
               m_frontRight.getPosition(),
@@ -124,7 +124,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     public final SwerveDriveOdometry m_odometryCamera =
       new SwerveDriveOdometry(
           m_kinematicsCamera,
-          m_gyro.getRotation2d().unaryMinus(),
+          m_gyro.getRotation2d(),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -399,7 +399,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d().unaryMinus())
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot),
             centerOffset
                 );
@@ -419,7 +419,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Updates the field relative position of the robot. */
   public void updateOdometry() {
     m_odometry.update(
-        m_gyro.getRotation2d().unaryMinus(),
+        m_gyro.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -430,7 +430,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void updateOdometryCamera() {
     m_odometryCamera.update(
-        m_gyro.getRotation2d().unaryMinus(),
+        m_gyro.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -466,7 +466,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        m_gyro.getRotation2d().unaryMinus(),
+        m_gyro.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -478,7 +478,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void resetOdometryCamera(Pose2d pose) {
     m_odometryCamera.resetPosition(
-        m_gyro.getRotation2d().unaryMinus(),
+        m_gyro.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
