@@ -30,6 +30,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
@@ -40,6 +42,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public static Joystick rightJoystick = RobotContainer.rightJoystick;
     public static Joystick leftJoystick = RobotContainer.leftJoystick;
+
+    public static Trigger customCenterControlButton = new JoystickButton(leftJoystick, 4);
+    
 
     public final double m_drivetrainWheelbaseWidth =  Constants.DRIVETRAIN_WHEELBASE_WIDTH;  //Calibrated for 2024 BunnyBots
     public final double m_drivetrainWheelbaseLength = Constants.DRIVETRAIN_WHEELBASE_LENGTH; //Calibrated for 2024 BunnyBots
@@ -58,6 +63,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
             new Translation2d(-m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
     public final Translation2d m_backRightLocation = 
             new Translation2d(m_drivetrainWheelbaseWidth/2, -m_drivetrainWheelbaseLength/2);
+
+    public final Translation2d m_frontLeftLocationCamera = 
+            new Translation2d(m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength);
+    public final Translation2d m_frontRightLocationCamera = 
+            new Translation2d(-m_drivetrainWheelbaseWidth/2, m_drivetrainWheelbaseLength);
+    public final Translation2d m_backLeftLocationCamera = 
+            new Translation2d(m_drivetrainWheelbaseWidth/2, 0);
+    public final Translation2d m_backRightLocationCamera = 
+            new Translation2d(-m_drivetrainWheelbaseWidth/2, 0);
 
     public final SwerveModule m_frontLeft = new SwerveModule(Constants.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, 
                                                               Constants.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, 
@@ -87,19 +101,36 @@ public class DrivetrainSubsystem extends SubsystemBase {
       m_frontRightLocation, 
       m_backLeftLocation, 
       m_backRightLocation);
+
+    private final SwerveDriveKinematics m_kinematicsCamera = new SwerveDriveKinematics(
+      m_frontLeftLocationCamera,
+      m_frontRightLocationCamera, 
+      m_backLeftLocationCamera, 
+      m_backRightLocationCamera);
     
     private boolean followJoystics = true;  //When false does not use Joysticks for driving - When true uses Joysticks for driving
   
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
             m_kinematics,
-            m_gyro.getRotation2d().unaryMinus(),
+            m_gyro.getRotation2d(),
             new SwerveModulePosition[] {
               m_frontLeft.getPosition(),
               m_frontRight.getPosition(),
               m_backLeft.getPosition(),
               m_backRight.getPosition()
             });
+    
+    public final SwerveDriveOdometry m_odometryCamera =
+      new SwerveDriveOdometry(
+          m_kinematicsCamera,
+          m_gyro.getRotation2d(),
+          new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_backLeft.getPosition(),
+            m_backRight.getPosition()
+          });
 
   /** Creates a new DrivetrianSubsystem. */
   public DrivetrainSubsystem() {
@@ -129,30 +160,31 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return createPath(startPose, middlePose, endPose, desiredRot); 
   }
 
+  public Command createVisionPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
+    return createPath(startPose, middlePose, endPose, endRot, false);
+  }
+  public Command createVisionPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot, boolean centerOfRotationCamera){
+    return createPath(startPose, middlePose, endPose, endRot, false, centerOfRotationCamera);
+  }
+
+  // Use for open loop paths which needs to be mirrored due to the alliance reflection
   public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot){
-    //boolean isRedAliance  = false;  Check if we need to actually set this to false in this method
+    boolean isRedAlliance = false;
+    isRedAlliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+    return createPath(startPose, middlePose, endPose, endRot, isRedAlliance);
+  }
 
-    //set isRedAlliance to value from DriverStation 
-    boolean isRedAliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red; 
+  public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot, boolean mirrorX){
+    return createPath(startPose, middlePose, endPose, endRot, mirrorX, false);
+  }
 
-    // if (selectedAliance.equalsIgnoreCase("FMS")) {
-    // }
-    // else if(selectedAliance.equalsIgnoreCase("blue")){
-    //   isRedAliance = false;
-    // }
-    // else if(selectedAliance.equalsIgnoreCase("red")){
-    //   isRedAliance = true;
-    // }
-    // else{
-    //   isRedAliance = false;
-    // }
+  public Command createPath(Pose2d startPose, Translation2d middlePose, Pose2d endPose, double endRot, boolean mirrorX, boolean centerOfRotationCamera){
 
-    // SmartDashboard.putString("selectedAlliance",selectedAliance);
-    SmartDashboard.putBoolean("isRedAlliance",isRedAliance);
+    SmartDashboard.putBoolean("mirrorX",mirrorX);
     SmartDashboard.putString("DriverStation.getAlliance().get()",DriverStation.getAlliance().get().name());
     SmartDashboard.putString("DriverStation.Alliance.Red",DriverStation.Alliance.Red.name());
 
-    if (isRedAliance) { 
+    if (mirrorX) { 
       //Default is Blue so if Red Alliance then negate the X value and Rotation converts to Red Alliance
       startPose = new Pose2d(-startPose.getX(), startPose.getY(), new Rotation2d(Math.toRadians(toRedHead(startPose.getRotation().getDegrees())))); 
       middlePose = new Translation2d(-middlePose.getX(), middlePose.getY());
@@ -166,7 +198,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
       Constants.maxModuleLinearSpeed,  // 3.5 m/s
       Constants.maxModuleLinearAccelaration)// 4 m/s^2
-      .setKinematics(m_kinematics);
+      .setKinematics(centerOfRotationCamera ? m_kinematicsCamera : m_kinematics);
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       startPose,
@@ -176,23 +208,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
       endPose,
       trajectoryConfig
       );
-
-    // double[] x1 = {0.0, 0.0, 0.0};
-    // double[] y1 = {0.0, -1.0, 0.0};
-
-    // double[] x2 = {0.0, 0.0, 0.0};
-    // double[] y2 = {-1.0, -1.0, 0.0};
-
-
-    // ControlVector cV1 = new ControlVector(x1, y1);
-    // ControlVector cV2 = new ControlVector(x2, y2);
-
-    // ControlVectorList cvl = new ControlVectorList();
-
-    // cvl.add(cV1);
-    // cvl.add(cV2);
-    
-    // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(cvl , trajectoryConfig);
 
     TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
@@ -210,8 +225,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
       trajectory,
-      this::getPose,
-      m_kinematics,
+      centerOfRotationCamera ? this::getPoseCamera : this::getPose,
+      centerOfRotationCamera ? m_kinematicsCamera  : m_kinematics,
       xController,
       yController,
       thetaController,
@@ -224,10 +239,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void  resetAngle(){
-    m_gyro.reset();
     // Setting the angle adjustment changes where forward is when you push the controls forward
     // However it doesn't rotate the definition of the odometry x and y
-    m_gyro.setAngleAdjustment(0);
+    resetAngle(0);
   }
   public void resetAngle(int degree){
     //Use this method if you want to reset the angle to something not 0
@@ -254,6 +268,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void setRotCommanded(double rot) {
+    // Input a value between -1 and 1 for angular velocity of robot, it is later multiplied by `kMaxAngularSpeed` in drive
+
     rotCommanded = rot;
   }
 
@@ -276,7 +292,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
-          rotCommanded = Constants.HAT_POWER_ROTATE*-1.0;
+          rotCommanded = Constants.HAT_POWER_ROTATE*-1;
         }
         else if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
           rotCommanded = Constants.HAT_POWER_ROTATE;
@@ -292,39 +308,48 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         // TODO: look at the deadband below
         if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
-          rotCommanded = rightJoystick.getTwist() * -1;
+          rotCommanded = rightJoystick.getTwist()*-1;
         }
 
-      
-        this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+        // TODO: document how to use this button to reset various robot centers of rotation
+        // Note: you can have multiple buttons for defining multiple centers of rotation.
+        if (customCenterControlButton.getAsBoolean()) {
+          this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
+                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
+                  true,
+                  new Translation2d(0, -Constants.DRIVETRAIN_WHEELBASE_LENGTH/2));
+        } else {
+          this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
                   yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
                   MathUtil.applyDeadband(rotCommanded * this.kMaxAngularSpeed, 0.2), 
                   true);
+        }
       }
       
       SmartDashboard.putNumber("rotCommanded", rotCommanded);
 
 
       double loggingState[] = {     //Array for predicted values
-        swerveModuleStates[3].angle.getDegrees(), // Order here is BR, FR, BL, FL; order on Advantage Scope is FL, FR, BL, BR, but it works like this and we don't know why
-        swerveModuleStates[3].speedMetersPerSecond,
-        swerveModuleStates[1].angle.getDegrees(),
-        swerveModuleStates[1].speedMetersPerSecond,
-        swerveModuleStates[2].angle.getDegrees(),
-        swerveModuleStates[2].speedMetersPerSecond,
-        swerveModuleStates[0].angle.getDegrees(),
-        swerveModuleStates[0].speedMetersPerSecond,
+        swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX].angle.getDegrees(), // Order here is BR, FR, BL, FL; order on Advantage Scope is FL, FR, BL, BR, but it works like this and we don't know why
+        swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX].speedMetersPerSecond,
+        swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX].angle.getDegrees(),
+        swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX].speedMetersPerSecond,
+        swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX].angle.getDegrees(),
+        swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX].speedMetersPerSecond,
+        swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX].angle.getDegrees(),
+        swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX].speedMetersPerSecond,
       };
 
       double actualLoggingState[] = {
-        m_backRight.getTurningEncoderRadians() * 180 / Math.PI, // same order problem as predicted values
-        m_backRight.getVelocity(),
+        m_frontLeft.getTurningEncoderRadians() * 180 / Math.PI, // same order problem as predicted values
+        m_frontLeft.getVelocity(),
         m_frontRight.getTurningEncoderRadians() * 180 / Math.PI,
         m_frontRight.getVelocity(),
         m_backLeft.getTurningEncoderRadians() * 180 / Math.PI,
         m_backLeft.getVelocity(),
-        m_frontLeft.getTurningEncoderRadians() * 180 / Math.PI,
-        m_frontLeft.getVelocity(),
+        m_backRight.getTurningEncoderRadians() * 180 / Math.PI,
+        m_backRight.getVelocity(),
       };
 
       SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
@@ -345,12 +370,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // System.out.println("FR: " + m_frontRight.printVoltage());
   }
 
-  // public void recalibrateGyro() {
-  //   // System.out.println(m_gyro.getRotation2d());
-  //   m_gyro.reset();
-  //   m_gyro.setAngleAdjustment(180);
-  //   // System.out.println(m_gyro.getRotation2d());
-  // }
+  /**
+   * Method to drive the robot using joystick info.
+   *
+   * @param xSpeed Speed of the robot in the x direction (forward).   -1.0 ... +1.0
+   * @param ySpeed Speed of the robot in the y direction (sideways).  -1.0 ... +1.0
+   * @param rot Angular rate of the robot.                            -1.0 ... +1.0
+   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   * This function is based off of the center of the robot.
+   */
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    drive(xSpeed, ySpeed, rot, fieldRelative, new Translation2d(0, 0));
+  }
 
   /**
    * Method to drive the robot using joystick info.
@@ -359,31 +390,27 @@ public class DrivetrainSubsystem extends SubsystemBase {
    * @param ySpeed Speed of the robot in the y direction (sideways).  -1.0 ... +1.0
    * @param rot Angular rate of the robot.                            -1.0 ... +1.0
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+   * @param centerOffset is offset from center of robot to custom center of rotation in meters.
+   * * left is positive x, front is positive y.
    */
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, Translation2d centerOffset) {
     // TODO: Move kMaxSpeed and kMaxRotation into this method for ySpeed and xSpeed, and rot
     // TODO: Add another parameter for kMaxSpeed so you have an option to set it
     swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d().unaryMinus())
-                : new ChassisSpeeds(xSpeed, ySpeed, rot));
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
+                : new ChassisSpeeds(xSpeed, ySpeed, rot),
+            centerOffset
+                );
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
-    // m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    // m_frontRight.setDesiredState(swerveModuleStates[1]);
-    // m_backLeft.setDesiredState(swerveModuleStates[2]);
-    // m_backRight.setDesiredState(swerveModuleStates[3]);
 
     //If the desired states are not in this order then the swerve will not work  
     m_frontLeft.setDesiredState(swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
     m_frontRight.setDesiredState(swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
     m_backLeft.setDesiredState(swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
     m_backRight.setDesiredState(swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
-    // Previous module states
-    // m_frontLeft.setDesiredState(swerveModuleStates[1]);
-    // m_frontRight.setDesiredState(swerveModuleStates[0]);
-    // m_backLeft.setDesiredState(swerveModuleStates[3]);
-    // m_backRight.setDesiredState(swerveModuleStates[2]);
+
     SmartDashboard.putNumber("xSpeed", xSpeed);
     SmartDashboard.putNumber("ySpeed", ySpeed);
     SmartDashboard.putNumber("rot", rot);
@@ -392,7 +419,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Updates the field relative position of the robot. */
   public void updateOdometry() {
     m_odometry.update(
-        m_gyro.getRotation2d().unaryMinus(),
+        m_gyro.getRotation2d(),
+        new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_backLeft.getPosition(),
+          m_backRight.getPosition()
+        });
+  }
+
+  public void updateOdometryCamera() {
+    m_odometryCamera.update(
+        m_gyro.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -404,6 +442,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Get pose from odometry field **/
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
+  }
+
+  public Pose2d getPoseCamera() {
+    return m_odometryCamera.getPoseMeters();
   }
 
   public SwerveDriveKinematics getSwerveDriveKinematics() {
@@ -424,7 +466,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        m_gyro.getRotation2d().unaryMinus(),
+        m_gyro.getRotation2d(),
+        new SwerveModulePosition[] {
+          m_frontLeft.getPosition(),
+          m_frontRight.getPosition(),
+          m_backLeft.getPosition(),
+          m_backRight.getPosition()
+        },
+        pose);
+  }
+
+  public void resetOdometryCamera(Pose2d pose) {
+    m_odometryCamera.resetPosition(
+        m_gyro.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -442,11 +496,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, 4);
-    //Desired states in this order or code will not work 1, 0, 3, 2 for FL, FR, BL, BR respectively
-    m_frontLeft.setDesiredState(swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
-    m_frontRight.setDesiredState(swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
-    m_backLeft.setDesiredState(swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
-    m_backRight.setDesiredState(swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
+  
+    m_frontLeft.setDesiredState(desiredStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
+    m_frontRight.setDesiredState(desiredStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
+    m_backLeft.setDesiredState(desiredStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
+    m_backRight.setDesiredState(desiredStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
   } 
 
   /** Sets the swerve ModuleStates. Accept a center of rotation for when you DON'T want to rotate
@@ -460,11 +514,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, 4);
     
-    //Desired states in this order or code will not work 1, 0, 3, 2 for FL, FR, BL, BR respectively
-    m_frontLeft.setDesiredState(swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
-    m_frontRight.setDesiredState(swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
-    m_backLeft.setDesiredState(swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
-    m_backRight.setDesiredState(swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
+    m_frontLeft.setDesiredState(desiredStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
+    m_frontRight.setDesiredState(desiredStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
+    m_backLeft.setDesiredState(desiredStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
+    m_backRight.setDesiredState(desiredStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
   } 
 
 public ChassisSpeeds getChassisSpeeds() {
@@ -482,11 +535,10 @@ public ChassisSpeeds getChassisSpeeds() {
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, DrivetrainSubsystem.kMaxSpeed);
-    //Desired states in this order or code will not work 1, 0, 3, 2 for FL, FR, BL, BR respectively
-    m_frontLeft.setDesiredState(swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
-    m_frontRight.setDesiredState(swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
-    m_backLeft.setDesiredState(swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
-    m_backRight.setDesiredState(swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
+    m_frontLeft.setDesiredState(desiredStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX]);
+    m_frontRight.setDesiredState(desiredStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX]);
+    m_backLeft.setDesiredState(desiredStates[Constants.BACK_LEFT_MODULE_STATE_INDEX]);
+    m_backRight.setDesiredState(desiredStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
   }
 
   /** Displays all 4 module positions + robot pose (forward/back) in SmartDashboard. 
