@@ -13,9 +13,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ArmShakeCommand;
+import frc.robot.commands.ArmToDownwardPosition;
+import frc.robot.commands.ArmToUpwardPosition;
 import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.VacuumCommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.commands.ToteGrabberDownCommand;
 import frc.robot.commands.ToteGrabberUpCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -37,18 +41,21 @@ public class RobotContainer {
 
   // Subsystems
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  public static final VacuumSubsystem m_leftVacuumSubsystem = new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID); 
-  public static final VacuumSubsystem m_rightVacuumSubsystem = new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID); 
-
   public static final VacuumSolenoidSubsystem m_vacuumSolenoidSusbsystem = new VacuumSolenoidSubsystem();
+  public static final VacuumSubsystem m_leftVacuumSubsystem = new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, m_vacuumSolenoidSusbsystem); 
+  public static final VacuumSubsystem m_rightVacuumSubsystem = new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, m_vacuumSolenoidSusbsystem); 
+  public static final ArmSubsystem m_armSubsystem = new ArmSubsystem();
   public static final ToteGrabberSubsystem m_toteGrabberSubsystem = new ToteGrabberSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
   //Command 
   public static final VacuumCommand m_leftVacuumCommand = new VacuumCommand(m_leftVacuumSubsystem);
   public static final VacuumCommand m_rightVacuumCommnad = new VacuumCommand(m_rightVacuumSubsystem);
+  public static final ArmToUpwardPosition m_armToUpwardPosition = new ArmToUpwardPosition(m_armSubsystem);
+  public static final ArmToDownwardPosition m_armToDownwardPosition = new ArmToDownwardPosition(m_armSubsystem);
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
   public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem);
+  public static final ArmShakeCommand m_armShakeCommand = new ArmShakeCommand(m_armSubsystem);  
   public static final ToteGrabberDownCommand m_toteGrabberDownCommand = new ToteGrabberDownCommand(m_toteGrabberSubsystem);
   public static final ToteGrabberUpCommand m_toteGrabberUpCommand = new ToteGrabberUpCommand(m_toteGrabberSubsystem);
 
@@ -73,20 +80,32 @@ public class RobotContainer {
     // right buttons
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, Constants.ZERO_ODOMETRY_BUTTON);
-
+    
+   
+    // left buttons
     Trigger leftVacuumToggle = new JoystickButton(rightJoystick, Constants.LEFT_VACUUM_TOGGLE_BUTTON);
     Trigger rightVacuumToggle = new JoystickButton(rightJoystick, Constants.RIGHT_VACUUM_TOGGLE_BUTTON);
-
-    // left buttons
+    
+    Trigger armToUpwardPositionButton = new JoystickButton(leftJoystick, Constants.ARM_TO_UPWARD_POSITION_BUTTON);
+    Trigger armToDownwardPositionButton = new JoystickButton(leftJoystick, Constants.ARM_TO_DOWNWARD_POSITION_BUTTON);   
+    Trigger armShakeButton = new JoystickButton(leftJoystick, Constants.ARM_SHAKE_BUTTON);
 
     Trigger toggleLeftSolenoidValve = new JoystickButton(leftJoystick, Constants.LEFT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
     Trigger toggleRightSolenoidValve = new JoystickButton(leftJoystick, Constants.RIGHT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
+    
 
     Trigger openLeftSolenoidValve = new JoystickButton(leftJoystick, 10);
     Trigger closeLeftSolenoidValve = new JoystickButton(leftJoystick, 9);
 
     toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleLeftValve()));
     toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleRightValve()));
+    
+    leftVacuumToggle.onTrue(m_leftVacuumCommand);
+    rightVacuumToggle.onTrue(m_rightVacuumCommnad);
+
+    armToUpwardPositionButton.onTrue(m_armToUpwardPosition);
+    armToDownwardPositionButton.onTrue(m_armToDownwardPosition);
+    armShakeButton.onTrue(m_armShakeCommand);
 
     // openLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.openLeftValve()));
     // closeLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.closeLeftValve()));
