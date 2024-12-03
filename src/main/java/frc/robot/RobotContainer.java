@@ -80,11 +80,12 @@ public class RobotContainer {
     // right buttons
     Trigger swerveResetButton = new JoystickButton(rightJoystick, Constants.SWERVE_RESET_BUTTON);
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, Constants.ZERO_ODOMETRY_BUTTON);
+    Trigger leftVacuumToggle = new JoystickButton(rightJoystick, Constants.LEFT_VACUUM_TOGGLE_BUTTON);
+    Trigger rightVacuumToggle = new JoystickButton(rightJoystick, Constants.RIGHT_VACUUM_TOGGLE_BUTTON);
     
    
     // left buttons
-    Trigger leftVacuumToggle = new JoystickButton(rightJoystick, Constants.LEFT_VACUUM_TOGGLE_BUTTON);
-    Trigger rightVacuumToggle = new JoystickButton(rightJoystick, Constants.RIGHT_VACUUM_TOGGLE_BUTTON);
+    
     
     Trigger armToUpwardPositionButton = new JoystickButton(leftJoystick, Constants.ARM_TO_UPWARD_POSITION_BUTTON);
     Trigger armToDownwardPositionButton = new JoystickButton(leftJoystick, Constants.ARM_TO_DOWNWARD_POSITION_BUTTON);   

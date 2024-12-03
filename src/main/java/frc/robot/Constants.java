@@ -174,6 +174,8 @@ public final class Constants {
     public static final int SWERVE_RESET_BUTTON = 7;
     public static final int BALANCE_BUTTON = 10;
     public static final int ZERO_ODOMETRY_BUTTON = 11;
+    public static final int LEFT_VACUUM_TOGGLE_BUTTON = 6;
+    public static final int RIGHT_VACUUM_TOGGLE_BUTTON = 5;
 
     
 
@@ -183,10 +185,9 @@ public final class Constants {
     public static final int RIGHT_VALVE_TOGGLE_BUTTON = 1;
     public static final int TOTE_GRABBER_UP_BUTTON = 5;
     public static final int TOTE_GRABBER_DOWN_BUTTON = 3;   
-    public static final int LEFT_VACUUM_TOGGLE_BUTTON = 6;
-    public static final int RIGHT_VACUUM_TOGGLE_BUTTON = 5;
+    
 
-    public static final int ARM_TO_UPWARD_POSITION_BUTTON = 3;
+    public static final int ARM_TO_UPWARD_POSITION_BUTTON = 6;
     public static final int ARM_TO_DOWNWARD_POSITION_BUTTON = 4;
 
     public static final int ARM_SHAKE_BUTTON = 12;
