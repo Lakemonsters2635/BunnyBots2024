@@ -68,7 +68,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
 
     // rotation matrix
     private double cameraTilt= 0.0 * Math.PI / 180.0;
-    private double[] cameraOffset = {0.0, 0.0, 0.0}; // goes {x, y, z} // In inches // TODO: figure this offset
+    private double[] cameraOffset = {0.0, 0.0}; // goes {x, y, z} // In inches // TODO: figure this offset
 
     private double sinTheta;
     private double cosTheta;
@@ -87,8 +87,8 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         if (source == "Balloon") { // TODO: figure our these source names from vision code
             cameraOffset = Constants.VISION_BALLOON_CAM_OFFSET;
         }
-        else if(source == "Autonomous"){
-            cameraOffset=Constants.VISION_AUTONOMOUS_CAM_OFFSET;
+        else if(source == "Eclipse"){ // TODO: This name should be changed to "Tote" but left as "Eclipse for testing purposes"
+            cameraOffset=Constants.VISION_TOTE_CAM_OFFSET;
         }
 
         sinTheta = Math.sin(cameraTilt);
@@ -122,7 +122,9 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("VisionY", getNearestAprilTagDetection().y);
             SmartDashboard.putNumber("VisionZ", getNearestAprilTagDetection().z);
             SmartDashboard.putNumber("VisionYa", getNearestAprilTagDetection().ya);
-            //System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
+
+            System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
+           
             visionZ = getNearestAprilTagDetection().z;
             visionX = getNearestAprilTagDetection().x;
             visionY = getNearestAprilTagDetection().y;
@@ -136,7 +138,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         }
 
         try {
-            System.out.println(getSpecificAprilTag(14).objectLabel);
+            // System.out.println(getSpecificAprilTag(14).objectLabel);
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -460,14 +462,27 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         // Seperate out the detections with rotation
         for (int i = 0; i < gsonOut.size(); i++) { // Maybe change later
             if (gsonOut.get(i).objectLabel.substring(0,3).equals("tag")) {
-                aprilTags.add(gsonOut.get(i));
+                aprilTags.add(adjustCamOffset(gsonOut.get(i)));
                 // System.out.println("UpdateDetections(: found apriltag");
             } else {
-                yoloObjects.add(gsonOut.get(i));
+                yoloObjects.add(adjustCamOffset(gsonOut.get(i)));
                 // System.out.println("yolo object");
             }
         }
     }
 
-
+    // TODO: not tested code
+    private Detection adjustCamOffset(Detection detection1){
+        Detection detection = detection1;
+        if (source == "Balloon") { // TODO: figure our these source names from vision code
+            detection.x -= cameraOffset[0];
+            detection.z += cameraOffset[1];
+        }
+        else if(source == "Eclipse"){
+            detection.x += cameraOffset[0];
+            detection.z = -detection.z + cameraOffset[1];
+        }
+        
+        return detection;
+    }
 }

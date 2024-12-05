@@ -39,7 +39,7 @@ public final class Constants {
     // Switch robot's lenght to width
 
     // ROBOT WIDTH AND LENGHT
-    public static final double DRIVETRAIN_WHEELBASE_WIDTH =  25.5/ Constants.INCHES_PER_METER; //21.5
+    public static final double DRIVETRAIN_WHEELBASE_WIDTH =  25.5 / Constants.INCHES_PER_METER; //21.5
     public static final double DRIVETRAIN_WHEELBASE_LENGTH = 21.5 / Constants.INCHES_PER_METER; //25.5
 
     // SWERVE MODULE STATES
@@ -174,8 +174,8 @@ public final class Constants {
     public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(0);
     public static final double VISION_APRIL_TAG_PRO_TILT = Units.degreesToRadians(0);
 
-    // {x, y, z}
-    public static final double[] VISION_AUTONOMOUS_CAM_OFFSET = {}; // TODO: calculate these values based from the center of the robot
+    // {x, y} in inches, +y is robots front, +x is to the right
+    public static final double[] VISION_TOTE_CAM_OFFSET = {-Units.metersToInches((DRIVETRAIN_WHEELBASE_WIDTH/2)) + 4, -Units.metersToInches(DRIVETRAIN_WHEELBASE_LENGTH/2)}; // TODO: calculate these values based from the center of the robot
     public static final double[] VISION_BALLOON_CAM_OFFSET = {};
 
     public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;

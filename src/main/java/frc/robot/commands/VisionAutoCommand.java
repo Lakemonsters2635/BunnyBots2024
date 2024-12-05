@@ -29,6 +29,7 @@ public class VisionAutoCommand extends Command {
 
   double fieldX;
   double fieldY;
+
   public VisionAutoCommand(DrivetrainSubsystem dts, ObjectTrackerSubsystem ots) {
     m_dts = dts;
     m_ots = ots;
