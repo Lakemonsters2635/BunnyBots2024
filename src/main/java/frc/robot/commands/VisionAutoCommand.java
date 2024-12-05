@@ -53,15 +53,10 @@ public class VisionAutoCommand extends Command {
       SmartDashboard.putNumber("visionXInitial", visionX);
       SmartDashboard.putNumber("visionYInitial", visionY);
       SmartDashboard.putNumber("visionYaInitial", visionYa);
-      // SmartDashboard.putNumber("NAVX angle", m_dts.m_gyro.getAngle());
-      // System.out.println("AHRS_angle" + m_dts.m_gyro.getAngle());
-
-      // SmartDashboard.putNumber("radius", radius);
-      // SmartDashboard.putNumber("thetaYZ", thetaYZ);
 
     }
     catch(Exception e) {
-      // System.out.println(e);
+      System.out.println(e);
     }
     visionCreatePath(15, 15, 0).schedule();
 

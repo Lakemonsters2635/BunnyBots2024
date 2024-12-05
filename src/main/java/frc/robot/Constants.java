@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -171,6 +173,10 @@ public final class Constants {
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
     public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(0);
     public static final double VISION_APRIL_TAG_PRO_TILT = Units.degreesToRadians(0);
+
+    // {x, y, z}
+    public static final double[] VISION_AUTONOMOUS_CAM_OFFSET = {}; // TODO: calculate these values based from the center of the robot
+    public static final double[] VISION_BALLOON_CAM_OFFSET = {};
 
     public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;
 

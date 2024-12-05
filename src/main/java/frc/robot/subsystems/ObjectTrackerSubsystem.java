@@ -84,11 +84,11 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         monsterVision = inst.getTable("MonsterVision");
         jsonString = "";
 
-        if (source == "NoteCam") { // is it defined eclipse?
-            cameraTilt= Constants.VISION_NOTE_CAM_TILT;
+        if (source == "Balloon") { // TODO: figure our these source names from vision code
+            cameraOffset = Constants.VISION_BALLOON_CAM_OFFSET;
         }
-        else if(source == "AprilTagPro"){
-            cameraTilt=Constants.VISION_APRIL_TAG_PRO_TILT;
+        else if(source == "Autonomous"){
+            cameraOffset=Constants.VISION_AUTONOMOUS_CAM_OFFSET;
         }
 
         sinTheta = Math.sin(cameraTilt);
@@ -133,6 +133,12 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("CameraFPS", fps);
         } catch (Exception e) {
             // System.out.println(e);
+        }
+
+        try {
+            System.out.println(getSpecificAprilTag(14).objectLabel);
+        } catch (Exception e) {
+            // TODO: handle exception
         }
         return ;
         /* This commented code uses the OLD VisionObject
@@ -250,7 +256,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         return object;
     }
 
-    public VisionObject getSpecificAprilTag(int id) {
+    public VisionObject getSpecificAprilTagVisionObject(int id) {
         String objectLabel = "tag16h5: " + id;
         VisionObject[] objects = getObjectsOfType(objectLabel);
         if (objects == null || objects.length == 0) {
@@ -341,6 +347,19 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         }
         return null;
     }
+
+    public Detection getSpecificAprilTag(int id){
+        Detection currentAprilTag;
+        for (int i = 0; i < aprilTags.size(); i++) {
+            currentAprilTag = aprilTags.get(i);
+            // The .substring(10) is for this specific aprilTag family which is "tag36h11: "
+            if (currentAprilTag.objectLabel.substring(10).equals(""+id)) {
+                return currentAprilTag;
+            }
+        }
+        return null;
+    }
+
     public Detection[] getNearestAprilTagsDetection(int count) {
         Detection[] detections = new Detection[count];
         if (count <= aprilTags.size()) {
@@ -352,12 +371,14 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             return null;
         }
     }
+
     public Detection getNearestYoloDetection() {
         if (yoloObjects.size() > 0) {
             return yoloObjects.get(0);
         }
         return null;
     }
+
     public Detection[] getNearestYoloDetections(int count) {
         Detection[] detections = new Detection[count];
         if (count <= yoloObjects.size()) {
@@ -420,6 +441,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         double radius = Math.sqrt(Math.pow(camX, 2) + Math.pow(camZ, 2));
         return radius;
     }
+
     public void updateDetections(String detectionsString, Gson gson) {
         DetectionList gsonOut = gson.fromJson(detectionsString, DetectionList.class);
         // Initialy grab fps from gsonOut, only update april tags and Yolo objects only if fps is above 25
@@ -431,6 +453,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             // If the frames per second is less than 25 don't do the update
             return ;
         }
+
         aprilTags.clear();
         yoloObjects.clear();
         
