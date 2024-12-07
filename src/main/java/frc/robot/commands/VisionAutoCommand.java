@@ -59,6 +59,7 @@ public class VisionAutoCommand extends Command {
     catch(Exception e) {
       System.out.println(e);
     }
+
     visionCreatePath(15, 15, 0).schedule();
 
   }

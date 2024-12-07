@@ -474,12 +474,12 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     // TODO: not tested code
     private Detection adjustCamOffset(Detection detection1){
         Detection detection = detection1;
-        if (source == "Balloon") { // TODO: figure our these source names from vision code
-            detection.x -= cameraOffset[0];
+        if (source == "Balloon") { // TODO: figure out these source names from vision code
+            detection.x += cameraOffset[0];
             detection.z += cameraOffset[1];
         }
         else if(source == "Eclipse"){
-            detection.x += cameraOffset[0];
+            detection.x -= cameraOffset[0];
             detection.z = -detection.z + cameraOffset[1];
         }
         

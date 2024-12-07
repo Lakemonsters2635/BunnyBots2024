@@ -19,6 +19,7 @@ import frc.robot.commands.ArmToUpwardPosition;
 import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.VacuumCommand;
+import frc.robot.commands.VisionAutoCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.commands.ToteGrabberDownCommand;
 import frc.robot.commands.ToteGrabberUpCommand;
@@ -54,10 +55,13 @@ public class RobotContainer {
   //Command 
   public static final VacuumCommand m_leftVacuumCommand = new VacuumCommand(m_leftVacuumSubsystem);
   public static final VacuumCommand m_rightVacuumCommnad = new VacuumCommand(m_rightVacuumSubsystem);
+
   public static final ArmToUpwardPosition m_armToUpwardPosition = new ArmToUpwardPosition(m_armSubsystem);
   public static final ArmToDownwardPosition m_armToDownwardPosition = new ArmToDownwardPosition(m_armSubsystem);
+
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
-  public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem);
+  public static final VisionAutoCommand m_visionAutoCommand = new VisionAutoCommand(m_drivetrainSubsystem, m_objectTrackerSubsystem);
+  public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_objectTrackerSubsystem);
   public static final ArmShakeCommand m_armShakeCommand = new ArmShakeCommand(m_armSubsystem);  
   public static final ToteGrabberDownCommand m_toteGrabberDownCommand = new ToteGrabberDownCommand(m_toteGrabberSubsystem);
   public static final ToteGrabberUpCommand m_toteGrabberUpCommand = new ToteGrabberUpCommand(m_toteGrabberSubsystem);
@@ -145,6 +149,7 @@ public class RobotContainer {
     // m_alianceChooser.addOption("blue", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("blue")));
     // m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
     m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
+    m_autoChooser.addOption("goToCorralVision", m_autonomousCommands.goToCorralVision());
     m_autoChooser.setDefaultOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
 
     SmartDashboard.putData("AutoChooser", m_autoChooser);

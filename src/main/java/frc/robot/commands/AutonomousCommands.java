@@ -12,12 +12,17 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ObjectTrackerSubsystem;
 
 /** Add your docs here. */
 public class AutonomousCommands {
     private DrivetrainSubsystem m_dts;
-    public AutonomousCommands(DrivetrainSubsystem dts){
+    private VisionAutoCommand m_vac;
+    private ObjectTrackerSubsystem m_obja;
+
+    public AutonomousCommands(DrivetrainSubsystem dts, ObjectTrackerSubsystem obja){
         m_dts = dts;
+        m_obja = obja;
     }
 
      public Command postSeasonAutoStraight(){  
@@ -64,5 +69,22 @@ public class AutonomousCommands {
                         new Translation2d(-1.5/Constants.FEET_TO_METERS, 10/Constants.FEET_TO_METERS),
                         new Pose2d(-3/Constants.FEET_TO_METERS, 20/Constants.FEET_TO_METERS, new Rotation2d(Math.toRadians(90)))
             ));
+    }
+
+    public Command goToCorralVision(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            new VisionAutoCommand(m_dts, m_obja).visionCreatePath( // Lining with the corral
+                    0,  
+                    20, 
+                    0 
+            ),
+            new VisionAutoCommand(m_dts, m_obja).visionCreatePath( // Going in front of the corral
+                0, 
+                0, 
+                0
+            )
+        );
     }
 }
