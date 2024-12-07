@@ -13,13 +13,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class vacuumSubsystem extends SubsystemBase {
+public class VacuumSubsystem extends SubsystemBase {
   /** Creates a new VacuumSubsystem. */
 
   public TalonSRX vacuumMotor;
 
  
-  public vacuumSubsystem(int can) {
+  public VacuumSubsystem(int can) {
 
     vacuumMotor = new TalonSRX(can);
   }
