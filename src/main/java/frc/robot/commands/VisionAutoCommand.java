@@ -80,6 +80,10 @@ public class VisionAutoCommand extends Command {
     return true;
   }
 
+
+  /* 
+   * xPrime cannot be zero, because in calculation some of the values are divided by xPrime
+  */
   public Command visionCreatePath(double xPrime, double zPrime, double finalYa){
     // m_ots.data();
     // visionX = m_ots.visionX;

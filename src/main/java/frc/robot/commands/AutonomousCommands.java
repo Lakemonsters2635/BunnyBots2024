@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -72,17 +73,19 @@ public class AutonomousCommands {
     }
 
     public Command goToCorralVision(){
+        VisionAutoCommand vac = new VisionAutoCommand(m_dts, m_obja);
+
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
-            new InstantCommand(() -> m_dts.resetAngle()),
-            new VisionAutoCommand(m_dts, m_obja).visionCreatePath( // Lining with the corral
-                    0,  
+            new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.1),
+            vac.visionCreatePath( // Lining with the corral
+                    0.000001,
                     20, 
                     0 
             ),
-            new VisionAutoCommand(m_dts, m_obja).visionCreatePath( // Going in front of the corral
-                0, 
-                0, 
+            vac.visionCreatePath( // Going in front of the corral
+                0.0000001, 
+                Units.metersToInches(Constants.DRIVETRAIN_WHEELBASE_LENGTH/2), 
                 0
             )
         );
