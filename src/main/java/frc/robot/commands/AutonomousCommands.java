@@ -72,22 +72,22 @@ public class AutonomousCommands {
             ));
     }
 
-    public Command goToCorralVision(){
-        VisionAutoCommand vac = new VisionAutoCommand(m_dts, m_obja);
+    public Command goToToteVision(){
+        // VisionAutoCommand vac = new VisionAutoCommand(m_dts, m_obja);
 
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
             new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.1),
-            vac.visionCreatePath( // Lining with the corral
-                    0.000001,
-                    20, 
-                    0 
-            ),
-            vac.visionCreatePath( // Going in front of the corral
-                0.0000001, 
-                Units.metersToInches(Constants.DRIVETRAIN_WHEELBASE_LENGTH/2), 
-                0
-            )
+            // new VisionAutoCommand(m_dts, m_obja, 0.000001, 20, 0) // Lining with the tote
+            new VisionAutoCommand(m_dts, m_obja).visionCreatePath( 
+                0.000001, 
+                20, 
+                90) // Lining with the tote
+            // vac.visionCreatePath( // Going in front of the corral
+            //     0.0000001, 
+            //     Units.metersToInches(Constants.DRIVETRAIN_WHEELBASE_LENGTH/2), 
+            //     0
+            // )
         );
     }
 }

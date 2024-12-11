@@ -480,7 +480,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         }
         else if(source == "Eclipse"){
             detection.x -= cameraOffset[0];
-            detection.z = -detection.z + cameraOffset[1];
+            detection.z = detection.z + cameraOffset[1];
         }
         
         return detection;

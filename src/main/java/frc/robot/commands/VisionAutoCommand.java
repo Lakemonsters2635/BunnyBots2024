@@ -30,9 +30,17 @@ public class VisionAutoCommand extends Command {
   double fieldX;
   double fieldY;
 
+  double xPrime;
+  double zPrime;
+  double finalYa;
+
   public VisionAutoCommand(DrivetrainSubsystem dts, ObjectTrackerSubsystem ots) {
     m_dts = dts;
     m_ots = ots;
+
+    // this.xPrime = xPrime0;
+    // this.zPrime = zPrime0;
+    // this.finalYa = finalYa0;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -60,7 +68,7 @@ public class VisionAutoCommand extends Command {
       System.out.println(e);
     }
 
-    visionCreatePath(15, 15, 0).schedule();
+    // visionCreatePath(xPrime, zPrime, finalYa).schedule();
 
   }
 
