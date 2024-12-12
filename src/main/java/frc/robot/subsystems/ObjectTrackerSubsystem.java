@@ -447,14 +447,14 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     public void updateDetections(String detectionsString, Gson gson) {
         DetectionList gsonOut = gson.fromJson(detectionsString, DetectionList.class);
         // Initialy grab fps from gsonOut, only update april tags and Yolo objects only if fps is above 25
-        String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
-        double fps = Double.valueOf(fpsString);
-        SmartDashboard.putNumber("CameraFPS", fps);
+        // String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+        // double fps = Double.valueOf(fpsString);
+        // SmartDashboard.putNumber("CameraFPS", fps);
         
-        if (fps<25) {
-            // If the frames per second is less than 25 don't do the update
-            return ;
-        }
+        // if (fps<25) {
+        //     // If the frames per second is less than 25 don't do the update
+        //     return ;
+        // }
 
         aprilTags.clear();
         yoloObjects.clear();
@@ -462,16 +462,18 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         // Seperate out the detections with rotation
         for (int i = 0; i < gsonOut.size(); i++) { // Maybe change later
             if (gsonOut.get(i).objectLabel.substring(0,3).equals("tag")) {
-                aprilTags.add(adjustCamOffset(gsonOut.get(i)));
+                aprilTags.add(gsonOut.get(i));
+                // aprilTags.add(adjustCamOffset(gsonOut.get(i)));
                 // System.out.println("UpdateDetections(: found apriltag");
             } else {
-                yoloObjects.add(adjustCamOffset(gsonOut.get(i)));
+                yoloObjects.add(gsonOut.get(i));
+                // yoloObjects.add(adjustCamOffset(gsonOut.get(i)));
                 // System.out.println("yolo object");
             }
         }
     }
 
-    // TODO: not tested code
+    // TODO: not working yet
     private Detection adjustCamOffset(Detection detection1){
         Detection detection = detection1;
         if (source == "Balloon") { // TODO: figure out these source names from vision code

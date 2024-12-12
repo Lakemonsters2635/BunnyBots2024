@@ -23,7 +23,7 @@ public class AutonomousCommands {
 
     public AutonomousCommands(DrivetrainSubsystem dts, ObjectTrackerSubsystem obja){
         m_dts = dts;
-        m_obja = obja;
+        m_obja = obja; // ObjectTrackerSubsystem()
     }
 
      public Command postSeasonAutoStraight(){  
