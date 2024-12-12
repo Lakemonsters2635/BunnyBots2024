@@ -167,6 +167,17 @@ public final class Constants {
     public static final double ARM_POWER = .15;
     public static final double ARM_VOLTS = 11;
 
+    //ARDUINO CONSTANTS
+    public static final int RED_LEFT_ID =5;
+    public static final int BLUE_LEFT_ID =7;
+    public static final int BLUE_RIGHT_ID =6;
+    public static final int RED_RIGHT_ID =4;
+    public static final int LEFT_ENABLE_ID =9;
+    public static final int RIGHT_ENABLE_ID =8;
+
+    public static final int LEFT_ENABLE_BUTTON = 9;
+    public static final int RIGHT_ENABLE_BUTTON = 10;
+
 
     //BUTTON BINDINGS
 

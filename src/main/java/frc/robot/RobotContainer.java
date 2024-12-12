@@ -19,6 +19,7 @@ import frc.robot.commands.ArmToUpwardPosition;
 import frc.robot.commands.AutonomousCommands;
 import frc.robot.commands.DrivetrainCommand;
 import frc.robot.commands.VacuumCommand;
+import frc.robot.subsystems.ArduinoSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.commands.ToteGrabberDownCommand;
 import frc.robot.commands.ToteGrabberUpCommand;
@@ -27,6 +28,8 @@ import frc.robot.subsystems.ObjectTrackerSubsystem;
 import frc.robot.subsystems.VacuumSubsystem;
 import frc.robot.subsystems.VacuumSolenoidSubsystem;
 import frc.robot.subsystems.ToteGrabberSubsystem;
+import frc.robot.subsystems.ArduinoSubsystem;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,6 +49,7 @@ public class RobotContainer {
   public static final VacuumSubsystem m_rightVacuumSubsystem = new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, m_vacuumSolenoidSusbsystem); 
   public static final ArmSubsystem m_armSubsystem = new ArmSubsystem();
   public static final ToteGrabberSubsystem m_toteGrabberSubsystem = new ToteGrabberSubsystem();
+  public static final ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
   //Command 
@@ -58,6 +62,7 @@ public class RobotContainer {
   public static final ArmShakeCommand m_armShakeCommand = new ArmShakeCommand(m_armSubsystem);  
   public static final ToteGrabberDownCommand m_toteGrabberDownCommand = new ToteGrabberDownCommand(m_toteGrabberSubsystem);
   public static final ToteGrabberUpCommand m_toteGrabberUpCommand = new ToteGrabberUpCommand(m_toteGrabberSubsystem);
+  
 
 
   public RobotContainer() {
@@ -95,8 +100,8 @@ public class RobotContainer {
     Trigger toggleRightSolenoidValve = new JoystickButton(leftJoystick, Constants.RIGHT_VALVE_TOGGLE_BUTTON); //CONFIGURE BUTTONS LATER
     
 
-    Trigger openLeftSolenoidValve = new JoystickButton(leftJoystick, 10);
-    Trigger closeLeftSolenoidValve = new JoystickButton(leftJoystick, 9);
+    // Trigger openLeftSolenoidValve = new JoystickButton(leftJoystick, 10);
+    // Trigger closeLeftSolenoidValve = new JoystickButton(leftJoystick, 9);
 
     toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleLeftValve()));
     toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleRightValve()));
@@ -112,6 +117,8 @@ public class RobotContainer {
     // closeLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.closeLeftValve()));
     Trigger toteGrabberUpButton = new JoystickButton(leftJoystick, Constants.TOTE_GRABBER_UP_BUTTON);
     Trigger toteGrabberDownButton = new JoystickButton(leftJoystick, Constants.TOTE_GRABBER_DOWN_BUTTON);
+    Trigger leftEnableToggleButton = new JoystickButton(leftJoystick, Constants.LEFT_ENABLE_BUTTON);
+    Trigger rightEnableToggleButton = new JoystickButton(leftJoystick, Constants.RIGHT_ENABLE_BUTTON);
 
     // right
     swerveResetButton.onTrue(new InstantCommand(()->m_drivetrainSubsystem.resetAngle()));
@@ -126,6 +133,8 @@ public class RobotContainer {
     rightVacuumToggle.onTrue(m_rightVacuumCommnad);
 
     // left
+    leftEnableToggleButton.onTrue(new InstantCommand(()->m_arduinoSubsystem.toggleLeftStrip()));
+    rightEnableToggleButton.onTrue(new InstantCommand(()->m_arduinoSubsystem.toggleRightStrip()));
     toteGrabberDownButton.whileTrue(m_toteGrabberDownCommand);
     toteGrabberUpButton.whileTrue(m_toteGrabberUpCommand);
   }

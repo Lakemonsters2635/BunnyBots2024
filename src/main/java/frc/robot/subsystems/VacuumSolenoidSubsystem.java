@@ -11,17 +11,19 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.ArduinoSubsystem;
 
 public class VacuumSolenoidSubsystem extends SubsystemBase {
   /** Creates a new VacuumSolenoidSubsystem. */
+  private ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
   private Timer m_timer;
   private Solenoid leftValve;
   private Solenoid rightValve;
   private boolean isRedAlliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red; 
-  private boolean isLeftRed = false; //INPUT TRUE VALUES LATER
-  private boolean isLeftBlue = false; //INPUT TRUE VALUES LATER
-  private boolean isRightRed = false; //INPUT TRUE VALUES LATER
-  private boolean isRightBlue = false; //INPUT TRUE VALUES LATER
+  private boolean isLeftRed = m_arduinoSubsystem.getRedLeft(); //INPUT TRUE VALUES LATER
+  private boolean isLeftBlue = m_arduinoSubsystem.getBlueLeft(); //INPUT TRUE VALUES LATER
+  private boolean isRightRed = m_arduinoSubsystem.getRedRight(); //INPUT TRUE VALUES LATER
+  private boolean isRightBlue = m_arduinoSubsystem.getBlueRight(); //INPUT TRUE VALUES LATER
 
 
   public VacuumSolenoidSubsystem() {
@@ -75,13 +77,13 @@ public class VacuumSolenoidSubsystem extends SubsystemBase {
     //2 sec then close
     if((isRedAlliance && isLeftBlue) || (!isRedAlliance && isLeftRed)){
       openLeftValve();
-      m_timer.delay(2);
+      Timer.delay(2);
       closeLeftValve();
 
     }
     if((isRedAlliance && isRightBlue) || (!isRedAlliance && isRightRed)){
       openRightValve();
-      m_timer.delay(2);
+      Timer.delay(2);
       closeRightValve();
     
     // This method will be called once per scheduler run
