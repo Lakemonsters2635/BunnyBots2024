@@ -21,6 +21,9 @@ public class ToteGrabberSubsystem extends SubsystemBase {
     toteGrabberMotor.setNeutralMode(NeutralModeValue.Coast);
   }
 
+  public double getTotePosition(){
+    return toteGrabberMotor.getPosition().getValue();
+  }
 
   public void toteGrabberDown(){
     toteGrabberMotor.set(0.1);
