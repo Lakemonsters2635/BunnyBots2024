@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 // TODO: Figure out whether to use phoenix6 or phoenix, aka phoenix5
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -16,14 +18,12 @@ public class ToteGrabberSubsystem extends SubsystemBase {
   TalonFX toteGrabberMotor;
   public ToteGrabberSubsystem() {
     toteGrabberMotor = new TalonFX(Constants.TOTE_GRABBER_ID);
+    toteGrabberMotor.setNeutralMode(NeutralModeValue.Coast);
   }
 
-  public double getTotePosition(){
-    return toteGrabberMotor.getPosition().getValue();
-  }
 
   public void toteGrabberDown(){
-    toteGrabberMotor.set(0.2);
+    toteGrabberMotor.set(0.1);
   }
   public void toteGrabberUp(){
     toteGrabberMotor.set(-0.2);
