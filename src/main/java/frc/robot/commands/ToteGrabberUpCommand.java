@@ -35,6 +35,9 @@ public class ToteGrabberUpCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(m_toteGrabberSubsystem.getTotePosition() <  -3.81){ //TODO: what is the max height
+    return true;
+  }
     return false;
   }
 }

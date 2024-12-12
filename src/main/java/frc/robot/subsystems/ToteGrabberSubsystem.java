@@ -4,21 +4,26 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+// TODO: Figure out whether to use phoenix6 or phoenix, aka phoenix5
+import com.ctre.phoenix6.hardware.TalonFX;
+
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+
 public class ToteGrabberSubsystem extends SubsystemBase {
   /** Creates a new ToteGrabberSubsystem. */
-  CANSparkMax toteGrabberMotor;
+  TalonFX toteGrabberMotor;
   public ToteGrabberSubsystem() {
-    toteGrabberMotor = new CANSparkMax(Constants.TOTE_GRABBER_ID, MotorType.kBrushless);
+    toteGrabberMotor = new TalonFX(Constants.TOTE_GRABBER_ID);
+    toteGrabberMotor.setNeutralMode(NeutralModeValue.Coast);
   }
 
+
   public void toteGrabberDown(){
-    toteGrabberMotor.set(0.2);
+    toteGrabberMotor.set(0.1);
   }
   public void toteGrabberUp(){
     toteGrabberMotor.set(-0.2);
@@ -26,7 +31,6 @@ public class ToteGrabberSubsystem extends SubsystemBase {
   public void toteGrabberStop(){
     toteGrabberMotor.set(0);
   }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
