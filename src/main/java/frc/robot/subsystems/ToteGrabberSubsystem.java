@@ -6,14 +6,20 @@ package frc.robot.subsystems;
 
 // TODO: Figure out whether to use phoenix6 or phoenix, aka phoenix5
 import com.ctre.phoenix6.hardware.TalonFX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
 
 public class ToteGrabberSubsystem extends SubsystemBase {
   /** Creates a new ToteGrabberSubsystem. */
   TalonFX toteGrabberMotor;
   public ToteGrabberSubsystem() {
     toteGrabberMotor = new TalonFX(Constants.TOTE_GRABBER_ID);
+  }
+
+  public double getTotePosition(){
+    return toteGrabberMotor.getPosition().getValue();
   }
 
   public void toteGrabberDown(){
@@ -25,7 +31,6 @@ public class ToteGrabberSubsystem extends SubsystemBase {
   public void toteGrabberStop(){
     toteGrabberMotor.set(0);
   }
-  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
