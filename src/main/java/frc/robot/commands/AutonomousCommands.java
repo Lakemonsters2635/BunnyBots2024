@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -28,8 +29,8 @@ public class AutonomousCommands {
 
      public Command postSeasonAutoStraight(){  
         return new SequentialCommandGroup(
-            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
-            new InstantCommand(() -> m_dts.resetAngle()),
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.1),
             m_dts.createPath( 
                         new Pose2d(0,0, new Rotation2d(Math.toRadians(45))),
                         new Translation2d(0.5, 0.5),
@@ -76,13 +77,17 @@ public class AutonomousCommands {
         // VisionAutoCommand vac = new VisionAutoCommand(m_dts, m_obja);
 
         return new SequentialCommandGroup(
-            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
-            new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
+            new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5),
             // new VisionAutoCommand(m_dts, m_obja, 0.000001, 20, 0) // Lining with the tote
             new VisionAutoCommand(m_dts, m_obja).visionCreatePath( 
-                0.000001, 
-                20, 
-                90) // Lining with the tote
+                0.1, 
+                40, 
+                0) // Lining with the tote
+            // new VisionAutoCommand(m_dts, m_obja).visionCreatePath( 
+            //     0.000001, 
+            //     5, 
+            //     0) // Lining with the tote
             // vac.visionCreatePath( // Going in front of the corral
             //     0.0000001, 
             //     Units.metersToInches(Constants.DRIVETRAIN_WHEELBASE_LENGTH/2), 

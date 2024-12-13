@@ -53,10 +53,10 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     private String source;
     private Gson gson = new Gson();
     
-    private double visionZ;
-    private double visionX;
-    private double visionY;
-    private double visionYa;
+    public double visionZ;
+    public double visionX;
+    public double visionY;
+    public double visionYa;
 
 
     /*
@@ -181,16 +181,44 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     }
 
     public double getVisionX(){
-        return visionX;
+        try{
+            visionX = getNearestAprilTagDetection().x;
+            return visionX;
+
+        }
+        catch(Exception e){
+            return 0;
+        }
     }
     public double getVisionY(){
-        return visionY;
+        try {
+            visionY = getNearestAprilTagDetection().y;
+
+            return visionY;
+        } catch (Exception e) {
+            return 0;
+        }
+        
     }
     public double getVisionZ(){
-        return visionZ;
+        try {
+            visionZ = getNearestAprilTagDetection().z;
+
+            return visionZ;
+        } catch (Exception e) {
+            return 0;
+        }
+        
     }
     public double getVisionYa(){
-        return visionYa;
+        try {
+            visionYa = getNearestAprilTagDetection().ya;
+
+            return visionYa;
+        } catch (Exception e) {
+            return 0;
+        }
+        
     }
 
     private void applyRotationTranslationMatrix() {
