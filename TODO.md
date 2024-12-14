@@ -23,4 +23,5 @@
       }
   }
   ```
-* Figure out which motors have embedded temperature sensors, and how to get these values.
+* Figure out which motors have embedded temperature sensors, and how to get these values.* Make sure we fix the json main in shuffleboard for vision data (`ObjectTrackerSubsystem`)
+* Call ObjectTrackerSubsystem.updateDetections() with detectionsString = jsonString to populate yoloObjects and aprilTags

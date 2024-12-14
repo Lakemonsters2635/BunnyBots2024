@@ -15,17 +15,48 @@ import com.google.gson.Gson;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.models.VisionObject;
 
+// TODO: Harmonize Detection and VisionObject and refactor code
+class Detection{
+    public String objectLabel;
+    public double x;
+    public double y;
+    public double z;
+    public double confidence;
+    public double xa;
+    public double ya;
+    public double za;
+}
+class DetectionList extends ArrayList<Detection> {
+    @Override
+    public boolean add(Detection detec) {
+        return super.add(detec);
+    }
+    @Override
+    public Detection get(int index) {
+        return super.get(index);
+    }
+    @Override
+    public Detection remove(int index) {
+        return super.remove(index);
+    }
+}
 
 public class ObjectTrackerSubsystem extends SubsystemBase {
-	  NetworkTable monsterVision; 
+	NetworkTable monsterVision; 
     public VisionObject[] foundObjects; 
     private String jsonString;
     private String source;
     private Gson gson = new Gson();
+    
+    public double visionZ;
+    public double visionX;
+    public double visionY;
+    public double visionYa;
 
 
     /*
@@ -37,10 +68,13 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
 
     // rotation matrix
     private double cameraTilt= 0.0 * Math.PI / 180.0;
-    private double[] cameraOffset = {0.0, 0.0, 0.0}; // goes {x, y, z} // In inches // TODO: figure this offset
+    private double[] cameraOffset = {0.0, 0.0}; // goes {x, y, z} // In inches // TODO: figure this offset
 
     private double sinTheta;
     private double cosTheta;
+
+    public DetectionList yoloObjects;
+    public DetectionList aprilTags;
 
 	// Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -50,15 +84,18 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         monsterVision = inst.getTable("MonsterVision");
         jsonString = "";
 
-        if (source == "NoteCam") {
-            cameraTilt= Constants.VISION_NOTE_CAM_TILT;
+        if (source == "Balloon") { // TODO: figure our these source names from vision code
+            cameraOffset = Constants.VISION_BALLOON_CAM_OFFSET;
         }
-        else if(source == "AprilTagPro"){
-            cameraTilt=Constants.VISION_APRIL_TAG_PRO_TILT;
+        else if(source == "Eclipse"){ // TODO: This name should be changed to "Tote" but left as "Eclipse for testing purposes"
+            cameraOffset=Constants.VISION_TOTE_CAM_OFFSET;
         }
 
         sinTheta = Math.sin(cameraTilt);
         cosTheta = Math.cos(cameraTilt);
+
+        yoloObjects = new DetectionList();
+        aprilTags = new DetectionList();
 
         // monsterVision.addEntryListener(
         //     "ObjectTracker",
@@ -74,8 +111,39 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         if(entry==null) {
             return;
         }
-        jsonString = entry.getString("ObjectTracker");
-        
+        // default to an empty list of detections if nothing is found: 
+        jsonString = entry.getString("[]");
+        // TODO: call updateDetections with detectionsString = jsonString to populate yoloObjects and aprilTags
+        updateDetections(jsonString, gson);
+        // use the getClosestAprilTag() to get the detection for the closest april tag
+        // Use smart dashboarf to display the x, y, z and ya values
+        try {
+            SmartDashboard.putNumber("VisionX", getNearestAprilTagDetection().x);
+            SmartDashboard.putNumber("VisionY", getNearestAprilTagDetection().y);
+            SmartDashboard.putNumber("VisionZ", getNearestAprilTagDetection().z);
+            SmartDashboard.putNumber("VisionYa", getNearestAprilTagDetection().ya);
+
+            System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
+           
+            visionZ = getNearestAprilTagDetection().z;
+            visionX = getNearestAprilTagDetection().x;
+            visionY = getNearestAprilTagDetection().y;
+            visionYa = getNearestAprilTagDetection().ya;
+            
+            String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+            double fps = Double.valueOf(fpsString);
+            SmartDashboard.putNumber("CameraFPS", fps);
+        } catch (Exception e) {
+            // System.out.println(e);
+        }
+
+        try {
+            // System.out.println(getSpecificAprilTag(14).objectLabel);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return ;
+        /* This commented code uses the OLD VisionObject
         try {
             foundObjects = gson.fromJson(jsonString, VisionObject[].class);
         } catch (Exception e) {
@@ -108,7 +176,49 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         // TODO: Comment this part
         // for (VisionObject object : foundObjects){
         //     System.out.format("%s %.1f %.1f %.1f %.1f\n",object.objectLabel, object.x, object.y, object.z, object.confidence);
-        // }       
+        // }      '' 
+        */
+    }
+
+    public double getVisionX(){
+        try{
+            visionX = getNearestAprilTagDetection().x;
+            return visionX;
+
+        }
+        catch(Exception e){
+            return 0;
+        }
+    }
+    public double getVisionY(){
+        try {
+            visionY = getNearestAprilTagDetection().y;
+
+            return visionY;
+        } catch (Exception e) {
+            return 0;
+        }
+        
+    }
+    public double getVisionZ(){
+        try {
+            visionZ = getNearestAprilTagDetection().z;
+
+            return visionZ;
+        } catch (Exception e) {
+            return 0;
+        }
+        
+    }
+    public double getVisionYa(){
+        try {
+            visionYa = getNearestAprilTagDetection().ya;
+
+            return visionYa;
+        } catch (Exception e) {
+            return 0;
+        }
+        
     }
 
     private void applyRotationTranslationMatrix() {
@@ -176,7 +286,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         return object;
     }
 
-    public VisionObject getSpecificAprilTag(int id) {
+    public VisionObject getSpecificAprilTagVisionObject(int id) {
         String objectLabel = "tag16h5: " + id;
         VisionObject[] objects = getObjectsOfType(objectLabel);
         if (objects == null || objects.length == 0) {
@@ -258,7 +368,151 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         //setDefaultCommand(new MySpecialCommand());
     }
 
+// ================================================================================
+// Functions from MyClass from JDoodle
+
+    public Detection getNearestAprilTagDetection() {
+        if (aprilTags.size() > 0) {
+            return aprilTags.get(0);
+        }
+        return null;
+    }
+
+    public Detection getSpecificAprilTag(int id){
+        Detection currentAprilTag;
+        for (int i = 0; i < aprilTags.size(); i++) {
+            currentAprilTag = aprilTags.get(i);
+            // The .substring(10) is for this specific aprilTag family which is "tag36h11: "
+            if (currentAprilTag.objectLabel.substring(10).equals(""+id)) {
+                return currentAprilTag;
+            }
+        }
+        return null;
+    }
+
+    public Detection[] getNearestAprilTagsDetection(int count) {
+        Detection[] detections = new Detection[count];
+        if (count <= aprilTags.size()) {
+            for (int i = 0; i < count; i++) {
+                detections[i] = aprilTags.get(i);
+            }
+            return detections;
+        } else {
+            return null;
+        }
+    }
+
+    public Detection getNearestYoloDetection() {
+        if (yoloObjects.size() > 0) {
+            return yoloObjects.get(0);
+        }
+        return null;
+    }
+
+    public Detection[] getNearestYoloDetections(int count) {
+        Detection[] detections = new Detection[count];
+        if (count <= yoloObjects.size()) {
+            for (int i = 0; i < count; i++) {
+                detections[i] = yoloObjects .get(i);
+            }
+            return detections;
+        } else {
+            return null;
+        }
+    }
+    // // Yaw difference is from the frame of reference of rotation
+    // // Get Y from the rotaion object of detection and translate to z rotation of robot spo we can directly feed into command to turn robot
+    // // Confirm that we are turning in correct direction
+    // public double getYawDifferenceFromDetectionRotation(Detection detection) {
+    //     // The whole point of this functions is so that we know which direction to turn the robot
+    //     return 0.0;
+    // }
+    // public double getDistanceFromDetection(Detection detection) {
+    //     return detection.z;
+    // }
+    // public double getXFieldDistanceFromDetection(Detection detection) {
+    //     // x not
+    //     return 0.0;
+    // }
+    public double getThetaYZField(Detection detection) {
+        double camX = detection.x;
+        double camZ = detection.z;
+        double yCamAngle = detection.ya;
+        double thetaYZ = Math.tanh(camZ/camX);
+        double thetaYZField = 90.0 - yCamAngle - thetaYZ;
+
+        return thetaYZField;
+    }
+    public double getYFieldAprilFromDetection(Detection detection) {
+        double yField;
+
+        double radius = getRadius(detection);
+        double thetaYZField = getThetaYZField(detection);
+
+        yField = Math.cos(thetaYZField) * radius;
+
+        return yField;
+    }
+    public double getXFieldAprilFromDetection(Detection detection) {
+        double xField;
+
+        double radius = getRadius(detection);
+        double thetaYZField = getThetaYZField(detection);
 
 
+        xField = Math.sin(thetaYZField) * radius;
 
+        return xField;
+    }
+    public double getRadius(Detection detection) {
+        double camX = detection.x;
+        double camZ = detection.z;
+        
+        double radius = Math.sqrt(Math.pow(camX, 2) + Math.pow(camZ, 2));
+        return radius;
+    }
+
+    public void updateDetections(String detectionsString, Gson gson) {
+        DetectionList gsonOut = gson.fromJson(detectionsString, DetectionList.class);
+        // Initialy grab fps from gsonOut, only update april tags and Yolo objects only if fps is above 25
+        // String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+        // double fps = Double.valueOf(fpsString);
+        // SmartDashboard.putNumber("CameraFPS", fps);
+        
+        // if (fps<25) {
+        //     // If the frames per second is less than 25 don't do the update
+        //     return ;
+        // }
+
+        aprilTags.clear();
+        yoloObjects.clear();
+        
+        // Seperate out the detections with rotation
+        for (int i = 0; i < gsonOut.size(); i++) { // Maybe change later
+            if (gsonOut.get(i).objectLabel.substring(0,3).equals("tag")) {
+                aprilTags.add(gsonOut.get(i));
+                // aprilTags.add(adjustCamOffset(gsonOut.get(i)));
+                // System.out.println("UpdateDetections(: found apriltag");
+            } else {
+                yoloObjects.add(gsonOut.get(i));
+                // yoloObjects.add(adjustCamOffset(gsonOut.get(i)));
+                // System.out.println("yolo object");
+            }
+        }
+    }
+
+    // TODO: not working yet
+    private Detection adjustCamOffset(Detection detection1){
+        Detection detection = detection1;
+        if (source == "Balloon") { // TODO: figure out these source names from vision code
+            detection.x += cameraOffset[0];
+            detection.z += cameraOffset[1];
+        }
+        else if(source == "Eclipse"){
+            detection.x -= cameraOffset[0];
+            detection.z = detection.z + cameraOffset[1];
+        }
+        
+        return detection;
+    }
 }

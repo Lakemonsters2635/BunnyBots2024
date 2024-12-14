@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -37,7 +39,7 @@ public final class Constants {
     // Switch robot's lenght to width
 
     // ROBOT WIDTH AND LENGHT
-    public static final double DRIVETRAIN_WHEELBASE_WIDTH =  25.5/ Constants.INCHES_PER_METER; //21.5
+    public static final double DRIVETRAIN_WHEELBASE_WIDTH =  25.5 / Constants.INCHES_PER_METER; //21.5
     public static final double DRIVETRAIN_WHEELBASE_LENGTH = 21.5 / Constants.INCHES_PER_METER; //25.5
 
     // SWERVE MODULE STATES
@@ -45,7 +47,6 @@ public final class Constants {
     public static final int FRONT_RIGHT_MODULE_STATE_INDEX = 1;
     public static final int BACK_LEFT_MODULE_STATE_INDEX = 2;
     public static final int BACK_RIGHT_MODULE_STATE_INDEX = 3;
-
 
     // FRONT LEFT
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 7; //1
@@ -78,6 +79,36 @@ public final class Constants {
     public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1-13+3+3.8+5.0+180+64+90+50-90-73+180); //3.01
 
     //    public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49.73+3-1.1+3-6.2-0.5); //3.0346
+
+    
+    /* ECLIPSE Constants (for vision)
+    // BACK LEFT
+    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 3; //9
+    public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 2; //0
+    public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 4; //10
+    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(17.07+5+50-90-19.3+3+4.8+180); // 3.0775
+
+
+    // FRONT RIGHT
+    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 9; //3
+    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 0; //2
+    public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 10; //4
+    public static final double FRONT_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(151.84+0.6-3.5+3+0.6+1.5+180); //2.9835
+
+
+     // FRONT LEFT
+     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 8; //1
+     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 1; //3
+     public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 7; //2
+     public static final double FRONT_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(49.73+3-1.1+3-6.2-0.5+180); //3.0346
+ 
+
+    // BACK RIGHT
+    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 1; //8
+    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 3;//1
+    public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 2; //7
+    public static final double BACK_RIGHT_ANGLE_OFFSET_COMPETITION = Math.toRadians(265.96+5.1-13+3+3.8+5.0+180); //3.01
+    */
 
     // hat constants 
     public static final int HAT_JOYSTICK_TRIM_POSITION = RIGHT_JOYSTICK_CHANNEL;
@@ -142,6 +173,10 @@ public final class Constants {
     public static double OBJECT_DETECTION_LATENCY = 0.217; // seconds
     public static final double VISION_NOTE_CAM_TILT = Units.degreesToRadians(0);
     public static final double VISION_APRIL_TAG_PRO_TILT = Units.degreesToRadians(0);
+
+    // {x, y} in inches, +y is robots front, +x is to the right
+    public static final double[] VISION_TOTE_CAM_OFFSET = {-Units.metersToInches((DRIVETRAIN_WHEELBASE_WIDTH/2)) + 4, -Units.metersToInches(DRIVETRAIN_WHEELBASE_LENGTH/2)}; // TODO: calculate these values based from the center of the robot
+    public static final double[] VISION_BALLOON_CAM_OFFSET = {};
 
     public static final int TARGET_TRIGGER_DISTANCE_APRIL_TAG = 0;
 
