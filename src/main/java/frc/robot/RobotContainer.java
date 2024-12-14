@@ -151,7 +151,7 @@ public class RobotContainer {
     
     m_autoChooser.setDefaultOption("goToToteVision", m_autonomousCommands.goToToteVision());
     m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
-
+    //m_autoChooser.addOption("toteScoreBunnyAuto", m_autonomousCommands.goToToteScoreBunnyAuto());
     SmartDashboard.putData("AutoChooser", m_autoChooser);
     SmartDashboard.putData("AlianceChooser", m_alianceChooser);
     

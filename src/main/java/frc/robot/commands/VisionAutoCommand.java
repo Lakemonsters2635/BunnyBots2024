@@ -11,10 +11,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
 
@@ -94,7 +96,14 @@ public class VisionAutoCommand extends Command {
   */
   public Command visionCreatePath(double xPrime, double zPrime, double finalYa){
     m_ots.data();
-
+    // while(m_ots.getNearestAprilTagDetection() == null){
+    //   try {
+    //     wait(10);
+    //   } catch (InterruptedException e) {
+    //     // TODO Auto-generated catch block
+    //     e.printStackTrace();
+    //   }
+    // }
     try{
       visionX = m_ots.visionX;
       visionY = m_ots.visionY;
@@ -165,17 +174,17 @@ public class VisionAutoCommand extends Command {
 
     SmartDashboard.putNumber("deltaRobotX in inches", Units.metersToInches(deltaRobotX));
     SmartDashboard.putNumber("deltaRobotY in inches", Units.metersToInches(deltaRobotY));
-    double botRadiansGyro = Units.degreesToRadians(m_dts.m_gyro.getAngle());
-    double botRadians = m_dts.getPose().getRotation().getRadians();
+    double botRadians = Units.degreesToRadians(m_dts.m_gyro.getAngle());
+    //double botRadians = m_dts.getPose().getRotation().getRadians();
     SmartDashboard.putNumber("botRadians", botRadians);
 
-    double angleOffset = -Units.degreesToRadians(0);
+    double angleOffset = -Units.degreesToRadians(90);
     double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
 
     // finalYa is in degrees
     // double finalYa = 0;
     // finalAngle is in degrees
-    double finalAngle = -visionYa + finalYa + Units.radiansToDegrees(botRadiansGyro);
+    double finalAngle = -visionYa + finalYa + Units.radiansToDegrees(botRadians);
     //System.out.println("BOT RADIANS BOT RADIANS " + botRadians);
 
     SmartDashboard.putNumber("finalAngle", finalAngle);
@@ -230,6 +239,7 @@ public class VisionAutoCommand extends Command {
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y after",m_dts.getPose().getY())),
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation after",m_dts.getPose().getRotation().getDegrees()))
     );
+
     // return new SequentialCommandGroup(
     //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x before",m_dts.getPose().getX())),
     //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y before",m_dts.getPose().getY())),

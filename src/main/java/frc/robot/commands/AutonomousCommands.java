@@ -13,8 +13,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
+import frc.robot.subsystems.VacuumSolenoidSubsystem;
+import frc.robot.subsystems.VacuumSubsystem;
 
 /** Add your docs here. */
 public class AutonomousCommands {
@@ -81,9 +84,25 @@ public class AutonomousCommands {
             new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5),
             // new VisionAutoCommand(m_dts, m_obja, 0.000001, 20, 0) // Lining with the tote
             new VisionAutoCommand(m_dts, m_obja).visionCreatePath( 
-                0.1, 
+                0.001, //MUST BE NONZERO
                 40, 
-                0) // Lining with the tote
+                0)
+            ,new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5),
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5)
+            ,m_dts.createPath(
+                 new Pose2d(0,0, new Rotation2d(Math.toRadians(0))),
+                 new Translation2d(Units.inchesToMeters(5), Units.inchesToMeters(-10)),
+                 new Pose2d(Units.inchesToMeters(10), Units.inchesToMeters(-20), new Rotation2d(Math.toRadians(90))),
+                 0)
+            // new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5),
+            // new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
+            // m_dts.createPath(
+            //      new Pose2d(0,0, new Rotation2d(Math.toRadians(0))),
+            //      new Translation2d(0, Units.inchesToMeters(-10)),
+            //      new Pose2d(0, Units.inchesToMeters(-20), new Rotation2d(Math.toRadians(90))),
+            //      0),
+            // new InstantCommand(()->m_dts.stopMotors())
+            //     ) // Lining with the tote
             // new VisionAutoCommand(m_dts, m_obja).visionCreatePath( 
             //     0.000001, 
             //     5, 
@@ -95,4 +114,15 @@ public class AutonomousCommands {
             // )
         );
     }
+
+    // public Command goToToteScoreBunnyAuto(){
+    //     return new SequentialCommandGroup(
+    //         new VacuumCommand(new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, new VacuumSolenoidSubsystem())),
+    //         new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem())),
+    //         goToToteVision(),
+    //         new ArmToUpwardPosition(new ArmSubsystem()),
+    //         new VacuumCommand(new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, new VacuumSolenoidSubsystem())),
+    //         new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem()))
+    //     );
+    // }
 }
