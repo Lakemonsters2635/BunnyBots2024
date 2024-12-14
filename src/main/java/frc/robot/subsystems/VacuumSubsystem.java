@@ -9,20 +9,39 @@ import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.ArduinoSubsystem;
+
 
 public class VacuumSubsystem extends SubsystemBase {
   /** Creates a new VacuumSubsystem. */
   VacuumSolenoidSubsystem m_vacuumSolenoidSubsystem; 
   TalonSRX vacuumMotor; 
+
+  private ArduinoSubsystem m_arduinoSubsystem;
+
+  private boolean isRedAlliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red; 
+  private boolean isLeftRed;
+  private boolean isLeftBlue; 
+  private boolean isRightRed;
+  private boolean isRightBlue;
   boolean vacuumEnabled = false; 
   boolean leftVacuum = false;
-  public VacuumSubsystem(int canID, boolean isLeftVacuum, VacuumSolenoidSubsystem vacuumSolenoidSubsystem) {
+  public VacuumSubsystem(int canID, boolean isLeftVacuum, VacuumSolenoidSubsystem vacuumSolenoidSubsystem, ArduinoSubsystem arduinoSubsystem ) {
     vacuumMotor = new TalonSRX(canID);
     vacuumEnabled = false;
     leftVacuum = isLeftVacuum;
+    m_arduinoSubsystem = arduinoSubsystem;
+    isLeftRed = m_arduinoSubsystem.getRedLeft(); //INPUT TRUE VALUES LATER
+    isLeftBlue = m_arduinoSubsystem.getBlueLeft(); //INPUT TRUE VALUES LATER
+    isRightRed= m_arduinoSubsystem.getRedRight(); //INPUT TRUE VALUES LATER
+    isRightBlue = m_arduinoSubsystem.getBlueRight(); //INPUT TRUE VALUES LATER
     m_vacuumSolenoidSubsystem = vacuumSolenoidSubsystem;
+    
+
 
   }
 
@@ -65,6 +84,26 @@ public class VacuumSubsystem extends SubsystemBase {
   
   @Override
   public void periodic() {
+    if(leftVacuum){
+      if((isRedAlliance && isLeftBlue) || (!isRedAlliance && isLeftRed)){
+            m_vacuumSolenoidSubsystem.openLeftValve();
+            stopVacuum();
+            Timer.delay(2);
+            m_vacuumSolenoidSubsystem.closeLeftValve();
+       }
+    }
+    else{
+      if((isRedAlliance && isRightBlue) || (!isRedAlliance && isRightRed)){
+        m_vacuumSolenoidSubsystem.openRightValve();
+        stopVacuum();
+        Timer.delay(2);
+        m_vacuumSolenoidSubsystem.closeRightValve();
+      }
+    }
+    
+    // This method will be called once per scheduler run
+    
+
     // This method will be called once per scheduler run
   }
 }

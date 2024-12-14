@@ -9,12 +9,14 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DigitalSource;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArduinoSubsystem extends SubsystemBase {
   /** Creates a new ArduinoSubsystem. */
   DigitalInput redLeftIn = new DigitalInput(Constants.RED_LEFT_ID);
   DigitalInput blueLeftIn = new DigitalInput(Constants.BLUE_LEFT_ID);
-  DigitalInput redRightIn = new DigitalInput(Constants.RED_RIGHT_ID);
+  DigitalInput redRightIn = new DigitalInput(Constants.
+  RED_RIGHT_ID);
   DigitalInput blueRightIn = new DigitalInput(Constants.BLUE_RIGHT_ID);
   DigitalOutput leftEnable = new DigitalOutput(Constants.LEFT_ENABLE_ID);
   DigitalOutput rightEnable = new DigitalOutput(Constants.RIGHT_ENABLE_ID);
@@ -43,6 +45,11 @@ public class ArduinoSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("redLeft", getRedLeft());
+    SmartDashboard.putBoolean("blueLeft", getBlueLeft());
+    SmartDashboard.putBoolean("redRight", getRedRight());
+    SmartDashboard.putBoolean("blueRight", getBlueRight());
+
     // This method will be called once per scheduler6 run
 
   }

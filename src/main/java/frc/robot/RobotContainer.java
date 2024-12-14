@@ -43,13 +43,13 @@ public class RobotContainer {
   public static final Joystick leftJoystick = new Joystick(Constants.LEFT_JOYSTICK_CHANNEL);
 
   // Subsystems
+  public static final ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   public static final VacuumSolenoidSubsystem m_vacuumSolenoidSusbsystem = new VacuumSolenoidSubsystem();
-  public static final VacuumSubsystem m_leftVacuumSubsystem = new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, m_vacuumSolenoidSusbsystem); 
-  public static final VacuumSubsystem m_rightVacuumSubsystem = new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, m_vacuumSolenoidSusbsystem); 
+  public static final VacuumSubsystem m_leftVacuumSubsystem = new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, m_vacuumSolenoidSusbsystem, m_arduinoSubsystem); 
+  public static final VacuumSubsystem m_rightVacuumSubsystem = new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, m_vacuumSolenoidSusbsystem, m_arduinoSubsystem); 
   public static final ArmSubsystem m_armSubsystem = new ArmSubsystem();
   public static final ToteGrabberSubsystem m_toteGrabberSubsystem = new ToteGrabberSubsystem();
-  public static final ArduinoSubsystem m_arduinoSubsystem = new ArduinoSubsystem();
   // public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
  
   //Command 
