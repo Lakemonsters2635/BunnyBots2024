@@ -18,6 +18,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.models.VisionObject;
 
 // TODO: Harmonize Detection and VisionObject and refactor code
@@ -126,9 +127,14 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
            
             visionZ = getNearestAprilTagDetection().z;
-            visionX = getNearestAprilTagDetection().x;
+            visionX =  getNearestAprilTagDetection().x;
             visionY = getNearestAprilTagDetection().y;
-            visionYa = getNearestAprilTagDetection().ya;
+            visionYa =  getNearestAprilTagDetection().ya;
+           
+            // visionZ = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).z;
+            // visionX = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).x;
+            // visionY = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).y;
+            // visionYa = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).ya;
             
             String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
             double fps = Double.valueOf(fpsString);

@@ -16,7 +16,7 @@ public class VacuumCommand extends Command {
   boolean initialVacuumState = false;
   public VacuumCommand(VacuumSubsystem vacuumSubsystem) {
     m_vacuumSubsystem = vacuumSubsystem;
-    addRequirements(m_vacuumSubsystem);
+    // addRequirements(m_vacuumSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

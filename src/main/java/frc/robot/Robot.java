@@ -30,6 +30,8 @@ public class Robot extends TimedRobot {
   public static double[] angle;
 
   public SendableChooser<Command> m_autoChooser;
+  // public static SendableChooser<Integer> m_toteChooser = new SendableChooser<>();
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,6 +42,21 @@ public class Robot extends TimedRobot {
     // motion compensate (vision)
     time = new double[circularBufferSize]; 
     angle =  new double[circularBufferSize];
+    
+    // m_toteChooser.addOption("tote1", 1);
+    // m_toteChooser.addOption("tote2", 2);
+    // m_toteChooser.addOption("tote3", 3);
+    // m_toteChooser.addOption("tote4", 4);
+    // m_toteChooser.addOption("tote5", 5);
+    // m_toteChooser.addOption("tote6", 6);
+    // m_toteChooser.addOption("tote7", 7);
+    // m_toteChooser.addOption("tote8", 8);
+    // m_toteChooser.addOption("tote9", 9);
+    // m_toteChooser.addOption("tote10", 10);
+    // m_toteChooser.addOption("tote11", 11);
+    // m_toteChooser.addOption("tote12", 12);
+
+    // m_toteChooser.getSelected();
 
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our

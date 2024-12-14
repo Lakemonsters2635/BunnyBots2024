@@ -24,10 +24,20 @@ public class AutonomousCommands {
     private DrivetrainSubsystem m_dts;
     private VisionAutoCommand m_vac;
     private ObjectTrackerSubsystem m_obja;
+    private VacuumCommand m_lvc;
+    private VacuumCommand m_rvc;
+    // private VacuumCommand m_lvc2;
+    // private VacuumCommand m_rvc2;
 
-    public AutonomousCommands(DrivetrainSubsystem dts, ObjectTrackerSubsystem obja){
+    public AutonomousCommands(DrivetrainSubsystem dts, ObjectTrackerSubsystem obja, VacuumCommand m_leftVacuumCommand, VacuumCommand m_rightVacuumCommand){
         m_dts = dts;
         m_obja = obja; // ObjectTrackerSubsystem()
+
+        m_lvc = m_leftVacuumCommand;
+        m_rvc = m_rightVacuumCommand;
+
+        // m_lvc2 = m_leftVacuumCommand;
+        // m_rvc2 = m_rightVacuumCommand;
     }
 
      public Command postSeasonAutoStraight(){  
@@ -91,8 +101,8 @@ public class AutonomousCommands {
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5)
             ,m_dts.createPath(
                  new Pose2d(0,0, new Rotation2d(Math.toRadians(0))),
-                 new Translation2d(Units.inchesToMeters(5), Units.inchesToMeters(-10)),
-                 new Pose2d(Units.inchesToMeters(10), Units.inchesToMeters(-20), new Rotation2d(Math.toRadians(90))),
+                 new Translation2d(Units.inchesToMeters(5), Units.inchesToMeters(-20)),
+                 new Pose2d(Units.inchesToMeters(10), Units.inchesToMeters(-40), new Rotation2d(Math.toRadians(0))),
                  0)
             // new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5),
             // new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
@@ -115,14 +125,17 @@ public class AutonomousCommands {
         );
     }
 
-    // public Command goToToteScoreBunnyAuto(){
-    //     return new SequentialCommandGroup(
-    //         new VacuumCommand(new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, new VacuumSolenoidSubsystem())),
-    //         new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem())),
-    //         goToToteVision(),
-    //         new ArmToUpwardPosition(new ArmSubsystem()),
-    //         new VacuumCommand(new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, new VacuumSolenoidSubsystem())),
-    //         new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem()))
-    //     );
-    // }
+    public Command goToToteScoreBunnyAuto(){
+        return new SequentialCommandGroup(
+            m_lvc,
+            m_rvc,
+            // new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem())),
+            goToToteVision(),
+            new ArmToUpwardPosition(new ArmSubsystem())
+            // m_lvc
+            // m_rvc
+            // new VacuumCommand(new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, new VacuumSolenoidSubsystem()))
+            // new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem()))
+        );
+    }
 }
