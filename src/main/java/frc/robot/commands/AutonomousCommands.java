@@ -26,16 +26,26 @@ public class AutonomousCommands {
     private ObjectTrackerSubsystem m_obja;
     private VacuumCommand m_lvc;
     private VacuumCommand m_rvc;
+    private VacuumSolenoidSubsystem m_vss;
+
+    private VacuumSubsystem m_vsr;
+    private VacuumSubsystem m_vsl;
+
+    private ArmShakeCommand asc;
     // private VacuumCommand m_lvc2;
     // private VacuumCommand m_rvc2;
 
-    public AutonomousCommands(DrivetrainSubsystem dts, ObjectTrackerSubsystem obja, VacuumCommand m_leftVacuumCommand, VacuumCommand m_rightVacuumCommand){
+    public AutonomousCommands(DrivetrainSubsystem dts, ObjectTrackerSubsystem obja, VacuumCommand m_leftVacuumCommand, VacuumCommand m_rightVacuumCommand, VacuumSubsystem m_vssl, VacuumSubsystem m_vssr, ArmShakeCommand arm){
         m_dts = dts;
         m_obja = obja; // ObjectTrackerSubsystem()
 
         m_lvc = m_leftVacuumCommand;
         m_rvc = m_rightVacuumCommand;
 
+        m_vsr = m_vssr;
+        m_vsl = m_vssl;
+
+        asc =arm;
         // m_lvc2 = m_leftVacuumCommand;
         // m_rvc2 = m_rightVacuumCommand;
     }
@@ -131,11 +141,10 @@ public class AutonomousCommands {
             m_rvc,
             // new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem())),
             goToToteVision(),
-            new ArmToUpwardPosition(new ArmSubsystem())
+            new ArmToUpwardPosition(new ArmSubsystem()),
             // m_lvc
             // m_rvc
-            // new VacuumCommand(new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, new VacuumSolenoidSubsystem()))
-            // new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem()))
+            asc
         );
     }
 }

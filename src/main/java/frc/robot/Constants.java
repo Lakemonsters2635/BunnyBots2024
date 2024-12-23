@@ -197,7 +197,7 @@ public final class Constants {
 
     //ARM CONSTANTS
     public static final int ARM_ID = 20;
-    public static final double ARM_DOWN_POSITION = -2.5; //Arm Power stops after it reaches this position
+    public static final double ARM_DOWN_POSITION = -0.1; //Arm Power stops after it reaches this position
     public static final double ARM_UP_POSITION = -6;     //Arm Power stops after it reaches this position
     public static final double ARM_POWER = .15;
     public static final double ARM_VOLTS = 11;

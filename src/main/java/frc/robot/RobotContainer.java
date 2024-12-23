@@ -60,9 +60,10 @@ public class RobotContainer {
   public static final ArmToDownwardPosition m_armToDownwardPosition = new ArmToDownwardPosition(m_armSubsystem);
 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
+    public static final ArmShakeCommand m_armShakeCommand = new ArmShakeCommand(m_armSubsystem);  
+
   // public static final VisionAutoCommand m_visionAutoCommand = new VisionAutoCommand(m_drivetrainSubsystem, m_objectTrackerSubsystem);
-  public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_objectTrackerSubsystem, m_leftVacuumCommand, m_rightVacuumCommnad);
-  public static final ArmShakeCommand m_armShakeCommand = new ArmShakeCommand(m_armSubsystem);  
+  public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_objectTrackerSubsystem, m_leftVacuumCommand, m_rightVacuumCommnad, m_leftVacuumSubsystem, m_rightVacuumSubsystem, m_armShakeCommand);
   public static final ToteGrabberDownCommand m_toteGrabberDownCommand = new ToteGrabberDownCommand(m_toteGrabberSubsystem);
   public static final ToteGrabberUpCommand m_toteGrabberUpCommand = new ToteGrabberUpCommand(m_toteGrabberSubsystem);
 
@@ -108,8 +109,8 @@ public class RobotContainer {
     toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleLeftValve()));
     toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleRightValve()));
     
-    leftVacuumToggle.onTrue(m_leftVacuumCommand);
-    rightVacuumToggle.onTrue(m_rightVacuumCommnad);
+    // leftVacuumToggle.onTrue(m_leftVacuumCommand);
+    // rightVacuumToggle.onTrue(m_rightVacuumCommnad);
 
     armToUpwardPositionButton.onTrue(m_armToUpwardPosition);
     armToDownwardPositionButton.onTrue(m_armToDownwardPosition);
