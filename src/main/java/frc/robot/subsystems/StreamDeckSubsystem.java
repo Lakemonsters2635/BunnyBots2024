@@ -27,9 +27,8 @@ public class StreamDeckSubsystem extends SubsystemBase {
   }
 
   public boolean isPressed(int index){
-
-
     boolean val = table.getBooleanTopic(index+"").getEntry(false).getAsBoolean();
+    table.getBooleanTopic(index+"").getEntry(false).close();
     clear();
     return val;
   }
@@ -44,6 +43,12 @@ public class StreamDeckSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if(isPressed(0)){
+      System.out.println("INDEX 0 IS PRESSED");
+    }
+    else{
+      System.out.println("INDEX 0 IS NOT PRESSED");
+    }
     // This method will be called once per scheduler run
   }
 }

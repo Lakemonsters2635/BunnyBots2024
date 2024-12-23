@@ -25,6 +25,7 @@ import frc.robot.commands.ToteGrabberDownCommand;
 import frc.robot.commands.ToteGrabberUpCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
+import frc.robot.subsystems.StreamDeckSubsystem;
 import frc.robot.subsystems.VacuumSubsystem;
 import frc.robot.subsystems.VacuumSolenoidSubsystem;
 import frc.robot.subsystems.ToteGrabberSubsystem;
@@ -44,7 +45,7 @@ public class RobotContainer {
 
   public static final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   public static final ObjectTrackerSubsystem m_objectTrackerSubsystem = new ObjectTrackerSubsystem("Eclipse");
-
+  public static final StreamDeckSubsystem m_streamDeckSubsystem = new StreamDeckSubsystem();
   public static final VacuumSolenoidSubsystem m_vacuumSolenoidSusbsystem = new VacuumSolenoidSubsystem();
   public static final VacuumSubsystem m_leftVacuumSubsystem = new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, m_vacuumSolenoidSusbsystem); 
   public static final VacuumSubsystem m_rightVacuumSubsystem = new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, m_vacuumSolenoidSusbsystem); 
