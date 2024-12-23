@@ -150,10 +150,23 @@ public class RobotContainer {
     // m_alianceChooser.addOption("blue", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("blue")));
     // m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
     
-    m_autoChooser.setDefaultOption("goToToteVision", m_autonomousCommands.goToToteVision());
+    // m_autoChooser.setDefaultOption("goToToteVision", m_autonomousCommands.goToToteVision());
+    m_autoChooser.setDefaultOption("goToMidTarget", m_autonomousCommands.goToMidTarget());
     
     m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
     m_autoChooser.addOption("ToteScoreBunnyAuto", m_autonomousCommands.goToToteScoreBunnyAuto());
+
+    //m_autoChooser.addOption("goToMidTarget", m_autonomousCommands.goToMidTarget());
+    m_autoChooser.addOption("goToLeftTarget", m_autonomousCommands.goToLeftTarget());
+    m_autoChooser.addOption("goToRightTarget", m_autonomousCommands.goToRightTarget());
+
+    m_autoChooser.addOption("goToRightTargetTurn45", m_autonomousCommands.goToRightTargetTurn45());
+    m_autoChooser.addOption("goToLeftTargetTurn45", m_autonomousCommands.goToLeftTargetTurn45());
+    m_autoChooser.addOption("goToMidTargetTurn45", m_autonomousCommands.goToMidTargetTurn45());
+
+    m_autoChooser.addOption("goToMidTargetTurn0", m_autonomousCommands.goToMidTargetTurn0());
+    m_autoChooser.addOption("goToLeftTargetTurn0", m_autonomousCommands.goToLeftTargetTurn0());
+    m_autoChooser.addOption("goToRightTargetTurn0", m_autonomousCommands.goToRightTargetTurn0());
     //m_autoChooser.addOption("toteScoreBunnyAuto", m_autonomousCommands.goToToteScoreBunnyAuto());
     SmartDashboard.putData("AutoChooser", m_autoChooser);
     SmartDashboard.putData("AlianceChooser", m_alianceChooser);

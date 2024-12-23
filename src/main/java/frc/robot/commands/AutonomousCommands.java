@@ -96,6 +96,104 @@ public class AutonomousCommands {
             ));
     }
 
+    public Command goToMidTarget(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.resetAngle()),
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
+                new Translation2d(0, -1), 
+                new Pose2d(0, -2, new Rotation2d(Units.degreesToRadians(90))))
+        );
+    }
+    public Command goToRightTarget(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(-135))), 
+                new Translation2d(1, 1), 
+                new Pose2d(2, 2, new Rotation2d(Units.degreesToRadians(-135))))
+        );
+    }
+    public Command goToLeftTarget(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(135))), 
+                new Translation2d(-1, 1), 
+                new Pose2d(-2, 2, new Rotation2d(Units.degreesToRadians(135))))
+        );
+    }
+
+    public Command goToMidTargetTurn45(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
+                new Translation2d(0, 1), 
+                new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90))),
+                45)
+        );
+    }
+    public Command goToRightTargetTurn45(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(45))), 
+                new Translation2d(1, 1), 
+                new Pose2d(2, 2, new Rotation2d(Units.degreesToRadians(45))),
+                45)
+        );
+    }
+    public Command goToLeftTargetTurn45(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(135))), 
+                new Translation2d(-1, 1), 
+                new Pose2d(-2, 2, new Rotation2d(Units.degreesToRadians(135))),
+                45)
+        );
+    }
+    public Command goToMidTargetTurn0(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
+                new Translation2d(0, 1), 
+                new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90))),
+                0)
+        );
+    }
+    public Command goToLeftTargetTurn0(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(45))), 
+                new Translation2d(-1, 1), 
+                new Pose2d(-2, 2, new Rotation2d(Units.degreesToRadians(45))),
+                0)
+        );
+    }
+    public Command goToRightTargetTurn0(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(135))), 
+                new Translation2d(1, 1), 
+                new Pose2d(2, 2, new Rotation2d(Units.degreesToRadians(135))),
+                0)
+        );
+    }
+
     public Command goToToteVision(){
         // VisionAutoCommand vac = new VisionAutoCommand(m_dts, m_obja);
 
