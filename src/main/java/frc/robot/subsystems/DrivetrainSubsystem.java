@@ -216,6 +216,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
+    // This x, y, and theta controllers are the controllers which are used for feedback inside 
+    // the holonomic drive controller created by the SwerveControllerCommand.  These controllers 
+    // close the loop around m_poseError and m_rotationError.  These caluclations are performed in 
+    // HolonomicDriveController.calculate().  Note that while they call it thetaFF in .calcualate()
+    // covers the error in heading and is controlled by the thetaController we create here.
+    //
+    // Important Note... we can disable the feedback and closing the loop around the x,y positions 
+    // in the trajectory by setting kp to 0 for the x and y controllers and only feed forward velocity
+    // commands will be set during the trajectory.  So for tuning the path, we can run a bunch of 
+    // trajectory commands (preferibly not auto so we can do multiple commands sequentially... would need
+    // to ensure we reset the odometry etc at the beginning of the sequetial command), then we can
+    // slowly increase kp up to the point that we get the desired performance.  Note that if we have 
+    // overshoot in the path, then we can increase kd.
     PIDController xController = new PIDController(0.4, 0, 0);
     PIDController yController = new PIDController(0.4, 0, 0);
     // Note: We reduced Kp to 2 so that rottion control loop doesn't saturate the module motor speed during autos
