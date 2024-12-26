@@ -227,7 +227,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     //This SwerveControllerCommand expects an angleSupplier
     Supplier<Rotation2d> angleSupplier = () -> (Rotation2d)(Rotation2d.fromDegrees(desiredRot));
 
-
+    // the SwerveControllerCommand makes a HolonomicDriveController() out of the x, y, theta
+    // controllers and inside HolonomicDriveController constructor, enables the continuous input 
+    // on the theta controller from 0 to 360.  Does this create problems if we try to input -45 deg
+    // as a target heading?
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
       trajectory,
       centerOfRotationCamera ? this::getPoseCamera : this::getPose,
