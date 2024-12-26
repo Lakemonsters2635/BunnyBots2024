@@ -24,6 +24,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+ // what is the difference with this and edu.wpi.first.math.trajectory.TrajectoryGenerator?
+ 
 /** Helper class used to generate trajectories with various constraints. */
 public final class TrajGenerator {
   private static final Trajectory kDoNothingTrajectory =
