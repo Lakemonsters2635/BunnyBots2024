@@ -37,6 +37,9 @@ public class SwerveModule {
   private double m_driveMotorGain;
   /**
    * Constructs a SwerveModule.
+   * 
+   * TODO: drive PID not used.  the PID constants are all zero.  should document why.
+   * TODO: update note in setDesiredState() for drive Output regarding PID constants for drive if they are updated.
    *
    * @param driveMotorChannel ID for the drive motor.
    * @param turningMotorChannel ID for the turning motor.
@@ -115,11 +118,11 @@ public class SwerveModule {
         angle += 2.0 * Math.PI;
     }
     return angle;
-    }
+  }
 
-    public double printVoltage() {
-      return m_turningEncoder.getVoltage();
-    }
+  public double printVoltage() {
+    return m_turningEncoder.getVoltage();
+  }
 
   /**
    * Returns the current state of the module.
@@ -151,6 +154,8 @@ public class SwerveModule {
         SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderRadians()));
 
     // Calculate the drive output from the drive PID controller.
+    // Note: due to the drive PID constants being zero currently, this driveOutput will
+    //       always be zero.
     final double driveOutput = //state.speedMetersPerSecond;
       m_drivePIDController.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);
 
@@ -185,7 +190,15 @@ public class SwerveModule {
     // SmartDashboard.putNumber(str2, driveFeedForward);
 
     // Calculate the turning motor output from the turning PID controller.
-    m_driveMotor.set(Math.max(-1.0, Math.min((driveOutput + driveFeedForward) * m_driveMotorGain, 1.0)));
+    m_driveMotor.set(
+      Math.max(
+        -1.0, 
+        Math.min(
+          (driveOutput + driveFeedForward) * m_driveMotorGain, 
+          1.0
+        )
+      )
+    );
     m_turningMotor.set(turnOutput);
   }
 }
