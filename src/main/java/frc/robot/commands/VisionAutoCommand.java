@@ -95,6 +95,12 @@ public class VisionAutoCommand extends Command {
    * xPrime cannot be zero, because in calculation some of the values are divided by xPrime
   */
   public Command visionCreatePath(double xPrime, double zPrime, double finalYa){
+    // TODO: since it is known that xPrime must be non-zero, we should just add 0.000001 to prevent
+    // a division by zero.  This protects us from inadvertantly providing an invalid answer and allows 
+    // us to specify 0 for xPrime when this function is called which is more intuitive than forcing the 
+    // user of this function to enter 0.0001 manually to avoid an error.
+    xPrime += 0.00000112358;
+
     m_ots.data();
     // while(m_ots.getNearestAprilTagDetection() == null){
     //   try {
