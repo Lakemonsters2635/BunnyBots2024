@@ -229,6 +229,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // to ensure we reset the odometry etc at the beginning of the sequetial command), then we can
     // slowly increase kp up to the point that we get the desired performance.  Note that if we have 
     // overshoot in the path, then we can increase kd.
+    //
+    // Note that for debugging, it would be good to implement our own SwerveControllerCommand.java
+    // class for our own use.  This would then override the execute() function and insert data into  
+    // the data logger / shuffleboard so we can directly compare the desired states , actual states
+    // target chassisSpeed and actual chassis speed.  Something like this...
+    // @Override
+    // public void execute() {
+    //   super.execute()
+    //   // instrumentation for shuffleboard logging goes here.
+    // }
     PIDController xController = new PIDController(0.4, 0, 0);
     PIDController yController = new PIDController(0.4, 0, 0);
     // Note: We reduced Kp to 2 so that rottion control loop doesn't saturate the module motor speed during autos
