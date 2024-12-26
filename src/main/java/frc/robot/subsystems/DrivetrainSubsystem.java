@@ -110,6 +110,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
     private boolean followJoystics = true;  //When false does not use Joysticks for driving - When true uses Joysticks for driving
   
+    // TODO: if we are going to use path planner, we will need to make the SwerveDriveOdometry() object with the
+    //       initialPose parameter.  Not urgent now, but someone should put this into an issue.
     public final SwerveDriveOdometry m_odometry =
         new SwerveDriveOdometry(
             m_kinematics,
@@ -199,9 +201,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-      Constants.maxModuleLinearSpeed,  // 3.5 m/s
-      Constants.maxModuleLinearAccelaration)// 4 m/s^2
-      .setKinematics(centerOfRotationCamera ? m_kinematicsCamera : m_kinematics);
+      Constants.maxModuleLinearSpeed,       // 3.5 m/s
+      Constants.maxModuleLinearAccelaration // 4 m/s^2
+    ).setKinematics(centerOfRotationCamera ? m_kinematicsCamera : m_kinematics);
 
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       startPose,
@@ -210,7 +212,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
       ),
       endPose,
       trajectoryConfig
-      );
+    );
 
     TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(Constants.kMaxModuleAngularSpeedRadiansPerSecond, Constants.kMaxModuleAngularAccelerationRadiansPerSecondSquared);
 
@@ -407,7 +409,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot),
             centerOffset
-                );
+        );
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
 
     //If the desired states are not in this order then the swerve will not work  
@@ -525,7 +527,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_backRight.setDesiredState(desiredStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX]);
   } 
 
-public ChassisSpeeds getChassisSpeeds() {
+  public ChassisSpeeds getChassisSpeeds() {
     ChassisSpeeds chassisSpeeds = m_kinematics.toChassisSpeeds(m_frontLeft.getState(), m_frontRight.getState(), m_backLeft.getState(), m_backRight.getState());
     return chassisSpeeds;
   }
