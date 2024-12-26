@@ -46,6 +46,15 @@ class DetectionList extends ArrayList<Detection> {
     }
 }
 
+/**
+ * TODO: if we get ObjectTrackerSubsystem working well, there is potential to use 
+ * SwerveDriveOdometry.resetPosition() based off of the vision measurements.  If this
+ * is done, possibly could use path-planner to create paths for us on the fly once the 
+ * robot knows where it is on the field.  This could also be used to reset the current 
+ * position of the robot during a long auto with multiple segments.  Note that we would 
+ * need to ensure that the path could be calculated within one periodic loop and not
+ * bog down the code and create clock over-runs.
+ */ 
 public class ObjectTrackerSubsystem extends SubsystemBase {
 	NetworkTable monsterVision; 
     public VisionObject[] foundObjects; 
