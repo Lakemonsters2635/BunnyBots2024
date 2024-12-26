@@ -148,6 +148,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_frontRight.stop();
   }
 
+  // We previously had this toRedHead() in here for converting heading for auto usage
+  // now that we have fixed the swerve modules, maybe this is not required... also... is our 
+  // 180 deg offset for heading required as well?
   public double toRedHead(double blueHeadingDegrees) {  //Turn Angle from Blue to Red Alliance
     return -1.*(blueHeadingDegrees + 180.);
   }
@@ -243,6 +246,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // However it doesn't rotate the definition of the odometry x and y
     resetAngle(0);
   }
+  // do we use resetAngle(degree) when starting the auto from some angle which is not aligned with 
+  // the front of the robot pointing downfield?
   public void resetAngle(int degree){
     //Use this method if you want to reset the angle to something not 0
     m_gyro.reset();
@@ -275,85 +280,85 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-      //Hat Power Overides for Trimming Position and Rotation
-      // System.out.println("X: "+getPose().getX()+"\tY: "+getPose().getY()+"\tRot: "+getPose().getRotation().getDegrees());
-      if (followJoystics) {
-        if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
-          yPowerCommanded = Constants.HAT_POWER_MOVE;
-        }
-        else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_BACK){
-          yPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
-        }
-        else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_RIGHT){
-          xPowerCommanded = Constants.HAT_POWER_MOVE*1.0;
-        }
-        else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_LEFT){
-          xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
-        }
-
-        if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
-          rotCommanded = Constants.HAT_POWER_ROTATE*-1;
-        }
-        else if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
-          rotCommanded = Constants.HAT_POWER_ROTATE;
-        }
-
-        if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
-          yPowerCommanded = rightJoystick.getY() * -1;
-        }
-
-        if (rightJoystick.getX()>0.05 || rightJoystick.getX()<-0.05) {
-          xPowerCommanded = rightJoystick.getX();
-        }
-
-        // TODO: look at the deadband below
-        if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
-          rotCommanded = rightJoystick.getTwist()*-1;
-        }
-
-        // TODO: document how to use this button to reset various robot centers of rotation
-        // Note: you can have multiple buttons for defining multiple centers of rotation.
-        if (customCenterControlButton.getAsBoolean()) {
-          this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
-                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
-                  MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
-                  true,
-                  new Translation2d(0, -Constants.DRIVETRAIN_WHEELBASE_LENGTH/2));
-        } else {
-          this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
-                  yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
-                  MathUtil.applyDeadband(rotCommanded * this.kMaxAngularSpeed, 0.2), 
-                  true);
-        }
+    //Hat Power Overides for Trimming Position and Rotation
+    // System.out.println("X: "+getPose().getX()+"\tY: "+getPose().getY()+"\tRot: "+getPose().getRotation().getDegrees());
+    if (followJoystics) {
+      if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_FORWARD ){
+        yPowerCommanded = Constants.HAT_POWER_MOVE;
       }
-      
-      SmartDashboard.putNumber("rotCommanded", rotCommanded);
+      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_BACK){
+        yPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
+      }
+      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_RIGHT){
+        xPowerCommanded = Constants.HAT_POWER_MOVE*1.0;
+      }
+      else if(rightJoystick.getPOV()==Constants.HAT_POV_MOVE_LEFT){
+        xPowerCommanded = Constants.HAT_POWER_MOVE*-1.0;
+      }
+
+      if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_RIGHT){
+        rotCommanded = Constants.HAT_POWER_ROTATE*-1;
+      }
+      else if(leftJoystick.getPOV()==Constants.HAT_POV_ROTATE_LEFT){
+        rotCommanded = Constants.HAT_POWER_ROTATE;
+      }
+
+      if (rightJoystick.getY()>0.05 || rightJoystick.getY()<-0.05) {
+        yPowerCommanded = rightJoystick.getY() * -1;
+      }
+
+      if (rightJoystick.getX()>0.05 || rightJoystick.getX()<-0.05) {
+        xPowerCommanded = rightJoystick.getX();
+      }
+
+      // TODO: look at the deadband below
+      if (Math.pow(rightJoystick.getTwist(),3)>0.05 || Math.pow(rightJoystick.getTwist(),3)<-0.05) {
+        rotCommanded = rightJoystick.getTwist()*-1;
+      }
+
+      // TODO: document how to use this button to reset various robot centers of rotation
+      // Note: you can have multiple buttons for defining multiple centers of rotation.
+      if (customCenterControlButton.getAsBoolean()) {
+        this.drive(-xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+                yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
+                MathUtil.applyDeadband(-rotCommanded * this.kMaxAngularSpeed, 0.2), 
+                true,
+                new Translation2d(0, -Constants.DRIVETRAIN_WHEELBASE_LENGTH/2));
+      } else {
+        this.drive(xPowerCommanded * DrivetrainSubsystem.kMaxSpeed, 
+                yPowerCommanded * DrivetrainSubsystem.kMaxSpeed,
+                MathUtil.applyDeadband(rotCommanded * this.kMaxAngularSpeed, 0.2), 
+                true);
+      }
+    }
+    
+    SmartDashboard.putNumber("rotCommanded", rotCommanded);
 
 
-      double loggingState[] = {     //Array for predicted values
-        swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX].angle.getDegrees(), // Order here is BR, FR, BL, FL; order on Advantage Scope is FL, FR, BL, BR, but it works like this and we don't know why
-        swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX].speedMetersPerSecond,
-        swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX].angle.getDegrees(),
-        swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX].speedMetersPerSecond,
-        swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX].angle.getDegrees(),
-        swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX].speedMetersPerSecond,
-        swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX].angle.getDegrees(),
-        swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX].speedMetersPerSecond,
-      };
+    double loggingState[] = {     //Array for predicted values
+      swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX].angle.getDegrees(), // Order here is BR, FR, BL, FL; order on Advantage Scope is FL, FR, BL, BR, but it works like this and we don't know why
+      swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX].speedMetersPerSecond,
+      swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX].angle.getDegrees(),
+      swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX].speedMetersPerSecond,
+      swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX].angle.getDegrees(),
+      swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX].speedMetersPerSecond,
+      swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX].angle.getDegrees(),
+      swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX].speedMetersPerSecond,
+    };
 
-      double actualLoggingState[] = {
-        m_frontLeft.getTurningEncoderRadians() * 180 / Math.PI, // same order problem as predicted values
-        m_frontLeft.getVelocity(),
-        m_frontRight.getTurningEncoderRadians() * 180 / Math.PI,
-        m_frontRight.getVelocity(),
-        m_backLeft.getTurningEncoderRadians() * 180 / Math.PI,
-        m_backLeft.getVelocity(),
-        m_backRight.getTurningEncoderRadians() * 180 / Math.PI,
-        m_backRight.getVelocity(),
-      };
+    double actualLoggingState[] = {
+      m_frontLeft.getTurningEncoderRadians() * 180 / Math.PI, // same order problem as predicted values
+      m_frontLeft.getVelocity(),
+      m_frontRight.getTurningEncoderRadians() * 180 / Math.PI,
+      m_frontRight.getVelocity(),
+      m_backLeft.getTurningEncoderRadians() * 180 / Math.PI,
+      m_backLeft.getVelocity(),
+      m_backRight.getTurningEncoderRadians() * 180 / Math.PI,
+      m_backRight.getVelocity(),
+    };
 
-      SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
-      SmartDashboard.putNumberArray("ActualSwerveModuleState", actualLoggingState);
+    SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
+    SmartDashboard.putNumberArray("ActualSwerveModuleState", actualLoggingState);
 
       
 
