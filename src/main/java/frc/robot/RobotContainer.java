@@ -60,9 +60,10 @@ public class RobotContainer {
   public static final ArmToDownwardPosition m_armToDownwardPosition = new ArmToDownwardPosition(m_armSubsystem);
 
   public static final DrivetrainCommand m_driveTrainCommand = new DrivetrainCommand(m_drivetrainSubsystem);
+    public static final ArmShakeCommand m_armShakeCommand = new ArmShakeCommand(m_armSubsystem);  
+
   // public static final VisionAutoCommand m_visionAutoCommand = new VisionAutoCommand(m_drivetrainSubsystem, m_objectTrackerSubsystem);
-  public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_objectTrackerSubsystem);
-  public static final ArmShakeCommand m_armShakeCommand = new ArmShakeCommand(m_armSubsystem);  
+  public static final AutonomousCommands m_autonomousCommands = new AutonomousCommands(m_drivetrainSubsystem, m_objectTrackerSubsystem, m_leftVacuumCommand, m_rightVacuumCommnad, m_leftVacuumSubsystem, m_rightVacuumSubsystem, m_armShakeCommand);
   public static final ToteGrabberDownCommand m_toteGrabberDownCommand = new ToteGrabberDownCommand(m_toteGrabberSubsystem);
   public static final ToteGrabberUpCommand m_toteGrabberUpCommand = new ToteGrabberUpCommand(m_toteGrabberSubsystem);
 
@@ -108,8 +109,8 @@ public class RobotContainer {
     toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleLeftValve()));
     toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleRightValve()));
     
-    leftVacuumToggle.onTrue(m_leftVacuumCommand);
-    rightVacuumToggle.onTrue(m_rightVacuumCommnad);
+    // leftVacuumToggle.onTrue(m_leftVacuumCommand);
+    // rightVacuumToggle.onTrue(m_rightVacuumCommnad);
 
     armToUpwardPositionButton.onTrue(m_armToUpwardPosition);
     armToDownwardPositionButton.onTrue(m_armToDownwardPosition);
@@ -149,8 +150,23 @@ public class RobotContainer {
     // m_alianceChooser.addOption("blue", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("blue")));
     // m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
     
-    m_autoChooser.setDefaultOption("goToToteVision", m_autonomousCommands.goToToteVision());
+    // m_autoChooser.setDefaultOption("goToToteVision", m_autonomousCommands.goToToteVision());
+    m_autoChooser.setDefaultOption("goToMidTarget", m_autonomousCommands.goToMidTarget());
+    
     m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
+    m_autoChooser.addOption("ToteScoreBunnyAuto", m_autonomousCommands.goToToteScoreBunnyAuto());
+
+    //m_autoChooser.addOption("goToMidTarget", m_autonomousCommands.goToMidTarget());
+    m_autoChooser.addOption("goToLeftTarget", m_autonomousCommands.goToLeftTarget());
+    m_autoChooser.addOption("goToRightTarget", m_autonomousCommands.goToRightTarget());
+
+    m_autoChooser.addOption("goToRightTargetTurn45", m_autonomousCommands.goToRightTargetTurn45());
+    m_autoChooser.addOption("goToLeftTargetTurn45", m_autonomousCommands.goToLeftTargetTurn45());
+    m_autoChooser.addOption("goToMidTargetTurn45", m_autonomousCommands.goToMidTargetTurn45());
+
+    m_autoChooser.addOption("goToMidTargetTurn0", m_autonomousCommands.goToMidTargetTurn0());
+    m_autoChooser.addOption("goToLeftTargetTurn0", m_autonomousCommands.goToLeftTargetTurn0());
+    m_autoChooser.addOption("goToRightTargetTurn0", m_autonomousCommands.goToRightTargetTurn0());
     //m_autoChooser.addOption("toteScoreBunnyAuto", m_autonomousCommands.goToToteScoreBunnyAuto());
     SmartDashboard.putData("AutoChooser", m_autoChooser);
     SmartDashboard.putData("AlianceChooser", m_alianceChooser);

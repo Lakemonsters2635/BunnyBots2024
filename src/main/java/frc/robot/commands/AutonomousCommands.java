@@ -24,10 +24,30 @@ public class AutonomousCommands {
     private DrivetrainSubsystem m_dts;
     private VisionAutoCommand m_vac;
     private ObjectTrackerSubsystem m_obja;
+    private VacuumCommand m_lvc;
+    private VacuumCommand m_rvc;
+    private VacuumSolenoidSubsystem m_vss;
 
-    public AutonomousCommands(DrivetrainSubsystem dts, ObjectTrackerSubsystem obja){
+    private VacuumSubsystem m_vsr;
+    private VacuumSubsystem m_vsl;
+
+    private ArmShakeCommand asc;
+    // private VacuumCommand m_lvc2;
+    // private VacuumCommand m_rvc2;
+
+    public AutonomousCommands(DrivetrainSubsystem dts, ObjectTrackerSubsystem obja, VacuumCommand m_leftVacuumCommand, VacuumCommand m_rightVacuumCommand, VacuumSubsystem m_vssl, VacuumSubsystem m_vssr, ArmShakeCommand arm){
         m_dts = dts;
         m_obja = obja; // ObjectTrackerSubsystem()
+
+        m_lvc = m_leftVacuumCommand;
+        m_rvc = m_rightVacuumCommand;
+
+        m_vsr = m_vssr;
+        m_vsl = m_vssl;
+
+        asc =arm;
+        // m_lvc2 = m_leftVacuumCommand;
+        // m_rvc2 = m_rightVacuumCommand;
     }
 
      public Command postSeasonAutoStraight(){  
@@ -76,6 +96,104 @@ public class AutonomousCommands {
             ));
     }
 
+    public Command goToMidTarget(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.resetAngle()),
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
+                new Translation2d(0, -1), 
+                new Pose2d(0, -2, new Rotation2d(Units.degreesToRadians(90))))
+        );
+    }
+    public Command goToRightTarget(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(-135))), 
+                new Translation2d(1, 1), 
+                new Pose2d(2, 2, new Rotation2d(Units.degreesToRadians(-135))))
+        );
+    }
+    public Command goToLeftTarget(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(135))), 
+                new Translation2d(-1, 1), 
+                new Pose2d(-2, 2, new Rotation2d(Units.degreesToRadians(135))))
+        );
+    }
+
+    public Command goToMidTargetTurn45(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
+                new Translation2d(0, 1), 
+                new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90))),
+                45)
+        );
+    }
+    public Command goToRightTargetTurn45(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(45))), 
+                new Translation2d(1, 1), 
+                new Pose2d(2, 2, new Rotation2d(Units.degreesToRadians(45))),
+                45)
+        );
+    }
+    public Command goToLeftTargetTurn45(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(135))), 
+                new Translation2d(-1, 1), 
+                new Pose2d(-2, 2, new Rotation2d(Units.degreesToRadians(135))),
+                45)
+        );
+    }
+    public Command goToMidTargetTurn0(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
+                new Translation2d(0, 1), 
+                new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90))),
+                0)
+        );
+    }
+    public Command goToLeftTargetTurn0(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(45))), 
+                new Translation2d(-1, 1), 
+                new Pose2d(-2, 2, new Rotation2d(Units.degreesToRadians(45))),
+                0)
+        );
+    }
+    public Command goToRightTargetTurn0(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->m_dts.zeroOdometry()),
+            new InstantCommand(()->m_dts.resetAngle()),
+            m_dts.createPath(
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(135))), 
+                new Translation2d(1, 1), 
+                new Pose2d(2, 2, new Rotation2d(Units.degreesToRadians(135))),
+                0)
+        );
+    }
+
     public Command goToToteVision(){
         // VisionAutoCommand vac = new VisionAutoCommand(m_dts, m_obja);
 
@@ -91,8 +209,8 @@ public class AutonomousCommands {
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5)
             ,m_dts.createPath(
                  new Pose2d(0,0, new Rotation2d(Math.toRadians(0))),
-                 new Translation2d(Units.inchesToMeters(5), Units.inchesToMeters(-10)),
-                 new Pose2d(Units.inchesToMeters(10), Units.inchesToMeters(-20), new Rotation2d(Math.toRadians(90))),
+                 new Translation2d(Units.inchesToMeters(5), Units.inchesToMeters(-20)),
+                 new Pose2d(Units.inchesToMeters(10), Units.inchesToMeters(-40), new Rotation2d(Math.toRadians(0))),
                  0)
             // new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5),
             // new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
@@ -115,14 +233,16 @@ public class AutonomousCommands {
         );
     }
 
-    // public Command goToToteScoreBunnyAuto(){
-    //     return new SequentialCommandGroup(
-    //         new VacuumCommand(new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, new VacuumSolenoidSubsystem())),
-    //         new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem())),
-    //         goToToteVision(),
-    //         new ArmToUpwardPosition(new ArmSubsystem()),
-    //         new VacuumCommand(new VacuumSubsystem(Constants.LEFT_VACUUM_MOTOR_ID, true, new VacuumSolenoidSubsystem())),
-    //         new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem()))
-    //     );
-    // }
+    public Command goToToteScoreBunnyAuto(){
+        return new SequentialCommandGroup(
+            m_lvc,
+            m_rvc,
+            // new VacuumCommand(new VacuumSubsystem(Constants.RIGHT_VACUUM_MOTOR_ID, false, new VacuumSolenoidSubsystem())),
+            goToToteVision(),
+            new ArmToUpwardPosition(new ArmSubsystem()),
+            // m_lvc
+            // m_rvc
+            asc
+        );
+    }
 }

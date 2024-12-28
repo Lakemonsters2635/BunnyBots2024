@@ -36,9 +36,10 @@ public class ArmToUpwardPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_armSubsystem.getPosition()< Constants.ARM_UP_POSITION){
+    if(m_armSubsystem.getPosition() < Constants.ARM_UP_POSITION){
       return true;
     }
     return false;
   }
 }
+
