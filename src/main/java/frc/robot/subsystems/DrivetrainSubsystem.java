@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.commands.SwerveControllerCommand2635;
 
 public class DrivetrainSubsystem extends SubsystemBase {
     public static final double kMaxSpeed = 3.63; // 3.63 meters per second  Max Speed for Front, Back, Left, Right
@@ -254,7 +255,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // controllers and inside HolonomicDriveController constructor, enables the continuous input 
     // on the theta controller from 0 to 360.  Does this create problems if we try to input -45 deg
     // as a target heading?
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+    SwerveControllerCommand2635 swerveControllerCommand = new SwerveControllerCommand2635(
       trajectory,
       centerOfRotationCamera ? this::getPoseCamera : this::getPose,
       centerOfRotationCamera ? m_kinematicsCamera  : m_kinematics,
