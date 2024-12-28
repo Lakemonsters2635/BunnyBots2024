@@ -65,14 +65,13 @@ public class HolonomicDriveController2635 extends HolonomicDriveController{
     PIDController yController = super.getYController();
 
     // if (m_firstRun) {
-    //   m_thetaController.reset(currentPose.getRotation().getRadians());
-    //   m_firstRun = false;
+    //     thetaController.reset(currentPose.getRotation().getRadians());
+    //     m_firstRun = false;
     // }
 
     // Calculate feedforward velocities (field-relative).
     double xFF = desiredLinearVelocityMetersPerSecond * trajectoryPose.getRotation().getCos();
     double yFF = desiredLinearVelocityMetersPerSecond * trajectoryPose.getRotation().getSin();
-
     double thetaFF =
         thetaController.calculate(
             currentPose.getRotation().getRadians(), desiredHeading.getRadians());
@@ -80,10 +79,15 @@ public class HolonomicDriveController2635 extends HolonomicDriveController{
     Pose2d poseError = trajectoryPose.relativeTo(currentPose);
     Rotation2d rotationError = desiredHeading.minus(currentPose.getRotation());
 
+    // This is only used when we disable the feedback controller
+    // if (!m_enabled) {
+    //     return ChassisSpeeds.fromFieldRelativeSpeeds(xFF, yFF, thetaFF, currentPose.getRotation());
+    // }
+
     // Calculate feedback velocities (based on position error).
     double xFeedback = xController.calculate(currentPose.getX(), trajectoryPose.getX());
     double yFeedback = yController.calculate(currentPose.getY(), trajectoryPose.getY());
-
+        
     // Return next output.
     SmartDashboard.putNumber("holo xFF", xFF);
     SmartDashboard.putNumber("holo yFF", yFF);
@@ -102,7 +106,11 @@ public class HolonomicDriveController2635 extends HolonomicDriveController{
     SmartDashboard.putNumber("holo curr getX", currentPose.getX());
     SmartDashboard.putNumber("holo curr getY", currentPose.getY());
 
-    return returnVal;
+    // Return next output.
+    return ChassisSpeeds.fromFieldRelativeSpeeds(
+        xFF + xFeedback, yFF + yFeedback, thetaFF, currentPose.getRotation());
+
+    // return returnVal;
     
     //ChassisSpeeds.fromFieldRelativeSpeeds(xFF + xFeedback, yFF + yFeedback, thetaFF, currentPose.getRotation());
   }
