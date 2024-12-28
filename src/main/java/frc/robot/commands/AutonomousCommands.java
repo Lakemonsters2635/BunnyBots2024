@@ -103,7 +103,9 @@ public class AutonomousCommands {
             m_dts.createPath(
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
                 new Translation2d(0, 1), 
-                new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90))))
+                new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90)))
+            ),
+            new InstantCommand(()->m_dts.stopMotors())
         );
     }
     public Command goToRightTarget(){
