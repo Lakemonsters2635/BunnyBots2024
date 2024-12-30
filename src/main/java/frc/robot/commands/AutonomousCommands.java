@@ -115,7 +115,9 @@ public class AutonomousCommands {
             m_dts.createPath(
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(45))), 
                 new Translation2d(0.5, 0.5), 
-                new Pose2d(1, 1, new Rotation2d(Units.degreesToRadians(45))))
+                new Pose2d(1, 1, new Rotation2d(Units.degreesToRadians(45)))
+            ),
+            new InstantCommand(()->m_dts.stopMotors())
         );
     }
     public Command goToLeftTarget(){
@@ -125,7 +127,9 @@ public class AutonomousCommands {
             m_dts.createPath(
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(135))), 
                 new Translation2d(-1, 1), 
-                new Pose2d(-2, 2, new Rotation2d(Units.degreesToRadians(135))))
+                new Pose2d(-2, 2, new Rotation2d(Units.degreesToRadians(135)))
+            ),
+            new InstantCommand(()->m_dts.stopMotors())
         );
     }
 
@@ -137,7 +141,9 @@ public class AutonomousCommands {
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
                 new Translation2d(0, 1), 
                 new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90))),
-                45)
+                45
+            ),
+            new InstantCommand(()->m_dts.stopMotors())
         );
     }
     public Command goToRightTargetTurn45(){
@@ -148,7 +154,9 @@ public class AutonomousCommands {
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(45))), 
                 new Translation2d(1, 1), 
                 new Pose2d(2, 2, new Rotation2d(Units.degreesToRadians(45))),
-                45)
+                45
+            ),
+            new InstantCommand(()->m_dts.stopMotors())
         );
     }
     public Command goToLeftTargetTurn45(){
@@ -159,7 +167,9 @@ public class AutonomousCommands {
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(135))), 
                 new Translation2d(-1, 1), 
                 new Pose2d(-2, 2, new Rotation2d(Units.degreesToRadians(135))),
-                45)
+                45
+            ),
+            new InstantCommand(()->m_dts.stopMotors())
         );
     }
     public Command goToMidTargetTurn0(){
@@ -170,7 +180,9 @@ public class AutonomousCommands {
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
                 new Translation2d(0, 1), 
                 new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90))),
-                0)
+                0
+            ),
+            new InstantCommand(()->m_dts.stopMotors())
         );
     }
     public Command goToLeftTargetTurn0(){
@@ -181,7 +193,9 @@ public class AutonomousCommands {
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(45))), 
                 new Translation2d(-1, 1), 
                 new Pose2d(-2, 2, new Rotation2d(Units.degreesToRadians(45))),
-                0)
+                0
+            ),
+            new InstantCommand(()->m_dts.stopMotors())
         );
     }
     public Command goToRightTargetTurn0(){
@@ -192,7 +206,9 @@ public class AutonomousCommands {
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(135))), 
                 new Translation2d(1, 1), 
                 new Pose2d(2, 2, new Rotation2d(Units.degreesToRadians(135))),
-                0)
+                0
+            ),
+            new InstantCommand(()->m_dts.stopMotors())
         );
     }
 
