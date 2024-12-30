@@ -149,6 +149,25 @@ public final class Constants {
         // Assumes the encoders are directly mounted on the wheel shafts
         // (kWheelDiameterMeters * Math.PI) * (1.0 / (45.0 / 15.0) / (17.0 / 27.0) / (50.0 / 14.0));  //Mark 4i L2 Gear Ratio // should be 5.14 to 1 four L4 on BunnyBot
         (kWheelDiameterMeters * Math.PI) * 5.14;  //Mark 4i L2 Gear Ratio // should be 5.14 to 1 four L4 on BunnyBot
+
+        // Some additional notes... 
+        //
+        //6.74603174603 gear ratio for eclipse...
+        // 42 counts per revolution of the motor
+        // 6.746 * 42 counts per revolution of the wheel
+        // 283.333333333 counts per revolution of the wheel
+        // (kWheelDiameterMeters * Math.PI) circumference in meters
+        // (kWheelDiameterMeters * Math.PI) / 283.3333  meters per count i.e. distance per pulse
+        // 0.0011265396 meters per pulse for eclipse
+        //
+        //5.14 L4 gear ratio for bunnybot
+        //42 counts per revolution of the motor
+        //5.14 * 42 counts per revolution of the wheel
+        //215.88 counts per revolution of the wheel
+        // (kWheelDiameterMeters * Math.PI) circumference in meters
+        // (kWheelDiameterMeters * Math.PI)/ 215.88 meters per count i.e. distance per pulse
+        // 0.0014785364645989762 meters per pulse for bunnybot2024
+
     // put into manual mode, manually read position and rotate wheel
 
     public static final double kTurningEncoderDistancePerPulse =
