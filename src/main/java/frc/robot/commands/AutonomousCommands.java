@@ -113,9 +113,9 @@ public class AutonomousCommands {
             new InstantCommand(()->m_dts.zeroOdometry()),
             new InstantCommand(()->m_dts.resetAngle()),
             m_dts.createPath(
-                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(-135))), 
-                new Translation2d(1, 1), 
-                new Pose2d(2, 2, new Rotation2d(Units.degreesToRadians(-135))))
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(45))), 
+                new Translation2d(0.5, 0.5), 
+                new Pose2d(1, 1, new Rotation2d(Units.degreesToRadians(45))))
         );
     }
     public Command goToLeftTarget(){

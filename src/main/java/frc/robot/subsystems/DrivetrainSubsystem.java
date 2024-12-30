@@ -257,7 +257,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // as a target heading?
     SwerveControllerCommand2635 swerveControllerCommand = new SwerveControllerCommand2635(
       trajectory,
-      centerOfRotationCamera ? this::getPoseCamera : this::getPose,
+      centerOfRotationCamera ? this::getPoseCamera : this::getPoseMeters,
       centerOfRotationCamera ? m_kinematicsCamera  : m_kinematics,
       xController,
       yController,
@@ -476,6 +476,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
   /** Get pose from odometry field **/
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
+  }
+
+  public Pose2d getPoseMeters() {
+    Pose2d currentPose = getPose();
+    return new Pose2d(currentPose.getTranslation().div(39.37), currentPose.getRotation());
   }
 
   public Pose2d getPoseCamera() {

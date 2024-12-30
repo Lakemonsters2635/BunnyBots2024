@@ -76,6 +76,7 @@ public class HolonomicDriveController2635 extends HolonomicDriveController{
         thetaController.calculate(
             currentPose.getRotation().getRadians(), desiredHeading.getRadians());
 
+    // Pose2d poseMeters = new Pose2d(currentPose.getTranslation().div(39.37), currentPose.getRotation());
     Pose2d poseError = trajectoryPose.relativeTo(currentPose);
     Rotation2d rotationError = desiredHeading.minus(currentPose.getRotation());
 
