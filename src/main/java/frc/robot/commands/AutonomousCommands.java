@@ -102,16 +102,22 @@ public class AutonomousCommands {
             new InstantCommand(()->m_dts.zeroOdometry()),
             m_dts.createPath(
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
-                new Translation2d(0, 1), 
-                new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90)))
+                new Translation2d(0, 0.5), 
+                new Pose2d(0, 1, new Rotation2d(Units.degreesToRadians(90)))
             ),
             new InstantCommand(()->m_dts.stopMotors())
         );
     }
+
+    public void asdf(String label){
+        System.out.println(label + " Degrees: " + m_dts.getPose().getRotation().getDegrees());
+    }
     public Command goToRightTarget(){
         return new SequentialCommandGroup(
-            new InstantCommand(()->m_dts.zeroOdometry()),
-            new InstantCommand(()->m_dts.resetAngle()),
+            new InstantCommand(()->asdf("getPose.getRotation before ")).withTimeout(0.1),
+            new InstantCommand(()->m_dts.zeroOdometry()).withTimeout(0.1),
+            new InstantCommand(()->m_dts.resetAngle()).withTimeout(0.1),
+            new InstantCommand(()->asdf("getPose.getRotation after ")).withTimeout(0.1),
             m_dts.createPath(
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(45))), 
                 new Translation2d(0.5, 0.5), 

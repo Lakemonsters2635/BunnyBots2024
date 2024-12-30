@@ -103,9 +103,11 @@ public class HolonomicDriveController2635 extends HolonomicDriveController{
 
     SmartDashboard.putNumber("holo traj getX", trajectoryPose.getX());
     SmartDashboard.putNumber("holo traj getY", trajectoryPose.getY());
+    SmartDashboard.putNumber("holo traj getRotation", trajectoryPose.getRotation().getRadians());
 
     SmartDashboard.putNumber("holo curr getX", currentPose.getX());
     SmartDashboard.putNumber("holo curr getY", currentPose.getY());
+    SmartDashboard.putNumber("holo curr getRotation", currentPose.getRotation().getRadians());
 
     // Return next output.
     return ChassisSpeeds.fromFieldRelativeSpeeds(
