@@ -145,7 +145,7 @@ public final class Constants {
 
     public static final int kEncoderCPR = 42; // neo encoder ticks per revolution
     public static final double kWheelDiameterMeters = 4.0 / 39.37;
-    public static final double kCalibrationFactor = 1.2; // we tested the actual traveled distance vs the distance the robot thinks it traveled to come up with this factor
+    public static final double kCalibrationFactor = 0.9; // we tested the actual traveled distance vs the distance the robot thinks it traveled to come up with this factor
     public static final double kDriveEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         // (kWheelDiameterMeters * Math.PI) * (1.0 / (45.0 / 15.0) / (17.0 / 27.0) / (50.0 / 14.0));  //Mark 4i L2 Gear Ratio // should be 5.14 to 1 four L4 on BunnyBot
