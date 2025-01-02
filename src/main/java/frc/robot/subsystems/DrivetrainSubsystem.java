@@ -375,6 +375,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
       swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX].speedMetersPerSecond,
     };
 
+    double loggingStateForAdvantageScope[] = {     //Array for predicted values
+      swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX].angle.getDegrees() - 90, // Order here is BR, FR, BL, FL; order on Advantage Scope is FL, FR, BL, BR, but it works like this and we don't know why
+      swerveModuleStates[Constants.FRONT_LEFT_MODULE_STATE_INDEX].speedMetersPerSecond,
+      swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX].angle.getDegrees() - 90,
+      swerveModuleStates[Constants.FRONT_RIGHT_MODULE_STATE_INDEX].speedMetersPerSecond,
+      swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX].angle.getDegrees() - 90,
+      swerveModuleStates[Constants.BACK_LEFT_MODULE_STATE_INDEX].speedMetersPerSecond,
+      swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX].angle.getDegrees() - 90,
+      swerveModuleStates[Constants.BACK_RIGHT_MODULE_STATE_INDEX].speedMetersPerSecond,
+    };
+
     double actualLoggingState[] = {
       m_frontLeft.getTurningEncoderRadians() * 180 / Math.PI, // same order problem as predicted values
       m_frontLeft.getVelocity(),
@@ -386,8 +397,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
       m_backRight.getVelocity(),
     };
 
+    double loggingActualStateForAdvantageScope[] = {
+      (m_frontLeft.getTurningEncoderRadians() * 180 / Math.PI) - 90, // same order problem as predicted values
+      m_frontLeft.getVelocity(),
+      (m_frontRight.getTurningEncoderRadians() * 180 / Math.PI) - 90,
+      m_frontRight.getVelocity(),
+      (m_backLeft.getTurningEncoderRadians() * 180 / Math.PI) - 90,
+      m_backLeft.getVelocity(),
+      (m_backRight.getTurningEncoderRadians() * 180 / Math.PI) - 90,
+      m_backRight.getVelocity(),
+    };
+
     SmartDashboard.putNumberArray("SwerveModuleStates",loggingState);
+    SmartDashboard.putNumberArray("loggingStateForAdvantageScope",loggingStateForAdvantageScope);
     SmartDashboard.putNumberArray("ActualSwerveModuleState", actualLoggingState);
+    SmartDashboard.putNumberArray("loggingActualStateForAdvantageScope", loggingActualStateForAdvantageScope);
 
       
 
