@@ -261,8 +261,11 @@ public final class TrajGenerator {
     // Create the vector of spline points.
     var splinePoints = new ArrayList<PoseWithCurvature>();
 
-    // Add the first point to the vector.
-    splinePoints.add(splines[0].getPoint(0.0));
+    // TODO: The following line started giving error after switching to 2025 version of WPILIB, might want to check it out
+    // But since we are not using it and not planning to use it, we can comment it out.
+
+    // Add the first point to the vector. 
+    // splinePoints.add(splines[0].getPoint(0.0));
 
     // Iterate through the vector and parameterize each spline, adding the
     // parameterized points to the final vector.
