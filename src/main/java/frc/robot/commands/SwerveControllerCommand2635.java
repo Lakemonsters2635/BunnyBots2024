@@ -11,10 +11,12 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
@@ -226,6 +228,20 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
     var targetChassisSpeeds =
         m_controller.calculate(m_pose.get(), desiredState, m_desiredRotation.get());
     var targetModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
+    ChassisSpeeds myTargetChassisSpeeds = (ChassisSpeeds)targetChassisSpeeds;
+    
+    // public double vxMetersPerSecond;
+
+    // /** Velocity along the y-axis. (Left is +) */
+    // public double vyMetersPerSecond;
+  
+    // /** Represents the angular velocity of the robot frame. (CCW is +) */
+    // public double omegaRadiansPerSecond;
+  
+    SmartDashboard.putNumber("TargetChassisSpeeds.vxMetersPerSecond", targetChassisSpeeds.vxMetersPerSecond);
+    SmartDashboard.putNumber("TargetChassisSpeeds.vyMetersPerSecond", targetChassisSpeeds.vyMetersPerSecond);
+    SmartDashboard.putNumber("TargetChassisSpeeds.omegaRadiansPerSecond", targetChassisSpeeds.omegaRadiansPerSecond);
+
 
     m_outputModuleStates.accept(targetModuleStates);
   }

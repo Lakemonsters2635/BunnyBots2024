@@ -133,7 +133,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("VisionZ", getNearestAprilTagDetection().z);
             SmartDashboard.putNumber("VisionYa", getNearestAprilTagDetection().ya);
 
-            System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
+           // System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
            
             visionZ = getNearestAprilTagDetection().z;
             visionX =  getNearestAprilTagDetection().x;
@@ -145,9 +145,9 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             // visionY = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).y;
             // visionYa = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).ya;
             
-            String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
-            double fps = Double.valueOf(fpsString);
-            SmartDashboard.putNumber("CameraFPS", fps);
+            // String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+            // double fps = Double.valueOf(fpsString);
+            // SmartDashboard.putNumber("CameraFPS", fps);
         } catch (Exception e) {
             // System.out.println(e);
         }
@@ -490,15 +490,16 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
     public void updateDetections(String detectionsString, Gson gson) {
         DetectionList gsonOut = gson.fromJson(detectionsString, DetectionList.class);
         // Initialy grab fps from gsonOut, only update april tags and Yolo objects only if fps is above 25
-        // String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
-        // double fps = Double.valueOf(fpsString);
-        // SmartDashboard.putNumber("CameraFPS", fps);
+        String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+        double fps = Double.valueOf(fpsString);
         
-        // if (fps<25) {
-        //     // If the frames per second is less than 25 don't do the update
-        //     return ;
-        // }
-
+        
+        if (fps<25) {
+            // If the frames per second is less than 25 don't do the update
+            // TODO: debug why there is intermittent frame rate
+            return ;
+        }
+        SmartDashboard.putNumber("CameraFPS", fps);
         aprilTags.clear();
         yoloObjects.clear();
         
