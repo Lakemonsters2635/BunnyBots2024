@@ -95,6 +95,18 @@ public class AutonomousCommands {
                         new Pose2d(-3/Constants.FEET_TO_METERS, 20/Constants.FEET_TO_METERS, new Rotation2d(Math.toRadians(90)))
             ));
     }
+    public Command goOnlyRight(){
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.1),
+            new InstantCommand(() -> m_dts.resetAngle()),
+            m_dts.createPath( 
+                        new Pose2d(0,0, new Rotation2d(Math.toRadians(0))),
+                        new Translation2d(1, 0),
+                        new Pose2d(2, 0, new Rotation2d(Math.toRadians(0)))
+            ),
+            new InstantCommand(()->m_dts.stopMotors())
+        );
+    }
 
     public Command goToMidTarget(){
         return new SequentialCommandGroup(
@@ -103,7 +115,8 @@ public class AutonomousCommands {
             m_dts.createPath(
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(90))), 
                 new Translation2d(0, 1), 
-                new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90)))
+                new Pose2d(0, 2, new Rotation2d(Units.degreesToRadians(90))),
+                45
             ),
             new InstantCommand(()->m_dts.stopMotors())
         );
@@ -120,8 +133,9 @@ public class AutonomousCommands {
             new InstantCommand(()->asdf("getPose.getRotation after ")).withTimeout(0.1),
             m_dts.createPath(
                 new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(45))), 
-                new Translation2d(0.5, 0.5), 
-                new Pose2d(1, 1, new Rotation2d(Units.degreesToRadians(45)))
+                new Translation2d(1.25, 1.25), 
+                new Pose2d(2.5, 2.5, new Rotation2d(Units.degreesToRadians(45))),
+                0.5
             ),
             new InstantCommand(()->m_dts.stopMotors())
         );
@@ -232,9 +246,9 @@ public class AutonomousCommands {
             ,new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5),
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5)
             ,m_dts.createPath(
-                 new Pose2d(0,0, new Rotation2d(Math.toRadians(0))),
+                 new Pose2d(0,0, new Rotation2d(Math.toRadians(-90))),
                  new Translation2d(Units.inchesToMeters(5), Units.inchesToMeters(-20)),
-                 new Pose2d(Units.inchesToMeters(10), Units.inchesToMeters(-40), new Rotation2d(Math.toRadians(0))),
+                 new Pose2d(Units.inchesToMeters(10), Units.inchesToMeters(-20), new Rotation2d(Math.toRadians(-90))),
                  0)
             // new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5),
             // new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
