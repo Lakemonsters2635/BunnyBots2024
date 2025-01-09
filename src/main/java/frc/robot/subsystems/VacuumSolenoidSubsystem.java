@@ -3,8 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-import java.util.concurrent.TimeUnit;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -14,7 +12,6 @@ import frc.robot.Constants;
 
 public class VacuumSolenoidSubsystem extends SubsystemBase {
   /** Creates a new VacuumSolenoidSubsystem. */
-  private Timer m_timer;
   private Solenoid leftValve;
   private Solenoid rightValve;
   private boolean isRedAlliance = DriverStation.getAlliance().get() == DriverStation.Alliance.Red; 
@@ -75,13 +72,13 @@ public class VacuumSolenoidSubsystem extends SubsystemBase {
     //2 sec then close
     if((isRedAlliance && isLeftBlue) || (!isRedAlliance && isLeftRed)){
       openLeftValve();
-      m_timer.delay(2);
+      Timer.delay(2);
       closeLeftValve();
 
     }
     if((isRedAlliance && isRightBlue) || (!isRedAlliance && isRightRed)){
       openRightValve();
-      m_timer.delay(2);
+      Timer.delay(2);
       closeRightValve();
     
     // This method will be called once per scheduler run

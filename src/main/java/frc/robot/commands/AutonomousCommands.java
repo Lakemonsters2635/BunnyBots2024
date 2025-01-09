@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -16,20 +15,14 @@ import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
-import frc.robot.subsystems.VacuumSolenoidSubsystem;
 import frc.robot.subsystems.VacuumSubsystem;
 
 /** Add your docs here. */
 public class AutonomousCommands {
     private DrivetrainSubsystem m_dts;
-    private VisionAutoCommand m_vac;
     private ObjectTrackerSubsystem m_obja;
     private VacuumCommand m_lvc;
     private VacuumCommand m_rvc;
-    private VacuumSolenoidSubsystem m_vss;
-
-    private VacuumSubsystem m_vsr;
-    private VacuumSubsystem m_vsl;
 
     private ArmShakeCommand asc;
     // private VacuumCommand m_lvc2;
@@ -41,10 +34,6 @@ public class AutonomousCommands {
 
         m_lvc = m_leftVacuumCommand;
         m_rvc = m_rightVacuumCommand;
-
-        m_vsr = m_vssr;
-        m_vsl = m_vssl;
-
         asc =arm;
         // m_lvc2 = m_leftVacuumCommand;
         // m_rvc2 = m_rightVacuumCommand;
