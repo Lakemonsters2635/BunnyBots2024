@@ -41,7 +41,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
   private final Trajectory m_trajectory;
   private final Supplier<Pose2d> m_pose;
   private final SwerveDriveKinematics m_kinematics;
-  private final HolonomicDriveController m_controller;
+  private final HolonomicDriveController2635 m_controller;
   private final Consumer<SwerveModuleState[]> m_outputModuleStates;
   private final Supplier<Rotation2d> m_desiredRotation;
 
@@ -72,6 +72,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
       SwerveDriveKinematics kinematics,
       PIDController xController,
       PIDController yController,
+      PIDController vController,
       ProfiledPIDController thetaController,
       Supplier<Rotation2d> desiredRotation,
       Consumer<SwerveModuleState[]> outputModuleStates,
@@ -83,6 +84,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
         new HolonomicDriveController2635(
             requireNonNullParam(xController, "xController", "SwerveControllerCommand"),
             requireNonNullParam(yController, "yController", "SwerveControllerCommand"),
+            requireNonNullParam(vController, "vController", "SwerveControllerCommand"),
             requireNonNullParam(thetaController, "thetaController", "SwerveControllerCommand")),
         desiredRotation,
         outputModuleStates,
@@ -118,6 +120,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
       SwerveDriveKinematics kinematics,
       PIDController xController,
       PIDController yController,
+      PIDController vController,
       ProfiledPIDController thetaController,
       Consumer<SwerveModuleState[]> outputModuleStates,
       Subsystem... requirements) {
@@ -127,6 +130,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
         kinematics,
         xController,
         yController,
+        vController,
         thetaController,
         () ->
             trajectory.getStates().get(trajectory.getStates().size() - 1).poseMeters.getRotation(),
