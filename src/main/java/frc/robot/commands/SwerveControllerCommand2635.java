@@ -72,7 +72,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
       SwerveDriveKinematics kinematics,
       PIDController xController,
       PIDController yController,
-      PIDController vController,
+      // PIDController vController,
       ProfiledPIDController thetaController,
       Supplier<Rotation2d> desiredRotation,
       Consumer<SwerveModuleState[]> outputModuleStates,
@@ -84,7 +84,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
         new HolonomicDriveController2635(
             requireNonNullParam(xController, "xController", "SwerveControllerCommand"),
             requireNonNullParam(yController, "yController", "SwerveControllerCommand"),
-            requireNonNullParam(vController, "vController", "SwerveControllerCommand"),
+            // requireNonNullParam(vController, "vController", "SwerveControllerCommand"),
             requireNonNullParam(thetaController, "thetaController", "SwerveControllerCommand")),
         desiredRotation,
         outputModuleStates,
@@ -120,7 +120,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
       SwerveDriveKinematics kinematics,
       PIDController xController,
       PIDController yController,
-      PIDController vController,
+      // PIDController vController,
       ProfiledPIDController thetaController,
       Consumer<SwerveModuleState[]> outputModuleStates,
       Subsystem... requirements) {
@@ -130,7 +130,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
         kinematics,
         xController,
         yController,
-        vController,
+        // vController,
         thetaController,
         () ->
             trajectory.getStates().get(trajectory.getStates().size() - 1).poseMeters.getRotation(),
@@ -227,7 +227,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
   @Override
   public void execute() {
     double curTime = m_timer.get();
-    var desiredState = m_trajectory.sample(curTime);
+    var desiredState = m_trajectory.sample(curTime+0.1);
 
     var targetChassisSpeeds =
         m_controller.calculate(m_pose.get(), desiredState, m_desiredRotation.get());

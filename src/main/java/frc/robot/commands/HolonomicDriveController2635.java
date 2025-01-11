@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -24,25 +25,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * are decoupled from translations, users can specify a custom heading that the drivetrain should
  * point toward. This heading reference is profiled for smoothness.
  */
+@Logged
 public class HolonomicDriveController2635 extends HolonomicDriveController{
-  private final PIDController m_vController;
+  // private final PIDController m_vController;
 
   /**
    * Constructs a holonomic drive controller.
    *
    * @param xController A PID Controller to respond to error in the field-relative x direction.
    * @param yController A PID Controller to respond to error in the field-relative y direction.
-   * @param vController A PID Controller to respond to error in the field-relative velocity.
+  //  * @param vController A PID Controller to respond to error in the field-relative velocity.
    * @param thetaController A profiled PID controller to respond to error in angle.
    */
   public HolonomicDriveController2635(
-      PIDController xController, PIDController yController, PIDController vController, ProfiledPIDController thetaController) {
+      PIDController xController, PIDController yController, ProfiledPIDController thetaController) {
     super(xController, yController, thetaController);
     // m_xController = xController;
     // m_yController = yController;
     // m_thetaController = thetaController;
     // m_thetaController.enableContinuousInput(0, Units.degreesToRadians(360.0));
-    m_vController = vController;
   }
 
   @Override
@@ -67,7 +68,7 @@ public class HolonomicDriveController2635 extends HolonomicDriveController{
     ProfiledPIDController thetaController = super.getThetaController();
     PIDController xController = super.getXController();
     PIDController yController = super.getYController();
-    PIDController vController = m_vController;
+    // PIDController vController = m_vController;
 
     // if (m_firstRun) {
     //     thetaController.reset(currentPose.getRotation().getRadians());

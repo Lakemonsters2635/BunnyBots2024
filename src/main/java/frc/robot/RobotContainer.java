@@ -157,7 +157,7 @@ public class RobotContainer {
     m_autoChooser.addOption("postSeasonAutoStraight", m_autonomousCommands.postSeasonAutoStraight());
     m_autoChooser.addOption("ToteScoreBunnyAuto", m_autonomousCommands.goToToteScoreBunnyAuto());
 
-    //m_autoChooser.addOption("goToMidTarget", m_autonomousCommands.goToMidTarget());
+    m_autoChooser.addOption("goToMidTarget", m_autonomousCommands.goToMidTarget());
     m_autoChooser.addOption("goToLeftTarget", m_autonomousCommands.goToLeftTarget());
     m_autoChooser.addOption("goToRightTarget", m_autonomousCommands.goToRightTarget());
 
