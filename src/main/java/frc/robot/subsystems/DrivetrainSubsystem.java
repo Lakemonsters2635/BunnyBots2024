@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import java.util.List;
 import java.util.function.Supplier;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -25,11 +27,9 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
@@ -95,7 +95,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                                               Constants.BACK_RIGHT_ANGLE_OFFSET_COMPETITION,
                                                               1.0);
   
-    public final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);  //Nav X
+    public final AHRS m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI, 200); //new AHRS(SPI.Port.kMXP, (byte) 200);  //Nav X
 
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
       m_frontLeftLocation,

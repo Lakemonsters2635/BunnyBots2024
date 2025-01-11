@@ -262,7 +262,9 @@ public final class TrajGenerator {
     var splinePoints = new ArrayList<PoseWithCurvature>();
 
     // Add the first point to the vector.
-    splinePoints.add(splines[0].getPoint(0.0));
+    // TODO: Look at the error below
+    // Was giving an error but since we are no longer using this file, should be fine
+    // splinePoints.add(splines[0].getPoint(0.0));
 
     // Iterate through the vector and parameterize each spline, adding the
     // parameterized points to the final vector.

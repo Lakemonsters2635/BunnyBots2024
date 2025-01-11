@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-// TODO: Figure out whether to use phoenix6 or phoenix, aka phoenix5
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -22,7 +21,7 @@ public class ToteGrabberSubsystem extends SubsystemBase {
   }
 
   public double getTotePosition(){
-    return toteGrabberMotor.getPosition().getValue();
+    return toteGrabberMotor.getPosition().getValueAsDouble();
   }
 
   public void toteGrabberDown(){

@@ -4,19 +4,15 @@
 
 package frc.robot.commands;
 
-import org.opencv.core.Mat;
-
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ObjectTrackerSubsystem;
 
@@ -60,11 +56,6 @@ public class VisionAutoCommand extends Command {
       SmartDashboard.putNumber("Robot x", m_dts.getPose().getX());
       SmartDashboard.putNumber("Robot y", m_dts.getPose().getY());
       SmartDashboard.putNumber("Robot rot", m_dts.getPose().getRotation().getDegrees());
-
-      SmartDashboard.putNumber("visionXInitial", visionX);
-      SmartDashboard.putNumber("visionYInitial", visionY);
-      SmartDashboard.putNumber("visionYaInitial", visionYa);
-
     }
     catch(Exception e) {
       System.out.println(e);
@@ -90,13 +81,9 @@ public class VisionAutoCommand extends Command {
     return true;
   }
 
-
-  /* 
-   * xPrime cannot be zero, because in calculation some of the values are divided by xPrime
-  */
   public Command visionCreatePath(double xPrime, double zPrime, double finalYa){
-    // TODO: since it is known that xPrime must be non-zero, we should just add 0.000001 to prevent
-    // a division by zero.  This protects us from inadvertantly providing an invalid answer and allows 
+    // since it is known that xPrime must be non-zero, we should just add 0.000001 to prevent
+    // a division by zero.  This protects us from inadvertently providing an invalid answer and allows 
     // us to specify 0 for xPrime when this function is called which is more intuitive than forcing the 
     // user of this function to enter 0.0001 manually to avoid an error.
     xPrime += 0.00000112358;
@@ -122,6 +109,7 @@ public class VisionAutoCommand extends Command {
 
       SmartDashboard.putNumber("visionXInitial", visionX);
       SmartDashboard.putNumber("visionYInitial", visionY);
+      SmartDashboard.putNumber("visionZInitial", visionZ);
       SmartDashboard.putNumber("visionYaInitial", visionYa);
 
     }

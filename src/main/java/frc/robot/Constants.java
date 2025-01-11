@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -68,7 +66,7 @@ public final class Constants {
     public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 1; //3
     public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 0; //3
     public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 2; //10
-    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(17.07+5+50-90-19.3+3+4.8+180+55-90+56+90+38-131+90); // 3.0775
+    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(17.07+5+50-90-19.3+3+4.8+180+55-90+56+90+38-131+90+180); // 3.0775
 
     //    public static final double BACK_LEFT_ANGLE_OFFSET_COMPETITION = Math.toRadians(151.84+0.6-3.5+3+0.6+1.5); //2.9835
 

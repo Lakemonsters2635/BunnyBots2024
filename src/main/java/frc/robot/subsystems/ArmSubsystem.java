@@ -21,7 +21,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getPosition(){
-    return armMotor.getPosition().getValue();
+    return armMotor.getPosition().getValueAsDouble();
   }
   public void armUp(){
     armMotor.setVoltage(-1*Constants.ARM_POWER*Constants.ARM_VOLTS); //11 volts

@@ -11,7 +11,6 @@ import frc.robot.subsystems.VacuumSubsystem;
 
 public class VacuumCommand extends Command {
   /** Creates a new VacuumCommand. */
-  Timer m_timer = new Timer();
   VacuumSubsystem m_vacuumSubsystem;
   boolean initialVacuumState = false;
   public VacuumCommand(VacuumSubsystem vacuumSubsystem) {
@@ -39,7 +38,7 @@ public class VacuumCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    m_timer.delay(0.2);
+    Timer.delay(0.2);
     return true;
   }
 }
