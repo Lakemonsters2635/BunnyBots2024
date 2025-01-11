@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -55,11 +56,6 @@ public class VisionAutoCommand extends Command {
       SmartDashboard.putNumber("Robot x", m_dts.getPose().getX());
       SmartDashboard.putNumber("Robot y", m_dts.getPose().getY());
       SmartDashboard.putNumber("Robot rot", m_dts.getPose().getRotation().getDegrees());
-
-      SmartDashboard.putNumber("visionXInitial", visionX);
-      SmartDashboard.putNumber("visionYInitial", visionY);
-      SmartDashboard.putNumber("visionYaInitial", visionYa);
-
     }
     catch(Exception e) {
       System.out.println(e);
@@ -113,6 +109,7 @@ public class VisionAutoCommand extends Command {
 
       SmartDashboard.putNumber("visionXInitial", visionX);
       SmartDashboard.putNumber("visionYInitial", visionY);
+      SmartDashboard.putNumber("visionZInitial", visionZ);
       SmartDashboard.putNumber("visionYaInitial", visionYa);
 
     }
