@@ -97,8 +97,8 @@ public class VisionAutoCommand extends Command {
 
     }
     
-    xPrime = 10;
-    zPrime = -17.3;
+    xPrime = -14.1;
+    zPrime = -14.1;
     finalYa = 0;
     visionYa*=-1;
     double x_vt = xPrime * Math.cos(Math.toRadians(visionYa)) + -zPrime * Math.sin(Math.toRadians(visionYa));
