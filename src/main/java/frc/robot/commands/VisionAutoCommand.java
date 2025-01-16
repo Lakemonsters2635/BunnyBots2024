@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import org.opencv.core.Mat;
+
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -67,7 +69,9 @@ public class VisionAutoCommand extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    visionAutoData();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -78,7 +82,51 @@ public class VisionAutoCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false; //TODO: Change back to true after done debugging
+  }
+
+  public void visionAutoData(){
+    try{
+      m_ots.data();
+      visionX = m_ots.visionX;
+      visionZ = m_ots.visionZ;
+      visionY = m_ots.visionY;
+      visionYa = m_ots.visionYa;
+    }
+    catch(Exception e){
+
+    }
+    
+    xPrime = 10;
+    zPrime = -17.3;
+    finalYa = 0;
+    visionYa*=-1;
+    double x_vt = xPrime * Math.cos(Math.toRadians(visionYa)) + -zPrime * Math.sin(Math.toRadians(visionYa));
+    double z_vt = xPrime * Math.sin(Math.toRadians(visionYa)) + zPrime * Math.cos(Math.toRadians(visionYa));
+
+    double deltaRobotX = -1 * (visionX + x_vt);
+    double deltaRobotY = -1 * (visionZ + z_vt);
+
+    double botRadians = Units.degreesToRadians(m_dts.m_gyro.getAngle());
+    double angleOffset = -Units.degreesToRadians(90); 
+
+    double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
+    double finalAngle = -visionYa + finalYa + Units.radiansToDegrees(botRadians);
+
+    double deltaFieldX = ((deltaRobotX*Math.cos(botRadians))+ (deltaRobotY*Math.sin(botRadians)));
+    double deltaFieldY = -(deltaRobotX*Math.sin(botRadians))+ (deltaRobotY*Math.cos(botRadians));
+
+    SmartDashboard.putNumber("x_vt", x_vt);
+    SmartDashboard.putNumber("z_vt", z_vt);
+    SmartDashboard.putNumber("xPrime", xPrime);
+    SmartDashboard.putNumber("zPrime", zPrime);
+    SmartDashboard.putNumber("deltaRobotX", deltaRobotX);
+    SmartDashboard.putNumber("deltaRobotY", deltaRobotY);
+    SmartDashboard.putNumber("visionAuto.botRadians", botRadians);
+    SmartDashboard.putNumber("visionAuto.heading", heading);
+    SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
+    SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
+    SmartDashboard.putNumber("finalAngle", finalAngle);
   }
 
   public Command visionCreatePath(double xPrime, double zPrime, double finalYa){
@@ -86,8 +134,10 @@ public class VisionAutoCommand extends Command {
     // a division by zero.  This protects us from inadvertently providing an invalid answer and allows 
     // us to specify 0 for xPrime when this function is called which is more intuitive than forcing the 
     // user of this function to enter 0.0001 manually to avoid an error.
-    xPrime += 0.00000112358;
 
+    //when defining zPrime and xPrime zPrime is positive going behind the april tag and xPrime is positive right of the april tag
+    xPrime += 0.00000112358;
+    
     m_ots.data();
     // while(m_ots.getNearestAprilTagDetection() == null){
     //   try {
@@ -138,54 +188,54 @@ public class VisionAutoCommand extends Command {
     // double xPrime = 15;  //-13.5
     // double zPrime = -15; //8.5
 
-    double xPrimeSign = xPrime / Math.abs(xPrime);
+    // double xPrimeSign = xPrime / Math.abs(xPrime);
     // // This is the original equation works for negative xPrime however doesn't work for positive xPrime
     // double alpha = Math.atan(zPrime/(-xPrime));
     // Taking the negative of the absolute value "fixes" it but we should really figure out equations and draw the pictures nicely.
-    double alpha = Math.atan(zPrime/Math.abs(xPrime));
+    // double alpha = Math.atan(zPrime/Math.abs(xPrime));
 
-    // visionYa is in degrees
-    // need Phi = 
-    double phi = alpha - Math.toRadians(-visionYa)*(-1*xPrimeSign);
-    // need c =
-    double c = Math.sqrt(Math.pow(zPrime, 2) + Math.pow(xPrime, 2));
-    // need z_t = 
-    double z_t = c*Math.sin(phi);
-    // need x_t = 
-    double x_t = c*Math.cos(phi);
+    // // visionYa is in degrees
+    // // need Phi = 
+    // double phi = alpha - Math.toRadians(-visionYa)*(-1*xPrimeSign);
+    // // need c =
+    // double c = Math.sqrt(Math.pow(zPrime, 2) + Math.pow(xPrime, 2));
+    // // need z_t = 
+    // double z_t = c*Math.sin(phi);
+    // // need x_t = 
+    // double x_t = c*Math.cos(phi);
     // subtract z_t and X_t from vision x and vision z before calculating delta robot x and y
     
 
-    SmartDashboard.putNumber("x_t", x_t);
-    SmartDashboard.putNumber("z_t", z_t);
-    SmartDashboard.putNumber("alpha", alpha);
-    SmartDashboard.putNumber("phi", phi);
-    SmartDashboard.putNumber("xPrimeSign", xPrimeSign);
+    // SmartDashboard.putNumber("x_t", x_t);
+    // SmartDashboard.putNumber("z_t", z_t);
+    // SmartDashboard.putNumber("alpha", alpha);
+    // SmartDashboard.putNumber("phi", phi);
+    // SmartDashboard.putNumber("xPrimeSign", xPrimeSign);
 
-    // ---
-    double deltaRobotX = -1* Units.inchesToMeters(visionX-x_t*(-1*xPrimeSign)); // We are facing the april tag first so there is no need to change in robot x
-    double deltaRobotY = -1* Units.inchesToMeters(visionZ-z_t); // We want to end our auto 1 meter away from the apriltag
+    // // ---
+    // double deltaRobotX = -1* Units.inchesToMeters(visionX-x_t*(-1*xPrimeSign)); // We are facing the april tag first so there is no need to change in robot x
+    // double deltaRobotY =  -1* Units.inchesToMeters(visionZ-z_t); // We want to end our auto 1 meter away from the apriltag
 
-    SmartDashboard.putNumber("deltaRobotX in inches", Units.metersToInches(deltaRobotX));
-    SmartDashboard.putNumber("deltaRobotY in inches", Units.metersToInches(deltaRobotY));
-    double botRadians = Units.degreesToRadians(m_dts.m_gyro.getAngle());
-    //double botRadians = m_dts.getPose().getRotation().getRadians();
-    SmartDashboard.putNumber("botRadians", botRadians);
+    // SmartDashboard.putNumber("deltaRobotX in inches", Units.metersToInches(deltaRobotX));
+    // SmartDashboard.putNumber("deltaRobotY in inches", Units.metersToInches(deltaRobotY));
+    // double botRadians = Units.degreesToRadians(m_dts.m_gyro.getAngle());
+    // // //double botRadians = m_dts.getPose().getRotation().getRadians();
+    // // SmartDashboard.putNumber("botRadians", botRadians);
 
-    double angleOffset = -Units.degreesToRadians(90);
-    double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
+    // double angleOffset = -Units.degreesToRadians(90); 
+    // double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
 
     // finalYa is in degrees
     // double finalYa = 0;
     // finalAngle is in degrees
-    double finalAngle = -visionYa + finalYa + Units.radiansToDegrees(botRadians);
-    //System.out.println("BOT RADIANS BOT RADIANS " + botRadians);
+    // double finalAngle = -visionYa + finalYa + Units.radiansToDegrees(botRadians);
+    // //System.out.println("BOT RADIANS BOT RADIANS " + botRadians);
 
-    SmartDashboard.putNumber("finalAngle", finalAngle);
+    // SmartDashboard.putNumber("finalAngle", finalAngle);
     
     // Figure out the trigonometri which converts deltaRobotX and deltaRobotY to deltaFieldX and deltaFieldY
-    double deltaFieldX = ((deltaRobotX*Math.cos(botRadians))+ (deltaRobotY*Math.sin(botRadians)));
-    double deltaFieldY = -(deltaRobotX*Math.sin(botRadians))+ (deltaRobotY*Math.cos(botRadians));
+    // double deltaFieldX = ((deltaRobotX*Math.cos(botRadians))+ (deltaRobotY*Math.sin(botRadians)));
+    // double deltaFieldY = -(deltaRobotX*Math.sin(botRadians))+ (deltaRobotY*Math.cos(botRadians));
 
     // if(visionYa < 0){
     //    deltaFieldY = -(deltaRobotX*Math.sin(botRadians))+ (deltaRobotY*Math.cos(botRadians));
@@ -194,45 +244,75 @@ public class VisionAutoCommand extends Command {
     //    deltaFieldY = (deltaRobotX*Math.sin(botRadians))+ (deltaRobotY*Math.cos(botRadians));
     // }
 
-    deltaFieldX *=-1;
+    //deltaFieldX *=-1;
     // deltaFieldY += 1 + Units.inchesToMeters(13.5);
 
-    SmartDashboard.putNumber("deltaRobotX", deltaRobotX);
-    SmartDashboard.putNumber("deltaRobotY", deltaRobotY);
-    SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
-    SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
+    // double x_vt = xPrime * Math.cos(Math.toRadians(visionYa)) + zPrime * Math.sin(Math.toRadians(visionYa));
+    // double z_vt = xPrime * Math.sin(Math.toRadians(visionYa)) + zPrime * Math.cos(Math.toRadians(visionYa));
 
-    SmartDashboard.putNumber("VisionAuto.heading", heading);
+    // double deltaRobotX = -1 * (visionX + x_vt);
+    // double deltaRobotY = -1 * (visionZ + z_vt);
 
-    return new SequentialCommandGroup(
-      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x before",m_dts.getPose().getX())),
-      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y before",m_dts.getPose().getY())),
-      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation before",m_dts.getPose().getRotation().getDegrees())),
-      //new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.1),
+    // double botRadians = Units.degreesToRadians(m_dts.m_gyro.getAngle());
+    // double angleOffset = -Units.degreesToRadians(90); 
 
-      m_dts.createVisionPath(
-        new Pose2d(
-          botPose.getX(), 
-          botPose.getY(), 
-          new Rotation2d(heading)   // TODO need to explain this rotation offset and point to docs
-        ), 
-        new Translation2d(
-          botPose.getX()+(deltaFieldX/2), 
-          botPose.getY()+(deltaFieldY/2)
-        ), 
-        new Pose2d(
-          botPose.getX()+deltaFieldX,
-          botPose.getY()+deltaFieldY, 
-          new Rotation2d(heading)
-        ),
-        finalAngle //- m_dts.getPose().getRotation().getDegrees()//heading+(Math.PI/2)
-        // ,true
-      ),
-      new InstantCommand(()->m_dts.stopMotors()),
-      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x after",m_dts.getPose().getX())),
-      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y after",m_dts.getPose().getY())),
-      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation after",m_dts.getPose().getRotation().getDegrees()))
-    );
+    // double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
+    // double finalAngle = -visionYa + finalYa + Units.radiansToDegrees(botRadians);
+
+    // double deltaFieldX = ((deltaRobotX*Math.cos(botRadians))+ (deltaRobotY*Math.sin(botRadians)));
+    // double deltaFieldY = -(deltaRobotX*Math.sin(botRadians))+ (deltaRobotY*Math.cos(botRadians));
+
+    // SmartDashboard.putNumber("x_vt", x_vt);
+    // SmartDashboard.putNumber("z_vt", z_vt);
+    // SmartDashboard.putNumber("xPrime", xPrime);
+    // SmartDashboard.putNumber("xPrime", xPrime);
+    // SmartDashboard.putNumber("zPrime", xPrime);
+    // SmartDashboard.putNumber("deltaRobotX", deltaRobotX);
+    // SmartDashboard.putNumber("deltaRobotY", deltaRobotY);
+    // SmartDashboard.putNumber("visionAuto.botRadians", botRadians);
+    // SmartDashboard.putNumber("visionAuto.heading", heading);
+    // SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
+    // SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
+    // SmartDashboard.putNumber("finalAngle", finalAngle);
+    visionAutoData();
+    
+
+    // SmartDashboard.putNumber("deltaRobotX", deltaRobotX);
+    // SmartDashboard.putNumber("deltaRobotY", deltaRobotY);
+    // SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
+    // SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
+
+    // SmartDashboard.putNumber("VisionAuto.heading", heading);
+
+    // return new SequentialCommandGroup(
+    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x before",m_dts.getPose().getX())),
+    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y before",m_dts.getPose().getY())),
+    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation before",m_dts.getPose().getRotation().getDegrees())),
+    //   //new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.1),
+
+    //   m_dts.createVisionPath(
+    //     new Pose2d(
+    //       botPose.getX(), 
+    //       botPose.getY(), 
+    //       new Rotation2d(heading)   // TODO need to explain this rotation offset and point to docs
+    //     ), 
+    //     new Translation2d(
+    //       botPose.getX()+(deltaFieldX/2), 
+    //       botPose.getY()+(deltaFieldY/2)
+    //     ), 
+    //     new Pose2d(
+    //       botPose.getX()+deltaFieldX,
+    //       botPose.getY()+deltaFieldY, 
+    //       new Rotation2d(heading)
+    //     ),
+    //     finalAngle //- m_dts.getPose().getRotation().getDegrees()//heading+(Math.PI/2)
+    //     // ,true
+    //   ),
+    //   new InstantCommand(()->m_dts.stopMotors()),
+    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x after",m_dts.getPose().getX())),
+    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y after",m_dts.getPose().getY())),
+    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation after",m_dts.getPose().getRotation().getDegrees()))
+    // );
 
     // return new SequentialCommandGroup(
     //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x before",m_dts.getPose().getX())),
@@ -261,5 +341,9 @@ public class VisionAutoCommand extends Command {
     //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y after",m_dts.getPose().getY())),
     //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation after",m_dts.getPose().getRotation().getDegrees()))
     // );
+
+    return new Command() {
+      
+    };
   }
 }
