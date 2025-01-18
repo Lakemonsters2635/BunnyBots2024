@@ -111,7 +111,7 @@ public class VisionAutoCommand extends Command {
     double angleOffset = -Units.degreesToRadians(90); 
 
     double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
-    double finalAngle = -visionYa + finalYa + Units.radiansToDegrees(botRadians);
+    double finalAngle = visionYa + finalYa + Units.radiansToDegrees(botRadians);
 
     // double transformationAngle = botRadians; 
 
