@@ -97,8 +97,8 @@ public class VisionAutoCommand extends Command {
 
     }
     
-    xPrime = -14.1;
-    zPrime = -14.1;
+    xPrime = 0.0000001;
+    zPrime = 0;
     finalYa = 0;
     visionYa*=-1;
     double x_vt = xPrime * Math.cos(Math.toRadians(visionYa)) + -zPrime * Math.sin(Math.toRadians(visionYa));
@@ -113,8 +113,17 @@ public class VisionAutoCommand extends Command {
     double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
     double finalAngle = -visionYa + finalYa + Units.radiansToDegrees(botRadians);
 
-    double deltaFieldX = ((deltaRobotX*Math.cos(botRadians))+ (deltaRobotY*Math.sin(botRadians)));
-    double deltaFieldY = -(deltaRobotX*Math.sin(botRadians))+ (deltaRobotY*Math.cos(botRadians));
+    // double transformationAngle = botRadians; 
+
+    // double deltaFieldX = ((deltaRobotX*Math.cos(transformationAngle))+ -(deltaRobotY*Math.sin(transformationAngle)));
+    // double deltaFieldY = (deltaRobotX*Math.sin(transformationAngle))+ (deltaRobotY*Math.cos(transformationAngle));
+
+    // We need to change the direction of the botRadions to get the correct transformation
+    // TODO: This needs to be documented with drawings and pictures.
+    double transformationAngle = -1* botRadians;
+
+    double deltaFieldX = ((deltaRobotX*Math.cos(transformationAngle))+ -(deltaRobotY*Math.sin(transformationAngle)));
+    double deltaFieldY = (deltaRobotX*Math.sin(transformationAngle))+ (deltaRobotY*Math.cos(transformationAngle));
 
     SmartDashboard.putNumber("x_vt", x_vt);
     SmartDashboard.putNumber("z_vt", z_vt);
