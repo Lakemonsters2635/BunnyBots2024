@@ -107,6 +107,10 @@ public class VisionAutoCommand extends Command {
     double deltaRobotX = -1 * (visionX + x_vt);
     double deltaRobotY = -1 * (visionZ + z_vt);
 
+    // TODO: the following linear regression calculation doesn't work
+    // deltaRobotX -= -0.191819 * visionYa;
+    // deltaRobotY +=  0.21868 * visionYa;
+
     double botRadians = Units.degreesToRadians(m_dts.m_gyro.getAngle());
     double angleOffset = -Units.degreesToRadians(90); 
 
@@ -124,6 +128,9 @@ public class VisionAutoCommand extends Command {
 
     double deltaFieldX = ((deltaRobotX*Math.cos(transformationAngle))+ -(deltaRobotY*Math.sin(transformationAngle)));
     double deltaFieldY = (deltaRobotX*Math.sin(transformationAngle))+ (deltaRobotY*Math.cos(transformationAngle));
+
+    // deltaFieldX -= -0.191819 * visionYa;
+    // deltaFieldY -=  0.21868  * visionYa;
 
     SmartDashboard.putNumber("x_vt", x_vt);
     SmartDashboard.putNumber("z_vt", z_vt);
