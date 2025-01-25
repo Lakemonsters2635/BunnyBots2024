@@ -261,6 +261,8 @@ public class AutonomousCommands {
     }
 
     public Command visionAutoData(){
-        return new VisionAutoCommand(m_dts, m_obja);
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.stopMotors()),
+            new VisionAutoCommand(m_dts, m_obja));
     }
 }

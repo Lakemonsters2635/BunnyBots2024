@@ -97,8 +97,8 @@ public class VisionAutoCommand extends Command {
 
     }
     
-    xPrime = 0.0000001;
-    zPrime = 0;
+    xPrime = 23.5;
+    zPrime = -16.5;
     finalYa = 0;
     visionYa*=-1;
     double x_vt = xPrime * Math.cos(Math.toRadians(visionYa)) + -zPrime * Math.sin(Math.toRadians(visionYa));
@@ -106,6 +106,10 @@ public class VisionAutoCommand extends Command {
 
     double deltaRobotX = -1 * (visionX + x_vt);
     double deltaRobotY = -1 * (visionZ + z_vt);
+
+    // corrects for the camera position TODO: does this need to be meters for the field
+    deltaRobotX += -8.5;
+    deltaRobotY += -12.875;
 
     // TODO: the following linear regression calculation doesn't work
     // deltaRobotX -= -0.191819 * visionYa;
