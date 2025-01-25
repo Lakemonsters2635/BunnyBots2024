@@ -30,9 +30,11 @@ public class VisionAutoCommand extends Command {
   double fieldX;
   double fieldY;
 
-  double xPrime;
-  double zPrime;
-  double finalYa;
+  double heading_fixMe; // This really shouldn't be a class variable
+
+  // double xPrime;
+  // double zPrime;
+  // double finalYa;
 
   public VisionAutoCommand(DrivetrainSubsystem dts, ObjectTrackerSubsystem ots) {
     m_dts = dts;
@@ -70,7 +72,7 @@ public class VisionAutoCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    visionAutoData();
+    visionAutoData(0, 0, 0);
   }
 
   // Called once the command ends or is interrupted.
@@ -85,7 +87,7 @@ public class VisionAutoCommand extends Command {
     return false; //TODO: Change back to true after done debugging
   }
 
-  public void visionAutoData(){
+  public Pose2d visionAutoData(double xPrime, double zPrime, double finalYa){
     try{
       m_ots.data();
       visionX = m_ots.visionX;
@@ -97,9 +99,9 @@ public class VisionAutoCommand extends Command {
 
     }
     
-    xPrime = 23.5;
-    zPrime = -16.5;
-    finalYa = 0;
+    // xPrime = 23.5;
+    // zPrime = -16.5;
+    // finalYa = 0;
     visionYa*=-1;
     double x_vt = xPrime * Math.cos(Math.toRadians(visionYa)) + -zPrime * Math.sin(Math.toRadians(visionYa));
     double z_vt = xPrime * Math.sin(Math.toRadians(visionYa)) + zPrime * Math.cos(Math.toRadians(visionYa));
@@ -118,7 +120,8 @@ public class VisionAutoCommand extends Command {
     double botRadians = Units.degreesToRadians(m_dts.m_gyro.getAngle());
     double angleOffset = -Units.degreesToRadians(90); 
 
-    double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
+    // double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
+    heading_fixMe = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
     double finalAngle = visionYa + finalYa + Units.radiansToDegrees(botRadians);
 
     // double transformationAngle = botRadians; 
@@ -143,10 +146,16 @@ public class VisionAutoCommand extends Command {
     SmartDashboard.putNumber("deltaRobotX", deltaRobotX);
     SmartDashboard.putNumber("deltaRobotY", deltaRobotY);
     SmartDashboard.putNumber("visionAuto.botRadians", botRadians);
-    SmartDashboard.putNumber("visionAuto.heading", heading);
+    SmartDashboard.putNumber("visionAuto.heading", heading_fixMe);
     SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
     SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
     SmartDashboard.putNumber("finalAngle", finalAngle);
+
+    return new Pose2d(
+      Units.inchesToMeters(deltaFieldX), 
+      Units.inchesToMeters(deltaFieldY), 
+      new Rotation2d(Units.degreesToRadians(finalAngle))
+    );
   }
 
   public Command visionCreatePath(double xPrime, double zPrime, double finalYa){
@@ -294,7 +303,7 @@ public class VisionAutoCommand extends Command {
     // SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
     // SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
     // SmartDashboard.putNumber("finalAngle", finalAngle);
-    visionAutoData();
+    Pose2d fieldDeltaPose = visionAutoData(xPrime, zPrime, finalYa);
     
 
     // SmartDashboard.putNumber("deltaRobotX", deltaRobotX);
@@ -334,36 +343,37 @@ public class VisionAutoCommand extends Command {
     //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation after",m_dts.getPose().getRotation().getDegrees()))
     // );
 
-    // return new SequentialCommandGroup(
-    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x before",m_dts.getPose().getX())),
-    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y before",m_dts.getPose().getY())),
-    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation before",m_dts.getPose().getRotation().getDegrees())),
-    //   m_dts.createVisionPath(
-    //     new Pose2d(
-    //       botPose.getX(), 
-    //       botPose.getY(), 
-    //       new Rotation2d(heading)   // TODO need to explain this rotation offset and point to docs
-    //     ), 
-    //     new Translation2d(
-    //       botPose.getX()+(deltaFieldX/2), 
-    //       botPose.getY()+(deltaFieldY/2)
-    //     ), 
-    //     new Pose2d(
-    //       botPose.getX()+deltaFieldX,
-    //       botPose.getY()+deltaFieldY, 
-    //       new Rotation2d(heading)
-    //     ),
-    //     finalAngle //heading+(Math.PI/2)
-    //     // ,true
-    //   ),
-    //   new InstantCommand(()->m_dts.stopMotors()),
-    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x after",m_dts.getPose().getX())),
-    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y after",m_dts.getPose().getY())),
-    //   new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation after",m_dts.getPose().getRotation().getDegrees()))
-    // );
+    return new SequentialCommandGroup(
+      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x before",m_dts.getPose().getX())),
+      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y before",m_dts.getPose().getY())),
+      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation before",m_dts.getPose().getRotation().getDegrees())),
+      m_dts.createVisionPath(
+        new Pose2d(
+          botPose.getX(), 
+          botPose.getY(), 
+          new Rotation2d(heading_fixMe)   // TODO need to explain this rotation offset and point to docs
+        ), 
+        new Translation2d(
+          botPose.getX()+(fieldDeltaPose.getX()/2), 
+          botPose.getY()+(fieldDeltaPose.getY()/2)
+        ), 
+        new Pose2d(
+          botPose.getX()+fieldDeltaPose.getX(),
+          botPose.getY()+fieldDeltaPose.getY(), 
+          new Rotation2d(heading_fixMe)
+        ),
+        fieldDeltaPose.getRotation().getRadians()
+        // finalAngle //heading+(Math.PI/2)
+        // ,true
+      ),
+      new InstantCommand(()->m_dts.stopMotors()),
+      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() x after",m_dts.getPose().getX())),
+      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() y after",m_dts.getPose().getY())),
+      new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation after",m_dts.getPose().getRotation().getDegrees()))
+    );
 
-    return new Command() {
+    // return new Command() {
       
-    };
+    // };
   }
 }
