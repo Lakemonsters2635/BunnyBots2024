@@ -149,6 +149,8 @@ public class RobotContainer {
     // m_alianceChooser.addOption("red", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("red")));
     // m_alianceChooser.addOption("blue", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("blue")));
     // m_alianceChooser.addOption("FMS", new InstantCommand(()->m_drivetrainSubsystem.selectAliance("FMS")));
+    m_autoChooser.setDefaultOption("goToToteVision", m_autonomousCommands.goToToteVision());
+    //m_autoChooser.setDefaultOption("goToMidTarget", m_autonomousCommands.goToMidTarget());
     
     m_autoChooser.addOption("goToToteVision", m_autonomousCommands.goToToteVision());
     //m_autoChooser.setDefaultOption("goToMidTarget", m_autonomousCommands.goToMidTarget());
@@ -157,7 +159,7 @@ public class RobotContainer {
     m_autoChooser.addOption("ToteScoreBunnyAuto", m_autonomousCommands.goToToteScoreBunnyAuto());
     m_autoChooser.setDefaultOption("visionAutoTesting", m_autonomousCommands.visionAutoData());
 
-    //m_autoChooser.addOption("goToMidTarget", m_autonomousCommands.goToMidTarget());
+    m_autoChooser.addOption("goToMidTarget", m_autonomousCommands.goToMidTarget());
     m_autoChooser.addOption("goToLeftTarget", m_autonomousCommands.goToLeftTarget());
     m_autoChooser.addOption("goToRightTarget", m_autonomousCommands.goToRightTarget());
 

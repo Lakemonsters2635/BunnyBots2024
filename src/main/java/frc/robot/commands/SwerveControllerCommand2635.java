@@ -11,10 +11,12 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
@@ -39,7 +41,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
   private final Trajectory m_trajectory;
   private final Supplier<Pose2d> m_pose;
   private final SwerveDriveKinematics m_kinematics;
-  private final HolonomicDriveController m_controller;
+  private final HolonomicDriveController2635 m_controller;
   private final Consumer<SwerveModuleState[]> m_outputModuleStates;
   private final Supplier<Rotation2d> m_desiredRotation;
 
@@ -70,6 +72,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
       SwerveDriveKinematics kinematics,
       PIDController xController,
       PIDController yController,
+      // PIDController vController,
       ProfiledPIDController thetaController,
       Supplier<Rotation2d> desiredRotation,
       Consumer<SwerveModuleState[]> outputModuleStates,
@@ -81,6 +84,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
         new HolonomicDriveController2635(
             requireNonNullParam(xController, "xController", "SwerveControllerCommand"),
             requireNonNullParam(yController, "yController", "SwerveControllerCommand"),
+            // requireNonNullParam(vController, "vController", "SwerveControllerCommand"),
             requireNonNullParam(thetaController, "thetaController", "SwerveControllerCommand")),
         desiredRotation,
         outputModuleStates,
@@ -116,6 +120,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
       SwerveDriveKinematics kinematics,
       PIDController xController,
       PIDController yController,
+      // PIDController vController,
       ProfiledPIDController thetaController,
       Consumer<SwerveModuleState[]> outputModuleStates,
       Subsystem... requirements) {
@@ -125,6 +130,7 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
         kinematics,
         xController,
         yController,
+        // vController,
         thetaController,
         () ->
             trajectory.getStates().get(trajectory.getStates().size() - 1).poseMeters.getRotation(),
@@ -221,11 +227,25 @@ public class SwerveControllerCommand2635 extends SwerveControllerCommand {
   @Override
   public void execute() {
     double curTime = m_timer.get();
-    var desiredState = m_trajectory.sample(curTime);
+    var desiredState = m_trajectory.sample(curTime+0.1);
 
     var targetChassisSpeeds =
         m_controller.calculate(m_pose.get(), desiredState, m_desiredRotation.get());
     var targetModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
+    ChassisSpeeds myTargetChassisSpeeds = (ChassisSpeeds)targetChassisSpeeds;
+    
+    // public double vxMetersPerSecond;
+
+    // /** Velocity along the y-axis. (Left is +) */
+    // public double vyMetersPerSecond;
+  
+    // /** Represents the angular velocity of the robot frame. (CCW is +) */
+    // public double omegaRadiansPerSecond;
+  
+    SmartDashboard.putNumber("TargetChassisSpeeds.vxMetersPerSecond", targetChassisSpeeds.vxMetersPerSecond);
+    SmartDashboard.putNumber("TargetChassisSpeeds.vyMetersPerSecond", targetChassisSpeeds.vyMetersPerSecond);
+    SmartDashboard.putNumber("TargetChassisSpeeds.omegaRadiansPerSecond", targetChassisSpeeds.omegaRadiansPerSecond);
+
 
     m_outputModuleStates.accept(targetModuleStates);
   }
