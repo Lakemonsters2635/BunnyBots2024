@@ -132,7 +132,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("VisionZ", getNearestAprilTagDetection().z);
             SmartDashboard.putNumber("VisionYa", getNearestAprilTagDetection().ya);
 
-            System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
+            // System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
            
             visionZ = getNearestAprilTagDetection().z;
             visionX =  getNearestAprilTagDetection().x;

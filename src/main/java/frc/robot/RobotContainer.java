@@ -168,6 +168,8 @@ public class RobotContainer {
     m_autoChooser.addOption("goToMidTargetTurn0", m_autonomousCommands.goToMidTargetTurn0());
     m_autoChooser.addOption("goToLeftTargetTurn0", m_autonomousCommands.goToLeftTargetTurn0());
     m_autoChooser.addOption("goToRightTargetTurn0", m_autonomousCommands.goToRightTargetTurn0());
+
+    m_autoChooser.addOption("heading0", m_autonomousCommands.heading0());
     //m_autoChooser.addOption("toteScoreBunnyAuto", m_autonomousCommands.goToToteScoreBunnyAuto());
     SmartDashboard.putData("AutoChooser", m_autoChooser);
     SmartDashboard.putData("AlianceChooser", m_alianceChooser);

@@ -215,8 +215,8 @@ public class AutonomousCommands {
             new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5)
             // new VisionAutoCommand(m_dts, m_obja, 0.000001, 20, 0) // Lining with the tote
             ,new VisionAutoCommand(m_dts, m_obja).visionCreatePath( 
-                23.5, //MUST BE NONZERO
-                -16.5, 
+                0.00001, //MUST BE NONZERO
+                -40, 
                 0)
             // ,new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5)
             // ,new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5)
@@ -245,6 +245,13 @@ public class AutonomousCommands {
             //     0
             // )
         );
+    }
+
+    public Command heading0(){
+        return m_dts.createPath(
+            new Pose2d(0,0, new Rotation2d(Math.PI/2)),
+             new Translation2d(0,0.5),
+             new Pose2d(0,1,new Rotation2d(Math.PI/2)));
     }
 
     public Command goToToteScoreBunnyAuto(){

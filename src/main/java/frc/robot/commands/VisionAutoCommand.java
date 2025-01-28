@@ -117,11 +117,11 @@ public class VisionAutoCommand extends Command {
     // deltaRobotX -= -0.191819 * visionYa;
     // deltaRobotY +=  0.21868 * visionYa;
 
-    double botRadians = Units.degreesToRadians(m_dts.m_gyro.getAngle());
+    double botRadians = Units.degreesToRadians(m_dts.getPose().getRotation().getDegrees());
     double angleOffset = -Units.degreesToRadians(90); 
 
     // double heading = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
-    heading_fixMe = Math.atan(deltaRobotX/deltaRobotY)+botRadians+ angleOffset;
+    heading_fixMe = Math.atan(deltaRobotX/Math.abs(deltaRobotY))+botRadians+ angleOffset;
     double finalAngle = visionYa + finalYa + Units.radiansToDegrees(botRadians);
 
     // double transformationAngle = botRadians; 
@@ -304,7 +304,7 @@ public class VisionAutoCommand extends Command {
     // SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
     // SmartDashboard.putNumber("finalAngle", finalAngle);
     Pose2d fieldDeltaPose = visionAutoData(xPrime, zPrime, finalYa);
-    
+    System.out.println("VisionAutoCommand running!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
     // SmartDashboard.putNumber("deltaRobotX", deltaRobotX);
     // SmartDashboard.putNumber("deltaRobotY", deltaRobotY);
@@ -362,7 +362,7 @@ public class VisionAutoCommand extends Command {
           botPose.getY()+fieldDeltaPose.getY(), 
           new Rotation2d(heading_fixMe)
         ),
-        fieldDeltaPose.getRotation().getRadians()
+        fieldDeltaPose.getRotation().getDegrees()
         // finalAngle //heading+(Math.PI/2)
         // ,true
       ),
