@@ -90,7 +90,8 @@ public class RobotContainer {
     Trigger resetOdometryButton = new JoystickButton(rightJoystick, Constants.ZERO_ODOMETRY_BUTTON);
     Trigger leftVacuumToggle = new JoystickButton(rightJoystick, Constants.LEFT_VACUUM_TOGGLE_BUTTON);
     Trigger rightVacuumToggle = new JoystickButton(rightJoystick, Constants.RIGHT_VACUUM_TOGGLE_BUTTON);
-    
+    Trigger goToAprilTag = new JoystickButton(leftJoystick, 1);
+
    
     // left buttons
     
@@ -106,9 +107,10 @@ public class RobotContainer {
     Trigger openLeftSolenoidValve = new JoystickButton(leftJoystick, 10);
     Trigger closeLeftSolenoidValve = new JoystickButton(leftJoystick, 9);
 
+
     toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleLeftValve()));
     toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleRightValve()));
-    
+    goToAprilTag.onTrue(new AutonomousCommands(m_drivetrainSubsystem, m_objectTrackerSubsystem, m_leftVacuumCommand, m_rightVacuumCommnad, m_rightVacuumSubsystem, m_leftVacuumSubsystem, m_armShakeCommand).goToToteVision());
     // leftVacuumToggle.onTrue(m_leftVacuumCommand);
     // rightVacuumToggle.onTrue(m_rightVacuumCommnad);
 

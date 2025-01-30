@@ -26,7 +26,7 @@ public class VisionAutoCommand extends Command {
   double visionY;
   double visionZ;
   double visionYa;
-
+  Pose2d fieldDeltaPose;
   double fieldX;
   double fieldY;
 
@@ -303,7 +303,7 @@ public class VisionAutoCommand extends Command {
     // SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
     // SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
     // SmartDashboard.putNumber("finalAngle", finalAngle);
-    Pose2d fieldDeltaPose = visionAutoData(xPrime, zPrime, finalYa);
+    fieldDeltaPose = visionAutoData(xPrime, zPrime, finalYa);
     System.out.println("VisionAutoCommand running!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
     // SmartDashboard.putNumber("deltaRobotX", deltaRobotX);

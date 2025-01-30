@@ -231,7 +231,7 @@ public class AutonomousCommands {
             ,new VisionAutoCommand(m_dts, m_obja).visionCreatePath( 
                 0.00001, //MUST BE NONZERO
                 -40, 
-                0)
+                0).withTimeout(1)
             // ,new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5)
             // ,new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5)
             // ,m_dts.createPath(
@@ -239,7 +239,7 @@ public class AutonomousCommands {
             //      new Translation2d(Units.inchesToMeters(5), Units.inchesToMeters(-20)),
             //      new Pose2d(Units.inchesToMeters(10), Units.inchesToMeters(-40), new Rotation2d(Math.toRadians(0))),
             //      0)
-            ,new InstantCommand(()->m_dts.stopMotors())   
+            ,new InstantCommand(()->m_dts.stopMotors()).withTimeout(0.1)   
             // new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5),
             // new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
             // m_dts.createPath(
