@@ -354,17 +354,17 @@ public class VisionAutoCommand extends Command {
       new InstantCommand(()->SmartDashboard.putNumber("dts.getPose() rotation before",m_dts.getPose().getRotation().getDegrees())),
       m_dts.createVisionPath(
         new Pose2d(
-          botPose.getX(), 
-          botPose.getY(), 
+          0, //botPose.getX(), 
+          0, //botPose.getY(), 
           new Rotation2d(heading_fixMe)   // TODO need to explain this rotation offset and point to docs
         ), 
         new Translation2d(
-          botPose.getX()+(fieldDeltaPose.getX()/2), 
-          botPose.getY()+(fieldDeltaPose.getY()/2)
+          (fieldDeltaPose.getX()/2), 
+          (fieldDeltaPose.getY()/2)
         ), 
         new Pose2d(
-          botPose.getX()+fieldDeltaPose.getX(),
-          botPose.getY()+fieldDeltaPose.getY(), 
+          fieldDeltaPose.getX(),
+          fieldDeltaPose.getY(), 
           new Rotation2d(heading_fixMe)
         ),
         fieldDeltaPose.getRotation().getDegrees()

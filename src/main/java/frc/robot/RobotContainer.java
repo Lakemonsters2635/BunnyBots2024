@@ -107,6 +107,8 @@ public class RobotContainer {
     Trigger openLeftSolenoidValve = new JoystickButton(leftJoystick, 10);
     Trigger closeLeftSolenoidValve = new JoystickButton(leftJoystick, 9);
 
+    Trigger runAuto = new JoystickButton(rightJoystick, 9);
+
 
     toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleLeftValve()));
     toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleRightValve()));
@@ -134,6 +136,8 @@ public class RobotContainer {
 
     leftVacuumToggle.onTrue(m_leftVacuumCommand);
     rightVacuumToggle.onTrue(m_rightVacuumCommnad);
+
+    runAuto.onTrue(m_autonomousCommands.goToToteVision());
 
     // left
     toteGrabberDownButton.whileTrue(m_toteGrabberDownCommand);
