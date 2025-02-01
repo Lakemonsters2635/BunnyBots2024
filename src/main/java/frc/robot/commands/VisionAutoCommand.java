@@ -131,7 +131,7 @@ public class VisionAutoCommand extends Command {
 
     // We need to change the direction of the botRadions to get the correct transformation
     // TODO: This needs to be documented with drawings and pictures.
-    double transformationAngle = -1* botRadians;
+    double transformationAngle = botRadians;
 
     double deltaFieldX = ((deltaRobotX*Math.cos(transformationAngle))+ -(deltaRobotY*Math.sin(transformationAngle)));
     double deltaFieldY = (deltaRobotX*Math.sin(transformationAngle))+ (deltaRobotY*Math.cos(transformationAngle));
