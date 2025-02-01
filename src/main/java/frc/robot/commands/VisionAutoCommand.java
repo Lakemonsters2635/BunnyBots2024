@@ -65,14 +65,17 @@ public class VisionAutoCommand extends Command {
       System.out.println(e);
     }
 
-    // visionCreatePath(xPrime, zPrime, finalYa).schedule();
+    visionCreatePath(23.5, -40, 0).schedule();
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    visionAutoData(0, 0, 0);
+    // xPrime = 23.5;
+    // zPrime = -16.5;
+    // finalYa = 0;
+    // visionAutoData(23.5, -16.5, 45);
   }
 
   // Called once the command ends or is interrupted.
@@ -84,7 +87,7 @@ public class VisionAutoCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; //TODO: Change back to true after done debugging
+    return true; //TODO: Change back to true after done debugging
   }
 
   public Pose2d visionAutoData(double xPrime, double zPrime, double finalYa){
@@ -150,6 +153,8 @@ public class VisionAutoCommand extends Command {
     SmartDashboard.putNumber("deltaFieldX", deltaFieldX);
     SmartDashboard.putNumber("deltaFieldY", deltaFieldY);
     SmartDashboard.putNumber("finalAngle", finalAngle);
+    SmartDashboard.putNumber("visionAutoDataYa", visionYa);
+    SmartDashboard.putNumber("botRadians degrees", Units.radiansToDegrees(botRadians));
 
     return new Pose2d(
       Units.inchesToMeters(deltaFieldX), 

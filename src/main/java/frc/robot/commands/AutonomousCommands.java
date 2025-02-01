@@ -227,11 +227,13 @@ public class AutonomousCommands {
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
             new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5)
+
             // new VisionAutoCommand(m_dts, m_obja, 0.000001, 20, 0) // Lining with the tote
-            ,new VisionAutoCommand(m_dts, m_obja).visionCreatePath( 
-                0.00001, //MUST BE NONZERO
-                -40, 
-                0).withTimeout(1)
+            ,new VisionAutoCommand(m_dts, m_obja)
+            // .visionCreatePath( 
+            //     0.00001, //MUST BE NONZERO
+            //     -40, 
+            //     0).withTimeout(1)
             // ,new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5)
             // ,new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5)
             // ,m_dts.createPath(
