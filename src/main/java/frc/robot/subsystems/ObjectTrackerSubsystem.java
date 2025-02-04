@@ -194,6 +194,85 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         */
     }
 
+    public void data(int tagID) {
+        NetworkTableEntry entry = monsterVision.getEntry("ObjectTracker-" + source);
+        if(entry==null) {
+            return;
+        }
+        // default to an empty list of detections if nothing is found: 
+        jsonString = entry.getString("[]");
+        // TODO: call updateDetections with detectionsString = jsonString to populate yoloObjects and aprilTags
+        updateDetections(jsonString, gson);
+        // use the getClosestAprilTag() to get the detection for the closest april tag
+        // Use smart dashboarf to display the x, y, z and ya values
+        try {
+            SmartDashboard.putNumber(("VisionX" + tagID), getSpecificAprilTag(tagID).x);
+            SmartDashboard.putNumber(("VisionY" + tagID), getSpecificAprilTag(tagID).y);
+            SmartDashboard.putNumber(("VisionZ" + tagID), getSpecificAprilTag(tagID).z);
+            SmartDashboard.putNumber(("VisionYa" + tagID), getSpecificAprilTag(tagID).ya);
+
+            // System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
+           
+            visionZ = getSpecificAprilTag(tagID).z;
+            visionX =  getSpecificAprilTag(tagID).x;
+            visionY = getSpecificAprilTag(tagID).y;
+            visionYa =  getSpecificAprilTag(tagID).ya;
+           
+            // visionZ = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).z;
+            // visionX = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).x;
+            // visionY = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).y;
+            // visionYa = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).ya;
+            
+            // String fpsString = monsterVision.getEntry("ObjectTracker-fps").getString("").substring(5);
+            // double fps = Double.valueOf(fpsString);
+            // SmartDashboard.putNumber("CameraFPS", fps);
+        } catch (Exception e) {
+            // System.out.println(e);
+        }
+
+        try {
+            // System.out.println(getSpecificAprilTag(14).objectLabel);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return ;
+        /* This commented code uses the OLD VisionObject
+        try {
+            foundObjects = gson.fromJson(jsonString, VisionObject[].class);
+        } catch (Exception e) {
+            foundObjects = null; 
+        }
+
+        // loop over list of visionobjects, deletes them from list if z=0
+        // this handles case found on 3/22 where a cone is (0, 0, 0) despite being far away
+        try {
+            ArrayList<VisionObject> tmp = new ArrayList<VisionObject>(Arrays.asList(foundObjects));
+            for (int i = 0; i < tmp.size(); i++) {
+                VisionObject vo = tmp.get(i);
+                if (vo.z == 0) {
+                    tmp.remove(vo);
+                }
+            }
+            // convert arraylist to array via for loop bc .toArray() is being uncooperative
+            VisionObject[] tmp2 = new VisionObject[tmp.size()];
+            for (int i = 0; i<tmp.size();i++){
+                tmp2[i] = tmp.get(i);
+            }
+            foundObjects = tmp2;
+        } catch (Exception e) {
+            foundObjects = null;
+        }
+        
+        if (foundObjects != null && source.contains("Chassis")) {
+            applyRotationTranslationMatrix();
+        }
+        // TODO: Comment this part
+        // for (VisionObject object : foundObjects){
+        //     System.out.format("%s %.1f %.1f %.1f %.1f\n",object.objectLabel, object.x, object.y, object.z, object.confidence);
+        // }      '' 
+        */
+    }
+
     public double getVisionX(){
         try{
             visionX = getNearestAprilTagDetection().x;
@@ -398,6 +477,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             currentAprilTag = aprilTags.get(i);
             // The .substring(10) is for this specific aprilTag family which is "tag36h11: "
             if (currentAprilTag.objectLabel.substring(10).equals(""+id)) {
+                SmartDashboard.putString(currentAprilTag.objectLabel, ("get specific apriltag " + id));
                 return currentAprilTag;
             }
         }
