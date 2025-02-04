@@ -229,7 +229,7 @@ public class AutonomousCommands {
             new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5)
 
             // new VisionAutoCommand(m_dts, m_obja, 0.000001, 20, 0) // Lining with the tote
-            ,new VisionAutoCommand(m_dts, m_obja)
+            ,new VisionAutoCommand(m_dts, m_obja,15)
             // .visionCreatePath( 
             //     0.00001, //MUST BE NONZERO
             //     -40, 
