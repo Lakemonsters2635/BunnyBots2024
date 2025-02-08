@@ -135,10 +135,10 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
             // System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
            
             // lets just not use these at all...
-            visionZ = getNearestAprilTagDetection().z;
-            visionX =  getNearestAprilTagDetection().x;
-            visionY = getNearestAprilTagDetection().y;
-            visionYa =  getNearestAprilTagDetection().ya;
+            // visionZ = getNearestAprilTagDetection().z;
+            // visionX =  getNearestAprilTagDetection().x;
+            // visionY = getNearestAprilTagDetection().y;
+            // visionYa =  getNearestAprilTagDetection().ya;
            
             // visionZ = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).z;
             // visionX = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).x;
@@ -214,10 +214,10 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
 
             // System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
            
-            visionZ = getSpecificAprilTag(tagID).z;
-            visionX =  getSpecificAprilTag(tagID).x;
-            visionY = getSpecificAprilTag(tagID).y;
-            visionYa =  getSpecificAprilTag(tagID).ya;
+            // visionZ = getSpecificAprilTag(tagID).z;
+            // visionX =  getSpecificAprilTag(tagID).x;
+            // visionY = getSpecificAprilTag(tagID).y;
+            // visionYa =  getSpecificAprilTag(tagID).ya;
            
             // visionZ = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).z;
             // visionX = getSpecificAprilTag(Robot.m_toteChooser.getSelected()).x;

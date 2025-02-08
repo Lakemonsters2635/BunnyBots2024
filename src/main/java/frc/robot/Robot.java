@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     RobotContainer.m_objectTrackerSubsystem.data();
     //RobotContainer.m_objectTrackerSubsystem.data(15);
-    
+    SmartDashboard.putData("command scheduler", CommandScheduler.getInstance());
     // RobotContainer.m_objectTrackerSubsystem.Detection x = RobotContainer.m_objectTrackerSubsystem.getNearestAprilTagDetection();
     // if (x != null) {
     //   System.out.println(x);

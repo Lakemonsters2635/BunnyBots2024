@@ -265,7 +265,7 @@ public class AutonomousCommands {
 
     public Command goToToteVision(int tagId, double xPrime, double zPrime, double finalYa){
         // VisionAutoCommand vac = new VisionAutoCommand(m_dts, m_obja);
-
+        
         return new SequentialCommandGroup(
             new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
             new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5)
@@ -302,6 +302,20 @@ public class AutonomousCommands {
             //     Units.metersToInches(Constants.DRIVETRAIN_WHEELBASE_LENGTH/2), 
             //     0
             // )
+        );
+    }
+
+    public Command comboAprilTag(int tagId1, double xPrime1, double zPrime1, double finalYa1, int tagId2, double xPrime2, double zPrime2, double finalYa2){
+        
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
+            new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5)
+            ,  new VisionAutoCommand(m_dts, m_obja, tagId1, xPrime1, zPrime1, finalYa1).visionCreatePath(xPrime1, zPrime1, finalYa1)
+            // ,new VisionAutoCommand(m_dts, m_obja, tagId1, xPrime1, zPrime1, finalYa1)
+            // ,new InstantCommand(()->m_dts.stopMotors()).withTimeout(0.1)
+            // ,new VisionAutoCommand(m_dts, m_obja, tagId2, xPrime2, zPrime2, finalYa2)
+            // ,new InstantCommand(()->m_dts.stopMotors()).withTimeout(0.1)   
+            
         );
     }
 
