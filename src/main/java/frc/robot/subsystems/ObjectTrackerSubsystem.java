@@ -314,6 +314,38 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         
     }
 
+    public double getVisionX(int tagId){
+        try {
+            return getSpecificAprilTag(tagId).x;
+        } catch(Exception e) {
+            return 0;
+        }
+    }
+    public double getVisionY(int tagId){
+        try {
+            return getSpecificAprilTag(tagId).y;
+        } catch(Exception e) {
+            return 0;
+        }
+    }
+
+    public double getVisionZ(int tagId) {
+        try {
+            return getSpecificAprilTag(tagId).z;
+        } catch(Exception e) {
+            return 0;
+        }
+    }
+
+    public double getVisionYa(int tagId){
+        try {
+            return getSpecificAprilTag(tagId).ya;
+        } catch(Exception e) {
+            return 0;
+        }
+        
+    }
+
     private void applyRotationTranslationMatrix() {
         // sets reference to be the CENTER of the robot 
         
@@ -611,3 +643,22 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
         return detection;
     }
 }
+
+
+/*
+ * To switch from MV4.5 to MV4.6 the steps are: 
+ * nano runCamera
+ * then change the line with "cd" on it to have MV4.6 in the name
+ * then cd MV4.6
+ * then sudo cp ./models/MV46.json /boot/nn.json
+ * then sudo nano /boot/nn.json
+ * inside the nn_config part add (exactly including the comma): "blob": "MV46.blob",
+ * then done?
+ * 
+ * To switch back:
+ * nano runCamera
+ * then change the line with "cd" on it to have MV4.5 in the name
+ * then cd MV4.5
+ * then sudo cp ./models/2024.json /boot/nn.json
+ * then sudo nano /boot/nn.json
+ */
