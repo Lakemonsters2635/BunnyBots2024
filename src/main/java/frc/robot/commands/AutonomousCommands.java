@@ -263,6 +263,48 @@ public class AutonomousCommands {
         );
     }
 
+    public Command goToToteVision(int tagId, double xPrime, double zPrime, double finalYa){
+        // VisionAutoCommand vac = new VisionAutoCommand(m_dts, m_obja);
+
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
+            new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5)
+
+            // new VisionAutoCommand(m_dts, m_obja, 0.000001, 20, 0) // Lining with the tote
+            ,new VisionAutoCommand(m_dts, m_obja, tagId, xPrime, zPrime, finalYa)
+            // .visionCreatePath( 
+            //     0.00001, //MUST BE NONZERO
+            //     -40, 
+            //     0).withTimeout(1)
+            // ,new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5)
+            // ,new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5)
+            // ,m_dts.createPath(
+            //      new Pose2d(0,0, new Rotation2d(Math.toRadians(0))),
+            //      new Translation2d(Units.inchesToMeters(5), Units.inchesToMeters(-20)),
+            //      new Pose2d(Units.inchesToMeters(10), Units.inchesToMeters(-40), new Rotation2d(Math.toRadians(0))),
+            //      0)
+            ,new InstantCommand(()->m_dts.stopMotors()).withTimeout(0.1)   
+            // new InstantCommand(() -> m_dts.resetAngle()).withTimeout(0.5),
+            // new InstantCommand(() -> m_dts.resetOdometry(new Pose2d(0, 0, new Rotation2d()))).withTimeout(0.5),
+            // m_dts.createPath(
+            //      new Pose2d(0,0, new Rotation2d(Math.toRadians(0))),
+            //      new Translation2d(0, Units.inchesToMeters(-10)),
+            //      new Pose2d(0, Units.inchesToMeters(-20), new Rotation2d(Math.toRadians(90))),
+            //      0),
+            // new InstantCommand(()->m_dts.stopMotors())
+            //     ) // Lining with the tote
+            // new VisionAutoCommand(m_dts, m_obja).visionCreatePath( 
+            //     0.000001, 
+            //     5, 
+            //     0) // Lining with the tote
+            // vac.visionCreatePath( // Going in front of the corral
+            //     0.0000001, 
+            //     Units.metersToInches(Constants.DRIVETRAIN_WHEELBASE_LENGTH/2), 
+            //     0
+            // )
+        );
+    }
+
     public Command heading0(){
         return m_dts.createPath(
             new Pose2d(0,0, new Rotation2d(Math.PI/2)),

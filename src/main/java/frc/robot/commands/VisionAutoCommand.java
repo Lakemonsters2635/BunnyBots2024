@@ -31,12 +31,17 @@ public class VisionAutoCommand extends Command {
   double fieldY;
   int m_tagID;
 
+  double m_xPrime;
+  double m_zPrime;
+  double m_finalYa;
+
   double heading_fixMe; // This really shouldn't be a class variable
 
   // double xPrime;
   // double zPrime;
   // double finalYa;
 
+  // TODO: make this work again without a tagId
   public VisionAutoCommand(DrivetrainSubsystem dts, ObjectTrackerSubsystem ots) {
     m_dts = dts;
     m_ots = ots;
@@ -52,6 +57,24 @@ public class VisionAutoCommand extends Command {
     m_ots = ots;
     m_tagID = tagID;
 
+    m_xPrime = 0;
+    m_zPrime = -40;
+    m_finalYa = 0;
+
+    // this.xPrime = xPrime0;
+    // this.zPrime = zPrime0;
+    // this.finalYa = finalYa0;
+    addRequirements(m_dts, m_ots);
+  }
+
+  public VisionAutoCommand(DrivetrainSubsystem dts, ObjectTrackerSubsystem ots, int tagID, double xPrime, double zPrime, double finalYa) {
+    m_dts = dts;
+    m_ots = ots;
+    m_tagID = tagID;
+    m_xPrime = xPrime;
+    m_zPrime = zPrime;
+    m_finalYa = finalYa;
+
     // this.xPrime = xPrime0;
     // this.zPrime = zPrime0;
     // this.finalYa = finalYa0;
@@ -64,20 +87,21 @@ public class VisionAutoCommand extends Command {
     // Don't need to get m_ots.data() because it is already called in Robot.java periodic
 
     try{
-      visionX = m_ots.getVisionX();
-      visionY = m_ots.getVisionY();
-      visionZ = m_ots.getVisionZ();
-      visionYa = m_ots.getVisionYa();
+      // visionX = m_ots.getVisionX(m_tagID);
+      // visionY = m_ots.getVisionY(m_tagID);
+      // visionZ = m_ots.getVisionZ(m_tagID);
+      // visionYa = m_ots.getVisionYa(m_tagID);
 
       SmartDashboard.putNumber("Robot x", m_dts.getPose().getX());
       SmartDashboard.putNumber("Robot y", m_dts.getPose().getY());
       SmartDashboard.putNumber("Robot rot", m_dts.getPose().getRotation().getDegrees());
+
+      // no need to add a small value for xPrime since visionCreatePath takes care of it
+      visionCreatePath(m_xPrime, m_zPrime, m_finalYa, m_tagID).schedule();
     }
     catch(Exception e) {
       System.out.println(e);
     }
-
-    visionCreatePath(0.0000001, -40, 0, m_tagID).schedule();
 
   }
 
@@ -104,14 +128,13 @@ public class VisionAutoCommand extends Command {
 
   public Pose2d visionAutoData(double xPrime, double zPrime, double finalYa){
     try{
-      m_ots.data();
-      visionX = m_ots.visionX;
-      visionZ = m_ots.visionZ;
-      visionY = m_ots.visionY;
-      visionYa = m_ots.visionYa;
+      visionX = m_ots.getVisionX();
+      visionZ = m_ots.getVisionZ();
+      visionY = m_ots.getVisionY();
+      visionYa = m_ots.getVisionYa();
     }
     catch(Exception e){
-
+      System.out.println("VisionAutoCommand.visionAutoData(): failed to get vision");
     }
     
     // xPrime = 23.5;
@@ -175,16 +198,15 @@ public class VisionAutoCommand extends Command {
     );
   }
 
-  public Pose2d visionAutoData(double xPrime, double zPrime, double finalYa, int tagID){
+  public Pose2d visionAutoData(double xPrime, double zPrime, double finalYa, int tagId){
     try{
-      m_ots.data(tagID);
-      visionX = m_ots.visionX;
-      visionZ = m_ots.visionZ;
-      visionY = m_ots.visionY;
-      visionYa = m_ots.visionYa;
+      visionX = m_ots.getVisionX(tagId);
+      visionZ = m_ots.getVisionZ(tagId);
+      visionY = m_ots.getVisionY(tagId);
+      visionYa = m_ots.getVisionYa(tagId);
     }
     catch(Exception e){
-
+      System.out.println("VisionAutoCommand.visionAutoData(): failed to get vision");
     }
     
     // xPrime = 23.5;
@@ -257,7 +279,6 @@ public class VisionAutoCommand extends Command {
     //when defining zPrime and xPrime zPrime is positive going behind the april tag and xPrime is positive right of the april tag
     xPrime += 0.00000112358;
     
-    m_ots.data();
     // while(m_ots.getNearestAprilTagDetection() == null){
     //   try {
     //     wait(10);
@@ -267,19 +288,19 @@ public class VisionAutoCommand extends Command {
     //   }
     // }
     try{
-      visionX = m_ots.visionX;
-      visionY = m_ots.visionY;
-      visionZ = m_ots.visionZ;
-      visionYa = m_ots.visionYa;
+      // visionX = m_ots.visionX;
+      // visionY = m_ots.visionY;
+      // visionZ = m_ots.visionZ;
+      // visionYa = m_ots.visionYa;
 
       SmartDashboard.putNumber("Robot x", m_dts.getPose().getX());
       SmartDashboard.putNumber("Robot y", m_dts.getPose().getY());
       SmartDashboard.putNumber("Robot rot", m_dts.getPose().getRotation().getDegrees());
 
-      SmartDashboard.putNumber("visionXInitial", visionX);
-      SmartDashboard.putNumber("visionYInitial", visionY);
-      SmartDashboard.putNumber("visionZInitial", visionZ);
-      SmartDashboard.putNumber("visionYaInitial", visionYa);
+      // SmartDashboard.putNumber("visionXInitial", visionX);
+      // SmartDashboard.putNumber("visionYInitial", visionY);
+      // SmartDashboard.putNumber("visionZInitial", visionZ);
+      // SmartDashboard.putNumber("visionYaInitial", visionYa);
 
     }
     catch(Exception e) {
@@ -289,10 +310,10 @@ public class VisionAutoCommand extends Command {
     // visionX = m_ots.visionX;
     // visionZ = m_ots.visionZ;
     // visionY = m_ots.visionY;
-    SmartDashboard.putNumber("visionXAuto", visionX);
-    SmartDashboard.putNumber("visionYAuto", visionY);
-    SmartDashboard.putNumber("visionZAuto", visionZ);
-    SmartDashboard.putNumber("visionYaAuto", visionYa);
+    // SmartDashboard.putNumber("visionXAuto", visionX);
+    // SmartDashboard.putNumber("visionYAuto", visionY);
+    // SmartDashboard.putNumber("visionZAuto", visionZ);
+    // SmartDashboard.putNumber("visionYaAuto", visionYa);
 
     Pose2d botPose = m_dts.getPose();
 
@@ -486,19 +507,19 @@ public class VisionAutoCommand extends Command {
     //   }
     // }
     try{
-      visionX = m_ots.visionX;
-      visionY = m_ots.visionY;
-      visionZ = m_ots.visionZ;
-      visionYa = m_ots.visionYa;
+      // visionX = m_ots.visionX;
+      // visionY = m_ots.visionY;
+      // visionZ = m_ots.visionZ;
+      // visionYa = m_ots.visionYa;
 
       SmartDashboard.putNumber("Robot x", m_dts.getPose().getX());
       SmartDashboard.putNumber("Robot y", m_dts.getPose().getY());
       SmartDashboard.putNumber("Robot rot", m_dts.getPose().getRotation().getDegrees());
 
-      SmartDashboard.putNumber("visionXInitial", visionX);
-      SmartDashboard.putNumber("visionYInitial", visionY);
-      SmartDashboard.putNumber("visionZInitial", visionZ);
-      SmartDashboard.putNumber("visionYaInitial", visionYa);
+      // SmartDashboard.putNumber("visionXInitial", visionX);
+      // SmartDashboard.putNumber("visionYInitial", visionY);
+      // SmartDashboard.putNumber("visionZInitial", visionZ);
+      // SmartDashboard.putNumber("visionYaInitial", visionYa);
 
     }
     catch(Exception e) {
@@ -508,10 +529,10 @@ public class VisionAutoCommand extends Command {
     // visionX = m_ots.visionX;
     // visionZ = m_ots.visionZ;
     // visionY = m_ots.visionY;
-    SmartDashboard.putNumber("visionXAuto", visionX);
-    SmartDashboard.putNumber("visionYAuto", visionY);
-    SmartDashboard.putNumber("visionZAuto", visionZ);
-    SmartDashboard.putNumber("visionYaAuto", visionYa);
+    // SmartDashboard.putNumber("visionXAuto", visionX);
+    // SmartDashboard.putNumber("visionYAuto", visionY);
+    // SmartDashboard.putNumber("visionZAuto", visionZ);
+    // SmartDashboard.putNumber("visionYaAuto", visionYa);
 
     Pose2d botPose = m_dts.getPose();
 

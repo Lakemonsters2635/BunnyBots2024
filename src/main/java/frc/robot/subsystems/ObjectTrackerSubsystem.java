@@ -134,6 +134,7 @@ public class ObjectTrackerSubsystem extends SubsystemBase {
 
             // System.out.println("x: "+ getNearestAprilTagDetection().x + ", y: "+ getNearestAprilTagDetection().y + ", z: " + getNearestAprilTagDetection().z + ", ya: "+ getNearestAprilTagDetection().ya);
            
+            // lets just not use these at all...
             visionZ = getNearestAprilTagDetection().z;
             visionX =  getNearestAprilTagDetection().x;
             visionY = getNearestAprilTagDetection().y;

@@ -112,7 +112,11 @@ public class RobotContainer {
 
     toggleLeftSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleLeftValve()));
     toggleRightSolenoidValve.onTrue(new InstantCommand(()->m_vacuumSolenoidSusbsystem.toggleRightValve()));
-    goToAprilTag.onTrue(new AutonomousCommands(m_drivetrainSubsystem, m_objectTrackerSubsystem, m_leftVacuumCommand, m_rightVacuumCommnad, m_rightVacuumSubsystem, m_leftVacuumSubsystem, m_armShakeCommand).goToToteVision());
+    // goToAprilTag.onTrue(new AutonomousCommands(m_drivetrainSubsystem, m_objectTrackerSubsystem, m_leftVacuumCommand, m_rightVacuumCommnad, m_rightVacuumSubsystem, m_leftVacuumSubsystem, m_armShakeCommand).goToToteVision());
+    goToAprilTag.onTrue(new AutonomousCommands(
+      m_drivetrainSubsystem, m_objectTrackerSubsystem, m_leftVacuumCommand, m_rightVacuumCommnad, m_rightVacuumSubsystem, m_leftVacuumSubsystem, m_armShakeCommand
+    ).goToToteVision(15, 0, -40, 0));
+
     // leftVacuumToggle.onTrue(m_leftVacuumCommand);
     // rightVacuumToggle.onTrue(m_rightVacuumCommnad);
 
