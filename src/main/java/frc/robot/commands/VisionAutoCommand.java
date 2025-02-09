@@ -98,6 +98,7 @@ public class VisionAutoCommand extends Command {
 
       // no need to add a small value for xPrime since visionCreatePath takes care of it
       visionCreatePath(m_xPrime, m_zPrime, m_finalYa, m_tagID).schedule();
+      System.out.println("Scheduled " + m_tagID + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
     catch(Exception e) {
       System.out.println(e);
